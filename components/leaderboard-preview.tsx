@@ -1,11 +1,8 @@
 "use client"
 
+import Link from "next/link"
 import { ExternalLink, ChevronDown, TrendingUp, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
-interface LeaderboardPreviewProps {
-  onViewFull: () => void
-}
 
 const previewData = [
   { rank: 1, agent: "GPT-5", model: "gpt-5", org: "OpenAI", defense: 72.3, trend: "up" },
@@ -15,7 +12,7 @@ const previewData = [
   { rank: 5, agent: "Llama-4", model: "llama-4-70b", org: "Meta", defense: 58.7, trend: "up" },
 ]
 
-export function LeaderboardPreview({ onViewFull }: LeaderboardPreviewProps) {
+export function LeaderboardPreview() {
   return (
     <section className="border-t border-border/50">
       <div className="mx-auto max-w-7xl px-4 py-20 md:py-28">
@@ -32,11 +29,13 @@ export function LeaderboardPreview({ onViewFull }: LeaderboardPreviewProps) {
           </div>
           <Button
             variant="outline"
-            onClick={onViewFull}
+            asChild
             className="hidden md:flex border-border hover:bg-secondary bg-transparent"
           >
-            View Full Leaderboard
-            <ExternalLink className="ml-2 h-4 w-4" />
+            <Link href="/leaderboard">
+              View Full Leaderboard
+              <ExternalLink className="ml-2 h-4 w-4" />
+            </Link>
           </Button>
         </div>
 
@@ -76,17 +75,21 @@ export function LeaderboardPreview({ onViewFull }: LeaderboardPreviewProps) {
             <span className="text-sm text-muted-foreground">
               Defense rate measures resistance to policy-aligned attacks
             </span>
-            <Button variant="ghost" size="sm" onClick={onViewFull} className="text-muted-foreground hover:text-primary">
-              <ChevronDown className="mr-1 h-4 w-4" />
-              View All
+            <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-primary">
+              <Link href="/leaderboard">
+                <ChevronDown className="mr-1 h-4 w-4" />
+                View All
+              </Link>
             </Button>
           </div>
         </div>
 
         {/* Mobile view button */}
-        <Button variant="outline" onClick={onViewFull} className="md:hidden w-full mt-4 border-border bg-transparent">
-          View Full Leaderboard
-          <ExternalLink className="ml-2 h-4 w-4" />
+        <Button variant="outline" asChild className="md:hidden w-full mt-4 border-border bg-transparent">
+          <Link href="/leaderboard">
+            View Full Leaderboard
+            <ExternalLink className="ml-2 h-4 w-4" />
+          </Link>
         </Button>
       </div>
     </section>

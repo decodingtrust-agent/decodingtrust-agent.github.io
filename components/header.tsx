@@ -1,38 +1,34 @@
 "use client"
 
 import { useState } from "react"
+import { usePathname } from "next/navigation"
+import Link from "next/link"
 import { Github, MessageCircle, Menu, X, Sun, Moon } from "lucide-react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useTheme } from "@/components/theme-provider"
 
-type TabType = "home" | "quickstart" | "docs" | "leaderboard" | "competition" | "community" | "about"
-
-interface HeaderProps {
-  activeTab: TabType
-  onTabChange: (tab: TabType) => void
-}
-
-const navItems: { label: string; value: TabType }[] = [
-  { label: "Quickstart", value: "quickstart" },
-  { label: "Leaderboard", value: "leaderboard" },
-  { label: "Docs", value: "docs" },
-  { label: "Competition", value: "competition" },
-  { label: "Community", value: "community" },
-  { label: "About", value: "about" },
+const navItems = [
+  { label: "Quickstart", href: "/quickstart" },
+  { label: "Leaderboard", href: "/leaderboard" },
+  { label: "Docs", href: "/docs" },
+  { label: "Competition", href: "/competition" },
+  { label: "Community", href: "/community" },
+  { label: "About", href: "/about" },
 ]
 
-export function Header({ activeTab, onTabChange }: HeaderProps) {
+export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { theme, toggleTheme } = useTheme()
+  const pathname = usePathname()
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
       <div className="mx-auto flex h-14 max-w-7xl items-center px-4 lg:px-6">
         {/* Logo - left aligned */}
-        <button
-          onClick={() => onTabChange("home")}
+        <Link
+          href="/"
           className="flex items-center gap-2 hover:opacity-80 transition-opacity mr-8"
         >
           <Image
@@ -43,23 +39,23 @@ export function Header({ activeTab, onTabChange }: HeaderProps) {
             className="rounded"
           />
           <span className="text-sm font-semibold font-mono tracking-tight">decodingtrust-agent</span>
-        </button>
+        </Link>
 
         {/* Nav items - inline with logo */}
         <nav className="hidden lg:flex items-center gap-1">
           {navItems.map((item) => (
-            <button
-              key={item.value}
-              onClick={() => onTabChange(item.value)}
+            <Link
+              key={item.href}
+              href={item.href}
               className={cn(
                 "px-3 py-1.5 text-sm transition-colors",
-                activeTab === item.value
+                pathname === item.href
                   ? "text-foreground font-medium"
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
               {item.label}
-            </button>
+            </Link>
           ))}
         </nav>
 
@@ -95,21 +91,19 @@ export function Header({ activeTab, onTabChange }: HeaderProps) {
         <div className="lg:hidden border-t border-border bg-background">
           <nav className="flex flex-col p-4 gap-1">
             {navItems.map((item) => (
-              <button
-                key={item.value}
-                onClick={() => {
-                  onTabChange(item.value)
-                  setMobileMenuOpen(false)
-                }}
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
                 className={cn(
                   "px-4 py-2 text-sm transition-colors rounded text-left",
-                  activeTab === item.value
+                  pathname === item.href
                     ? "text-foreground font-medium bg-secondary"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/50",
                 )}
               >
                 {item.label}
-              </button>
+              </Link>
             ))}
           </nav>
         </div>

@@ -1,15 +1,10 @@
 "use client"
 
+import Link from "next/link"
 import { ArrowRight, FileText, Play, Shield, AlertTriangle, Scan } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-type TabType = "home" | "quickstart" | "docs" | "leaderboard" | "competition" | "community" | "about"
-
-interface HeroSectionProps {
-  onNavigate: (tab: TabType) => void
-}
-
-export function HeroSection({ onNavigate }: HeroSectionProps) {
+export function HeroSection() {
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0">
@@ -53,19 +48,23 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
           <Button
             size="lg"
             className="w-full sm:w-auto bg-foreground text-background hover:bg-foreground/90"
-            onClick={() => onNavigate("quickstart")}
+            asChild
           >
-            <Play className="mr-2 h-4 w-4" />
-            Get Started
+            <Link href="/quickstart">
+              <Play className="mr-2 h-4 w-4" />
+              Get Started
+            </Link>
           </Button>
           <Button
             variant="outline"
             size="lg"
             className="w-full sm:w-auto bg-transparent border-foreground/20 hover:bg-foreground/5"
-            onClick={() => onNavigate("docs")}
+            asChild
           >
-            <FileText className="mr-2 h-4 w-4" />
-            Documentation
+            <Link href="/docs">
+              <FileText className="mr-2 h-4 w-4" />
+              Documentation
+            </Link>
           </Button>
         </div>
 
