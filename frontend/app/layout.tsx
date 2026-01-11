@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next"
 import { JetBrains_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
+import { AuthProvider } from "@/contexts/auth-context"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import "./globals.css"
@@ -37,14 +38,16 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${jetbrainsMono.className} antialiased`}>
         <ThemeProvider>
-          <div className="min-h-screen bg-background relative">
-            <div className="fixed inset-0 grid-pattern pointer-events-none opacity-50" />
-            <div className="relative z-10">
-              <Header />
-              <main>{children}</main>
-              <Footer />
+          <AuthProvider>
+            <div className="min-h-screen bg-background relative">
+              <div className="fixed inset-0 grid-pattern pointer-events-none opacity-50" />
+              <div className="relative z-10">
+                <Header />
+                <main>{children}</main>
+                <Footer />
+              </div>
             </div>
-          </div>
+          </AuthProvider>
         </ThemeProvider>
         <Analytics />
       </body>
