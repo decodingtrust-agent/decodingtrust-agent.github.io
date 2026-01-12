@@ -79,24 +79,35 @@ export function DomainsSection() {
           <div className="flex flex-wrap gap-2">
             {[
               "Gmail",
-              "PayPal",
-              "Databricks",
-              "Stripe",
-              "Salesforce",
-              "AWS Console",
-              "Slack",
               "Google Calendar",
-              "Workday",
+              "PayPal",
+              "Zoom",
+              "Slack",
+              "Databricks",
+              "Snowflake",
+              "Salesforce",
+              "Google Form",
+              "Ebay",
+              "TravelSuite",
               "ServiceNow",
-              "Jira",
-              "GitHub",
+              "Atlassian Jira",
+              "Recommendation System",
+              "OrangeHRM",
+              "Arxiv",
+              "Windows OS",
+              "Mac OS",
+              "Microsoft 365",
+              "Filesystem",
+              "Terminal",
+              "Hospital EHR",
+              "SMS Messager",
             ].map((env) => (
               <span key={env} className="px-3 py-1.5 text-sm rounded-lg bg-secondary/50 border border-border/50">
                 {env}
               </span>
             ))}
             <span className="px-3 py-1.5 text-sm rounded-lg bg-primary/10 border border-primary/20 text-primary">
-              +18 more
+              + more
             </span>
           </div>
         </div>
