@@ -1,10 +1,8 @@
 "use client"
 
 import {
-  Book,
   ChevronRight,
   ChevronDown,
-  Code,
   Database,
   Zap,
   Terminal,
@@ -27,27 +25,18 @@ export const docsHierarchy = [
     items: [],
   },
   {
-    title: "Dev Guide",
-    icon: Code,
-    slug: "dev-guide",
-    items: [
-      { title: "Task Definition", slug: "task-definition" },
-      { title: "Evaluation", slug: "evaluation" },
-    ],
-  },
-  {
-    title: "Introduction: Domain",
+    title: "Domain",
     icon: Database,
-    slug: "intro-domain",
+    slug: "domain",
     items: [
       { title: "Workflow", slug: "workflow" },
       { title: "CRM", slug: "crm" },
     ],
   },
   {
-    title: "Introduction: Environment",
+    title: "Environment",
     icon: Server,
-    slug: "intro-environment",
+    slug: "environment",
     items: [
       { title: "Gmail", slug: "gmail" },
       { title: "Google Calendar", slug: "google-calendar" },
@@ -80,6 +69,7 @@ export const docsHierarchy = [
     slug: "supported-agents",
     items: [
       { title: "Off-the-Shelf Agents", slug: "off-the-shelf-agents" },
+      { title: "Wrap Pre-Built Agents", slug: "wrap-prebuilt-agents" },
       { title: "Add Custom Agents", slug: "add-custom-agents" },
       { title: "Use Custom Models", slug: "use-custom-models" },
     ],

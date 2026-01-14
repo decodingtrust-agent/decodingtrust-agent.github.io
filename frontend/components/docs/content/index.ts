@@ -1,6 +1,7 @@
 export { QuickStartContent } from "./quick-start"
 export { SupportedAgentsContent } from "./supported-agents"
 export { OffTheShelfAgentsContent } from "./off-the-shelf-agents"
+export { WrapPrebuiltAgentsContent } from "./wrap-prebuilt-agents"
 export { AddCustomAgentsContent } from "./add-custom-agents"
 export { UseCustomModelsContent } from "./use-custom-models"
 export { PlaceholderContent } from "./placeholder"

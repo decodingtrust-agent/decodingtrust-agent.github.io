@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Book, ChevronRight, Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { DocsSidebar, docsHierarchy, getCurrentInfo } from "./navigation"
@@ -8,33 +8,45 @@ import {
   QuickStartContent,
   SupportedAgentsContent,
   OffTheShelfAgentsContent,
+  WrapPrebuiltAgentsContent,
   AddCustomAgentsContent,
   UseCustomModelsContent,
   PlaceholderContent,
 } from "./content"
 
-// Content router component
-function getContent(slug: string, title: string) {
-  switch (slug) {
-    case "quick-start":
-      return <QuickStartContent />
-    case "supported-agents":
-      return <SupportedAgentsContent />
-    case "off-the-shelf-agents":
-      return <OffTheShelfAgentsContent />
-    case "add-custom-agents":
-      return <AddCustomAgentsContent />
-    case "use-custom-models":
-      return <UseCustomModelsContent />
-    default:
-      return <PlaceholderContent title={title} slug={slug} />
-  }
-}
-
 export function DocsSection() {
   const [activeSection, setActiveSection] = useState("quick-start")
   const [expandedSections, setExpandedSections] = useState<string[]>(["supported-agents"])
   const [searchQuery, setSearchQuery] = useState("")
+
+  // Handle navigation from content buttons
+  const handleNavigate = (slug: string) => {
+    // Ensure supported-agents is expanded
+    if (!expandedSections.includes("supported-agents")) {
+      setExpandedSections((prev) => [...prev, "supported-agents"])
+    }
+    setActiveSection(slug)
+  }
+
+  // Content router component
+  const getContent = (slug: string, title: string) => {
+    switch (slug) {
+      case "quick-start":
+        return <QuickStartContent />
+      case "supported-agents":
+        return <SupportedAgentsContent onNavigate={handleNavigate} />
+      case "off-the-shelf-agents":
+        return <OffTheShelfAgentsContent />
+      case "wrap-prebuilt-agents":
+        return <WrapPrebuiltAgentsContent />
+      case "add-custom-agents":
+        return <AddCustomAgentsContent />
+      case "use-custom-models":
+        return <UseCustomModelsContent />
+      default:
+        return <PlaceholderContent title={title} slug={slug} />
+    }
+  }
 
   // Handle section click - expand/collapse and navigate
   const handleSectionClick = (slug: string) => {
@@ -70,7 +82,7 @@ export function DocsSection() {
         <div className="border-b border-border px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Book className="h-6 w-6 text-accent" />
+              <Book className="h-6 w-6" />
               <h1 className="text-xl font-semibold">Documentation</h1>
             </div>
             <div className="relative w-64">

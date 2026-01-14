@@ -1,6 +1,6 @@
 "use client"
 
-import { Code, AlertTriangle, CheckCircle } from "lucide-react"
+import { Code } from "lucide-react"
 import { CodeBlock } from "../code-block"
 import { Callout } from "../callout"
 
@@ -20,7 +20,7 @@ export function AddCustomAgentsContent() {
       {/* Agent Interface Specification */}
       <div className="mt-8">
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-          <Code className="h-5 w-5 text-accent" />
+          <Code className="h-5 w-5" />
           Agent Interface Specification
         </h2>
 
@@ -202,38 +202,35 @@ class CustomAgent(Agent):
 
       {/* Required Methods Summary */}
       <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-          <CheckCircle className="h-5 w-5 text-green-500" />
-          Required Methods Summary
-        </h2>
+        <h2 className="text-xl font-semibold mb-4">Required Methods Summary</h2>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-sm border border-border rounded-lg">
-            <thead className="bg-secondary">
+          <table className="w-full text-sm border border-zinc-200 dark:border-zinc-700 rounded-lg">
+            <thead className="bg-zinc-100 dark:bg-zinc-800">
               <tr>
                 <th className="px-4 py-3 text-left font-medium">Method</th>
                 <th className="px-4 py-3 text-left font-medium">Purpose</th>
                 <th className="px-4 py-3 text-left font-medium">Must Do</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-zinc-200 dark:divide-zinc-700">
               <tr>
-                <td className="px-4 py-3"><code className="text-accent">initialize()</code></td>
+                <td className="px-4 py-3"><code className="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">initialize()</code></td>
                 <td className="px-4 py-3">Set up agent</td>
-                <td className="px-4 py-3">Create client, call <code>load_mcp_servers()</code>, init trajectory</td>
+                <td className="px-4 py-3">Create client, call <code className="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">load_mcp_servers()</code>, init trajectory</td>
               </tr>
               <tr>
-                <td className="px-4 py-3"><code className="text-accent">_create_mcp_server()</code></td>
+                <td className="px-4 py-3"><code className="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">_create_mcp_server()</code></td>
                 <td className="px-4 py-3">Create MCP instances</td>
                 <td className="px-4 py-3">Return framework-specific MCP client from config</td>
               </tr>
               <tr>
-                <td className="px-4 py-3"><code className="text-accent">run()</code></td>
+                <td className="px-4 py-3"><code className="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">run()</code></td>
                 <td className="px-4 py-3">Execute agent</td>
-                <td className="px-4 py-3">Record trajectory, return <code>AgentResult</code></td>
+                <td className="px-4 py-3">Record trajectory, return result object</td>
               </tr>
               <tr>
-                <td className="px-4 py-3"><code className="text-accent">cleanup()</code></td>
+                <td className="px-4 py-3"><code className="bg-zinc-100 dark:bg-zinc-800 px-1 rounded">cleanup()</code></td>
                 <td className="px-4 py-3">Clean up resources</td>
                 <td className="px-4 py-3">Close MCP connections, clean up client</td>
               </tr>
@@ -244,10 +241,7 @@ class CustomAgent(Agent):
 
       {/* Trajectory Format */}
       <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-          <AlertTriangle className="h-5 w-5 text-yellow-500" />
-          Trajectory Format Specification
-        </h2>
+        <h2 className="text-xl font-semibold mb-4">Trajectory Format Specification</h2>
 
         <p className="text-muted-foreground mb-4">
           Your agent must save trajectories in the following standard format for evaluation compatibility:
@@ -352,42 +346,41 @@ result = AgentResult(
       </div>
 
       {/* Integration Checklist */}
-      <div className="mt-8 border border-green-500/30 rounded-lg p-6 bg-green-500/5">
-        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-          <CheckCircle className="h-5 w-5 text-green-500" />
-          Integration Checklist
-        </h2>
+      <div className="mt-8">
+        <h2 className="text-xl font-semibold mb-4">Integration Checklist</h2>
 
-        <ul className="space-y-2 text-sm text-muted-foreground">
-          <li className="flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-            Inherit from <code className="bg-secondary px-1 rounded">Agent</code> base class
-          </li>
-          <li className="flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-            Implement all 4 required methods
-          </li>
-          <li className="flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-            Call <code className="bg-secondary px-1 rounded">load_mcp_servers()</code> in initialize()
-          </li>
-          <li className="flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-            Record all steps in trajectory (user, agent, tool)
-          </li>
-          <li className="flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-            Return <code className="bg-secondary px-1 rounded">AgentResult</code> from run()
-          </li>
-          <li className="flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-            Save trajectory in standard JSON format
-          </li>
-          <li className="flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-            Clean up all connections in cleanup()
-          </li>
-        </ul>
+        <div className="bg-zinc-100 dark:bg-zinc-800/50 rounded-lg p-4 border border-zinc-200 dark:border-zinc-700">
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            <li className="flex items-center gap-2">
+              <div className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
+              Inherit from <code className="bg-zinc-200 dark:bg-zinc-700 px-1 rounded">Agent</code> base class
+            </li>
+            <li className="flex items-center gap-2">
+              <div className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
+              Implement all 4 required methods
+            </li>
+            <li className="flex items-center gap-2">
+              <div className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
+              Call <code className="bg-zinc-200 dark:bg-zinc-700 px-1 rounded">load_mcp_servers()</code> in initialize()
+            </li>
+            <li className="flex items-center gap-2">
+              <div className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
+              Record all steps in trajectory (user, agent, tool)
+            </li>
+            <li className="flex items-center gap-2">
+              <div className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
+              Support async context manager (<code className="bg-zinc-200 dark:bg-zinc-700 px-1 rounded">async with agent:</code>)
+            </li>
+            <li className="flex items-center gap-2">
+              <div className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
+              Save trajectory in standard JSON format
+            </li>
+            <li className="flex items-center gap-2">
+              <div className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
+              Clean up all connections in cleanup()
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   )
