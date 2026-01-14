@@ -75,14 +75,14 @@ export const docsHierarchy = [
     ],
   },
   {
-    title: "AgentScanner: Red-teaming",
+    title: "Red-teaming Agent",
     icon: Shield,
-    slug: "agent-scanner",
+    slug: "red-teaming-agent",
     items: [
-      { title: "Direct Instruction", slug: "direct-instruction" },
-      { title: "Memory Poisoning", slug: "memory-poisoning" },
-      { title: "Workflow Context", slug: "workflow-context" },
-      { title: "Tool Results Poisoning", slug: "tool-results-poisoning" },
+      { title: "Overview", slug: "red-teaming-overview" },
+      { title: "Quick Start", slug: "red-teaming-quickstart" },
+      { title: "Attack Skills", slug: "attack-skills" },
+      { title: "Injection MCP Server", slug: "injection-mcp-server" },
     ],
   },
   {

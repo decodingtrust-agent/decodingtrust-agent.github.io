@@ -12,6 +12,10 @@ import {
   AddCustomAgentsContent,
   UseCustomModelsContent,
   PlaceholderContent,
+  RedTeamingOverviewContent,
+  RedTeamingQuickstartContent,
+  AttackSkillsContent,
+  InjectionMCPServerContent,
 } from "./content"
 
 export function DocsSection() {
@@ -21,9 +25,15 @@ export function DocsSection() {
 
   // Handle navigation from content buttons
   const handleNavigate = (slug: string) => {
-    // Ensure supported-agents is expanded
-    if (!expandedSections.includes("supported-agents")) {
+    // Ensure parent sections are expanded based on slug
+    const supportedAgentsSlugs = ["off-the-shelf-agents", "wrap-prebuilt-agents", "add-custom-agents", "use-custom-models"]
+    const redTeamingSlugs = ["red-teaming-overview", "red-teaming-quickstart", "attack-skills", "injection-mcp-server"]
+
+    if (supportedAgentsSlugs.includes(slug) && !expandedSections.includes("supported-agents")) {
       setExpandedSections((prev) => [...prev, "supported-agents"])
+    }
+    if (redTeamingSlugs.includes(slug) && !expandedSections.includes("red-teaming-agent")) {
+      setExpandedSections((prev) => [...prev, "red-teaming-agent"])
     }
     setActiveSection(slug)
   }
@@ -43,6 +53,14 @@ export function DocsSection() {
         return <AddCustomAgentsContent />
       case "use-custom-models":
         return <UseCustomModelsContent />
+      case "red-teaming-overview":
+        return <RedTeamingOverviewContent />
+      case "red-teaming-quickstart":
+        return <RedTeamingQuickstartContent />
+      case "attack-skills":
+        return <AttackSkillsContent />
+      case "injection-mcp-server":
+        return <InjectionMCPServerContent />
       default:
         return <PlaceholderContent title={title} slug={slug} />
     }
