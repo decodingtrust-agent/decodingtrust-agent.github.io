@@ -4,6 +4,7 @@ import { AttackIteration } from "@/types/attack-trajectory"
 import { AttackerStepCard } from "./attacker-step-card"
 import { VictimStepCard } from "./victim-step-card"
 import { JudgeStepCard } from "./judge-step-card"
+import { VerifiableJudgeCard } from "./verifiable-judge-card"
 import { Swords, ArrowDown } from "lucide-react"
 
 interface IterationBlockProps {
@@ -12,6 +13,11 @@ interface IterationBlockProps {
 }
 
 export function IterationBlock({ iteration, isLast }: IterationBlockProps) {
+  // Determine if we have any judge to show
+  const hasVerifiableJudge = !!iteration.verifiableJudgeStep
+  const hasJudgeFeedback = !!iteration.judgeFeedbackStep
+  const hasLegacyJudge = !!iteration.judgeStep
+
   return (
     <div className="relative animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Iteration Header */}
@@ -100,42 +106,90 @@ export function IterationBlock({ iteration, isLast }: IterationBlockProps) {
         </div>
       )}
 
-      {/* Flow Arrow to Judge */}
-      {iteration.judgeStep && (
+      {/* Flow Arrow to Verifiable Judge */}
+      {(hasVerifiableJudge || hasLegacyJudge) && (
         <div className="flex justify-center mb-4">
           <div className="flex flex-col items-center">
-            <div className="w-px h-4 bg-gradient-to-b from-blue-500/30 to-amber-500/30" />
+            <div className="w-px h-4 bg-gradient-to-b from-blue-500/30 to-purple-500/30" />
             <ArrowDown className="h-4 w-4 text-muted-foreground/50" />
           </div>
         </div>
       )}
 
-      {/* Judge Evaluation - CENTER/FULL WIDTH */}
-      {iteration.judgeStep && (
+      {/* Verifiable Judge - CENTER/FULL WIDTH */}
+      {hasVerifiableJudge && (
         <div
           className="flex justify-center mb-4 animate-in fade-in zoom-in-95 duration-300"
           style={{ animationDelay: `${iteration.attackerSteps.length * 100 + 400}ms` }}
         >
-          {/* Judge card spans the middle */}
           <div className="w-full max-w-2xl px-8">
             <div className="flex items-start gap-4">
-              {/* Left spacer */}
               <div className="w-[calc(50%-1.5rem)]" />
+              <div className="flex flex-col items-center shrink-0 w-6 pt-3">
+                <div className="w-5 h-5 rounded-full bg-purple-500 border-2 border-background shadow-lg ring-4 ring-purple-500/20 flex items-center justify-center">
+                  <div className="w-2 h-2 rounded-full bg-white" />
+                </div>
+              </div>
+              <div className="w-[calc(50%-1.5rem)]" />
+            </div>
+            <div className="mt-3 -mx-4">
+              <VerifiableJudgeCard step={iteration.verifiableJudgeStep!} />
+            </div>
+          </div>
+        </div>
+      )}
 
-              {/* Center Timeline Connector */}
+      {/* Flow Arrow to Judge Feedback (only shown if attack failed and feedback exists) */}
+      {hasJudgeFeedback && (
+        <div className="flex justify-center mb-4">
+          <div className="flex flex-col items-center">
+            <div className="w-px h-4 bg-gradient-to-b from-purple-500/30 to-orange-500/30" />
+            <ArrowDown className="h-4 w-4 text-muted-foreground/50" />
+          </div>
+        </div>
+      )}
+
+      {/* Judge Feedback - CENTER/FULL WIDTH (only if attack failed) */}
+      {hasJudgeFeedback && (
+        <div
+          className="flex justify-center mb-4 animate-in fade-in zoom-in-95 duration-300"
+          style={{ animationDelay: `${iteration.attackerSteps.length * 100 + 500}ms` }}
+        >
+          <div className="w-full max-w-2xl px-8">
+            <div className="flex items-start gap-4">
+              <div className="w-[calc(50%-1.5rem)]" />
+              <div className="flex flex-col items-center shrink-0 w-6 pt-3">
+                <div className="w-5 h-5 rounded-full bg-orange-500 border-2 border-background shadow-lg ring-4 ring-orange-500/20 flex items-center justify-center">
+                  <div className="w-2 h-2 rounded-full bg-white" />
+                </div>
+              </div>
+              <div className="w-[calc(50%-1.5rem)]" />
+            </div>
+            <div className="mt-3 -mx-4">
+              <JudgeStepCard step={iteration.judgeFeedbackStep!} />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Legacy Judge Evaluation (for backwards compatibility) */}
+      {hasLegacyJudge && !hasVerifiableJudge && (
+        <div
+          className="flex justify-center mb-4 animate-in fade-in zoom-in-95 duration-300"
+          style={{ animationDelay: `${iteration.attackerSteps.length * 100 + 400}ms` }}
+        >
+          <div className="w-full max-w-2xl px-8">
+            <div className="flex items-start gap-4">
+              <div className="w-[calc(50%-1.5rem)]" />
               <div className="flex flex-col items-center shrink-0 w-6 pt-3">
                 <div className="w-5 h-5 rounded-full bg-amber-500 border-2 border-background shadow-lg ring-4 ring-amber-500/20 flex items-center justify-center">
                   <div className="w-2 h-2 rounded-full bg-white" />
                 </div>
               </div>
-
-              {/* Right spacer */}
               <div className="w-[calc(50%-1.5rem)]" />
             </div>
-
-            {/* Full width judge card below the connector */}
             <div className="mt-3 -mx-4">
-              <JudgeStepCard step={iteration.judgeStep} />
+              <JudgeStepCard step={iteration.judgeStep!} />
             </div>
           </div>
         </div>

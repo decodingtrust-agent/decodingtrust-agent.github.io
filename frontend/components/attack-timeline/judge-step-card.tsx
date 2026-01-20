@@ -2,14 +2,13 @@
 
 import { useState } from "react"
 import { cn } from "@/lib/utils"
-import { JudgeStep } from "@/types/attack-trajectory"
+import { JudgeStep, JudgeFeedbackStep } from "@/types/attack-trajectory"
 import {
   ChevronDown,
   ChevronUp,
-  Scale,
-  CheckCircle2,
+  MessageSquare,
   XCircle,
-  AlertTriangle,
+  Lightbulb,
 } from "lucide-react"
 import {
   Collapsible,
@@ -18,55 +17,53 @@ import {
 } from "@/components/ui/collapsible"
 
 interface JudgeStepCardProps {
-  step: JudgeStep
+  step: JudgeStep | JudgeFeedbackStep
+}
+
+// Parse reasoning into sections (Failure Analysis and Improvement Suggestion)
+function parseReasoning(reasoning: string): {
+  failureAnalysis: string | null
+  improvementSuggestion: string | null
+  plainText: string | null
+} {
+  const failureMatch = reasoning.match(/\*\*Failure Analysis:\*\*\s*([\s\S]*?)(?=\*\*Improvement Suggestion:\*\*|$)/)
+  const improvementMatch = reasoning.match(/\*\*Improvement Suggestion:\*\*\s*([\s\S]*)/)
+
+  if (failureMatch || improvementMatch) {
+    return {
+      failureAnalysis: failureMatch ? failureMatch[1].trim() : null,
+      improvementSuggestion: improvementMatch ? improvementMatch[1].trim() : null,
+      plainText: null,
+    }
+  }
+
+  // No structured format, return as plain text
+  return {
+    failureAnalysis: null,
+    improvementSuggestion: null,
+    plainText: reasoning,
+  }
 }
 
 export function JudgeStepCard({ step }: JudgeStepCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const success = step.state
-
-  // Parse the reasoning to separate verifiable judge from LLM feedback
   const reasoning = step.metadata.reasoning
-  const verifiableMatch = reasoning.match(/\[Verifiable judge: ([^\]]+)\]/)
-  // Use split approach instead of /s flag for cross-line matching
-  const llmFeedbackMarker = "[LLM feedback]: "
-  const llmFeedbackIndex = reasoning.indexOf(llmFeedbackMarker)
-
-  const verifiableResult = verifiableMatch ? verifiableMatch[1] : null
-  const llmFeedback = llmFeedbackIndex !== -1
-    ? reasoning.slice(llmFeedbackIndex + llmFeedbackMarker.length).trim()
-    : reasoning
+  const parsed = parseReasoning(reasoning)
+  const hasStructuredContent = parsed.failureAnalysis || parsed.improvementSuggestion
 
   return (
     <div
       className={cn(
         "rounded-xl border-2 overflow-hidden transition-all duration-200",
-        success
-          ? "border-green-500/30 bg-gradient-to-r from-green-500/5 via-card to-green-500/5"
-          : "border-amber-500/30 bg-gradient-to-r from-amber-500/5 via-card to-amber-500/5"
+        "border-orange-500/30 bg-gradient-to-r from-orange-500/5 via-card to-orange-500/5"
       )}
     >
       {/* Header */}
-      <div
-        className={cn(
-          "px-4 py-3 flex items-center justify-between",
-          success ? "bg-green-500/10" : "bg-amber-500/10"
-        )}
-      >
+      <div className="px-4 py-3 flex items-center justify-between bg-orange-500/10">
         <div className="flex items-center gap-3">
-          <div
-            className={cn(
-              "h-10 w-10 rounded-full flex items-center justify-center",
-              success ? "bg-green-500/20" : "bg-amber-500/20"
-            )}
-          >
-            <Scale
-              className={cn(
-                "h-5 w-5",
-                success ? "text-green-500" : "text-amber-500"
-              )}
-            />
+          <div className="h-10 w-10 rounded-full flex items-center justify-center bg-orange-500/20">
+            <MessageSquare className="h-5 w-5 text-orange-500" />
           </div>
           <div>
             <div className="flex items-center gap-2">
@@ -74,62 +71,81 @@ export function JudgeStepCard({ step }: JudgeStepCardProps) {
                 Step {step.step_id}
               </span>
               <span className="text-xs text-muted-foreground">•</span>
-              <span className="text-xs font-medium text-amber-600">
-                Judge Evaluation
+              <span className="text-xs font-medium text-orange-600 dark:text-orange-400">
+                Judge Feedback
               </span>
             </div>
-            <div className="flex items-center gap-2 mt-1">
-              {success ? (
-                <>
-                  <CheckCircle2 className="h-4 w-4 text-green-500" />
-                  <span className="font-semibold text-green-500">
-                    Attack Succeeded
-                  </span>
-                </>
-              ) : (
-                <>
-                  <XCircle className="h-4 w-4 text-amber-500" />
-                  <span className="font-semibold text-amber-500">
-                    Attack Blocked
-                  </span>
-                </>
-              )}
+            <div className="text-sm font-medium text-foreground mt-0.5">
+              Feedback Judge Reasoning
             </div>
           </div>
         </div>
 
-        {/* Verifiable result badge */}
-        {verifiableResult && (
-          <div
-            className={cn(
-              "px-3 py-1.5 rounded-lg text-xs font-mono",
-              success
-                ? "bg-green-500/20 text-green-600 dark:text-green-400"
-                : "bg-amber-500/20 text-amber-600 dark:text-amber-400"
-            )}
-          >
-            {verifiableResult}
-          </div>
-        )}
+        {/* Status badge */}
+        <div className="px-2 py-1 rounded-md text-xs font-medium bg-orange-500/20 text-orange-600 dark:text-orange-400">
+          Attack Analysis
+        </div>
       </div>
 
       {/* Content */}
       <Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
-        <div className="px-4 py-3">
-          <div className="flex items-start gap-2">
-            <AlertTriangle className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" />
+        <div className="px-4 py-3 space-y-3">
+          {hasStructuredContent ? (
+            <>
+              {/* Failure Analysis Section */}
+              {parsed.failureAnalysis && (
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <XCircle className="h-4 w-4 text-red-500 shrink-0" />
+                    <span className="text-sm font-semibold text-red-600 dark:text-red-400">
+                      Failure Analysis
+                    </span>
+                  </div>
+                  <p
+                    className={cn(
+                      "text-sm text-muted-foreground leading-relaxed pl-6",
+                      !isExpanded && "line-clamp-2"
+                    )}
+                  >
+                    {parsed.failureAnalysis}
+                  </p>
+                </div>
+              )}
+
+              {/* Improvement Suggestion Section */}
+              {parsed.improvementSuggestion && (
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <Lightbulb className="h-4 w-4 text-yellow-500 shrink-0" />
+                    <span className="text-sm font-semibold text-yellow-600 dark:text-yellow-400">
+                      Improvement Suggestion
+                    </span>
+                  </div>
+                  <p
+                    className={cn(
+                      "text-sm text-muted-foreground leading-relaxed pl-6",
+                      !isExpanded && "line-clamp-2"
+                    )}
+                  >
+                    {parsed.improvementSuggestion}
+                  </p>
+                </div>
+              )}
+            </>
+          ) : (
+            /* Plain text fallback for legacy/unstructured reasoning */
             <p
               className={cn(
                 "text-sm text-muted-foreground leading-relaxed",
-                !isExpanded && "line-clamp-2"
+                !isExpanded && "line-clamp-3"
               )}
             >
-              {llmFeedback}
+              {parsed.plainText}
             </p>
-          </div>
+          )}
         </div>
 
-        {llmFeedback.length > 200 && (
+        {reasoning.length > 200 && (
           <div className="px-4 pb-3">
             <CollapsibleTrigger className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors">
               {isExpanded ? (
@@ -140,7 +156,7 @@ export function JudgeStepCard({ step }: JudgeStepCardProps) {
               ) : (
                 <>
                   <ChevronDown className="h-3 w-3" />
-                  Read full evaluation
+                  Read full analysis
                 </>
               )}
             </CollapsibleTrigger>
