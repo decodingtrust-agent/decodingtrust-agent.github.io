@@ -159,3 +159,62 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* Domain Release Section Animations */
+@keyframes release-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 oklch(0.7 0.15 260 / 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px oklch(0.7 0.15 260 / 0);
+  }
+}
+
+.release-pulse {
+  animation: release-pulse 2s ease-in-out infinite;
+}
+
+@keyframes countdown-flip {
+  0% {
+    transform: perspective(400px) rotateX(0deg);
+  }
+  50% {
+    transform: perspective(400px) rotateX(-5deg);
+  }
+  100% {
+    transform: perspective(400px) rotateX(0deg);
+  }
+}
+
+.countdown-flip {
+  animation: countdown-flip 1s ease-in-out;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-effect {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    oklch(0.7 0.15 260 / 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+/* Success foreground color for domain release */
+:root {
+  --success-foreground: oklch(0.99 0 0);
+}
+
+.dark {
+  --success-foreground: oklch(0.08 0.02 260);
+}
