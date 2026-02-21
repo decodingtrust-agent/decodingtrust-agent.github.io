@@ -41,18 +41,15 @@ export default function RootLayout({
         <ThemeProvider>
           <AuthProvider>
             <ApiKeysProvider>
-              <div className="min-h-screen bg-background relative">
-                <div className="fixed inset-0 grid-pattern pointer-events-none opacity-50" />
-                <div className="relative z-10">
-                  <Header />
-                  <main>{children}</main>
-                  <Footer />
-                </div>
+              <div className="min-h-screen bg-background">
+                <Header />
+                <main>{children}</main>
+                <Footer />
               </div>
             </ApiKeysProvider>
           </AuthProvider>
         </ThemeProvider>
-        <Analytics />
+        {process.env.VERCEL && <Analytics />}
       </body>
     </html>
   )

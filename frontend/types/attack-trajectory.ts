@@ -61,7 +61,7 @@ interface BaseTrajectoryStep {
 export interface AttackerStep extends BaseTrajectoryStep {
   role: "attacker"
   reasoning: string
-  action: "load_skill" | "inject_env" | "inject_tool" | "inject_prompt" | "execute_skill" | "query_victim"
+  action: "load_skill" | "inject_env" | "inject_tool" | "inject_skill" | "inject_prompt" | "execute_skill" | "query_victim"
   metadata: {
     // For load_skill action
     skill_loaded?: boolean
@@ -274,6 +274,12 @@ export function getActionDisplayInfo(action: string): {
       bgColor: "bg-orange-500/10",
       borderColor: "border-orange-500/30",
       label: "Tool Injection",
+    },
+    inject_skill: {
+      color: "text-purple-500",
+      bgColor: "bg-purple-500/10",
+      borderColor: "border-purple-500/30",
+      label: "Skill Injection",
     },
     inject_prompt: {
       color: "text-red-500",

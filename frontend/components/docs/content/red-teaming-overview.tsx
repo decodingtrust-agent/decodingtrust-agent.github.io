@@ -48,7 +48,7 @@ export function RedTeamingOverviewContent() {
           <div className="border border-zinc-200 dark:border-zinc-700 rounded-lg p-4">
             <h3 className="font-medium mb-2">Injection Points</h3>
             <p className="text-sm text-muted-foreground">
-              Three attack surfaces: prompt injection, tool description injection, and environment data injection.
+              Four attack surfaces: prompt injection, tool description injection, skill injection, and environment data injection.
             </p>
           </div>
         </div>
@@ -65,7 +65,7 @@ export function RedTeamingOverviewContent() {
               <li>Attacker can only <strong>append</strong> malicious instructions to the original task</li>
               <li>Original benign task remains visible to the victim</li>
               <li>Single-turn attacks only - each query creates a new victim session</li>
-              <li>All three injection types available: prompt, tool, environment</li>
+              <li>All four injection types available: prompt, tool, skill, environment</li>
             </ul>
           </div>
           <div className="border border-zinc-200 dark:border-zinc-700 rounded-lg p-4">

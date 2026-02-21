@@ -1,13 +1,14 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRight, FileText, Play, Shield, AlertTriangle, Scan } from "lucide-react"
+import { ArrowRight, FileText, Play, Shield, AlertTriangle, Scan, Database, Bot, Tags } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0">
+        <div className="absolute inset-0 grid-pattern opacity-50 pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
@@ -66,14 +67,27 @@ export function HeroSection() {
               Documentation
             </Link>
           </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="w-full sm:w-auto bg-transparent border-foreground/20 hover:bg-foreground/5"
+            asChild
+          >
+            <Link href="/registry">
+              <Database className="mr-2 h-4 w-4" />
+              Data Registry
+            </Link>
+          </Button>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-3 max-w-xl mx-auto">
+        <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 max-w-3xl mx-auto">
           {[
             { icon: Shield, value: "30+", label: "Sandbox Environments" },
             { icon: AlertTriangle, value: "500+", label: "Attack Scenarios" },
             { icon: Scan, value: "15+", label: "Policy Domains" },
+            { icon: Bot, value: "10+", label: "Agent Frameworks" },
+            { icon: Tags, value: "100+", label: "Risk Categories" },
           ].map((stat) => (
             <div key={stat.label} className="flex flex-col items-center p-3 rounded-lg bg-card border border-border">
               <stat.icon className="h-4 w-4 text-primary mb-1.5" />

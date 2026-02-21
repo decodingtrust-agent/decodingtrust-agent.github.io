@@ -12,6 +12,7 @@ import { useAuth } from "@/contexts/auth-context"
 
 const navItems = [
   { label: "Quickstart", href: "/quickstart" },
+  { label: "Registry", href: "/registry" },
   { label: "Leaderboard", href: "/leaderboard" },
   { label: "Docs", href: "/docs" },
   { label: "Competition", href: "/competition" },

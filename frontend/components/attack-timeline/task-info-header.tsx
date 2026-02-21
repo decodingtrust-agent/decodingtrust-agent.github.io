@@ -47,7 +47,7 @@ export function TaskInfoHeader({
               <div className="text-left">
                 <div className="flex items-center gap-2">
                   <span className="font-semibold text-sm">
-                    Task #{taskInfo.task_id}
+                    {taskInfo.task_id}
                   </span>
                   <Badge
                     variant="outline"
