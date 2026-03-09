@@ -14,6 +14,7 @@ const navItems = [
   { label: "Quickstart", href: "/quickstart" },
   { label: "Registry", href: "/registry" },
   { label: "Leaderboard", href: "/leaderboard" },
+  { label: "Data Auditing", href: "/data-auditing/0308" },
   { label: "Docs", href: "/docs" },
   { label: "Competition", href: "/competition" },
   { label: "Community", href: "/community" },
@@ -72,7 +73,7 @@ export function Header() {
               href={item.href}
               className={cn(
                 "px-3 py-1.5 text-sm transition-colors",
-                pathname === item.href
+                (pathname === item.href || pathname?.startsWith(item.href + "/"))
                   ? "text-foreground font-medium"
                   : "text-muted-foreground hover:text-foreground",
               )}
@@ -194,7 +195,7 @@ export function Header() {
                 onClick={() => setMobileMenuOpen(false)}
                 className={cn(
                   "px-4 py-2 text-sm transition-colors rounded text-left",
-                  pathname === item.href
+                  (pathname === item.href || pathname?.startsWith(item.href + "/"))
                     ? "text-foreground font-medium bg-secondary"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/50",
                 )}
