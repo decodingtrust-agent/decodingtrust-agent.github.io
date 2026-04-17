@@ -1,4 +1,0 @@
-:HL["/_next/static/chunks/b4ac12d39ba1be10.css","style"]
-:HL["/_next/static/chunks/0f2812963a9270ff.css","style"]
-:HL["/_next/static/media/70bc3e132a0a741e-s.p.15008bfb.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-0:{"buildId":"HRp5Wsm2UHza2BMrhP1E5","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"registry","paramType":null,"paramKey":"registry","hasRuntimePrefetch":false,"slots":{"children":{"name":"slug","paramType":"d","paramKey":"finance-malicious-direct-disaster_fraud-2","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}

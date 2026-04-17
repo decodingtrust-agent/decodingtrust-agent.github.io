@@ -1,8 +1,0 @@
-1:"$Sreact.fragment"
-2:I[385932,["/_next/static/chunks/5f7ca531572e44d4.js","/_next/static/chunks/741d18be0d94aebe.js"],"ViewportBoundary"]
-4:I[385932,["/_next/static/chunks/5f7ca531572e44d4.js","/_next/static/chunks/741d18be0d94aebe.js"],"MetadataBoundary"]
-5:"$Sreact.suspense"
-7:I[950289,["/_next/static/chunks/5f7ca531572e44d4.js","/_next/static/chunks/741d18be0d94aebe.js"],"IconMark"]
-0:{"buildId":"HRp5Wsm2UHza2BMrhP1E5","rsc":["$","$1","h",{"children":[null,["$","$L2",null,{"children":"$@3"}],["$","div",null,{"hidden":true,"children":["$","$L4",null,{"children":["$","$5",null,{"name":"Next.Metadata","children":"$@6"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"loading":null,"isPartial":false}
-3:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","media":"(prefers-color-scheme: light)","content":"#fafafa"}],["$","meta","3",{"name":"theme-color","media":"(prefers-color-scheme: dark)","content":"#0a0a14"}]]
-6:[["$","title","0",{"children":"DT-Agent | A Real-World Simulation Platform for Advanced Red-Teaming of AI Agents"}],["$","meta","1",{"name":"description","content":"DecodingTrust Agent (DT-Agent) — a real-world simulation platform for advanced red-teaming of AI agents, featuring DT-Red autonomous red-teaming and DT-Bench comprehensive benchmark."}],["$","meta","2",{"name":"generator","content":"v0.app"}],["$","meta","3",{"name":"keywords","content":"AI security,agent evaluation,red teaming,benchmark,AI safety,LLM security"}],["$","link","4",{"rel":"icon","href":"/dt-agent-logo.png"}],["$","link","5",{"rel":"apple-touch-icon","href":"/dt-agent-logo.png"}],["$","$L7","6",{}]]
