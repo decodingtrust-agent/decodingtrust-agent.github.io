@@ -1,457 +1,365 @@
 "use client"
 
-import { useState, useMemo } from "react"
-import { Copy, Check, Search, ChevronDown, X, Filter } from "lucide-react"
+import { useEffect, useMemo, useState } from "react"
+import { ChevronDown, Filter, Search, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  METRIC_OPTIONS,
+  filterBenchmarkEntries,
+  formatPercent,
+  getMetricDescription,
+  isHigherBetterMetric,
+  loadBenchmarkDataset,
+  rankBenchmarkEntries,
+  type BenchmarkDataset,
+  type BenchmarkDomain,
+  type BenchmarkMetricType,
+} from "@/lib/benchmark"
 import { cn } from "@/lib/utils"
 
-// Domain categories for filtering
-const DOMAINS = [
-  "Code",
-  "OS Terminal",
-  "OS GUI",
-  "E-commerce",
-  "Workflow",
-  "HR",
-  "Recommendation",
-  "Customer Service",
-  "Travel",
-  "Finance",
-  "Legal",
-  "Telecom",
-  "CRM",
-  "Healthcare",
-  "Research",
-] as const
-
-type Domain = (typeof DOMAINS)[number]
-
-// Full leaderboard data with per-domain scores
-const leaderboardData = [
-  {
-    rank: 1,
-    agent: "GPT-5",
-    model: "gpt-5",
-    date: "2026-01-08",
-    agentOrg: "OpenAI",
-    modelOrg: "OpenAI",
-    overall: 72.3,
-    variance: 2.1,
-    domains: {
-      Code: 78.2,
-      "OS Terminal": 81.4,
-      "OS GUI": 69.3,
-      "E-commerce": 71.5,
-      Workflow: 74.2,
-      HR: 68.9,
-      Recommendation: 70.1,
-      "Customer Service": 73.4,
-      Travel: 72.8,
-      Finance: 65.2,
-      Legal: 62.8,
-      Telecom: 71.9,
-      CRM: 74.5,
-      Healthcare: 61.2,
-      Research: 68.4,
-    },
-  },
-  {
-    rank: 2,
-    agent: "Claude-4",
-    model: "claude-4-opus",
-    date: "2026-01-05",
-    agentOrg: "Anthropic",
-    modelOrg: "Anthropic",
-    overall: 68.9,
-    variance: 1.8,
-    domains: {
-      Code: 74.1,
-      "OS Terminal": 76.3,
-      "OS GUI": 65.8,
-      "E-commerce": 69.2,
-      Workflow: 71.8,
-      HR: 66.4,
-      Recommendation: 67.9,
-      "Customer Service": 71.2,
-      Travel: 70.1,
-      Finance: 63.8,
-      Legal: 68.5,
-      Telecom: 69.4,
-      CRM: 71.2,
-      Healthcare: 59.8,
-      Research: 67.8,
-    },
-  },
-  {
-    rank: 3,
-    agent: "Gemini Pro",
-    model: "gemini-2.0-pro",
-    date: "2026-01-06",
-    agentOrg: "Google",
-    modelOrg: "Google",
-    overall: 65.4,
-    variance: 2.4,
-    domains: {
-      Code: 71.2,
-      "OS Terminal": 73.8,
-      "OS GUI": 62.4,
-      "E-commerce": 66.1,
-      Workflow: 68.3,
-      HR: 63.2,
-      Recommendation: 64.5,
-      "Customer Service": 67.8,
-      Travel: 66.9,
-      Finance: 61.2,
-      Legal: 58.9,
-      Telecom: 66.1,
-      CRM: 68.4,
-      Healthcare: 56.7,
-      Research: 65.2,
-    },
-  },
-  {
-    rank: 4,
-    agent: "DeepSeek-V4",
-    model: "deepseek-v4",
-    date: "2026-01-04",
-    agentOrg: "DeepSeek",
-    modelOrg: "DeepSeek",
-    overall: 62.1,
-    variance: 2.9,
-    domains: {
-      Code: 68.9,
-      "OS Terminal": 70.2,
-      "OS GUI": 58.1,
-      "E-commerce": 62.8,
-      Workflow: 64.9,
-      HR: 59.8,
-      Recommendation: 61.2,
-      "Customer Service": 64.1,
-      Travel: 63.2,
-      Finance: 57.8,
-      Legal: 55.4,
-      Telecom: 62.8,
-      CRM: 65.1,
-      Healthcare: 53.2,
-      Research: 63.8,
-    },
-  },
-  {
-    rank: 5,
-    agent: "Llama-4",
-    model: "llama-4-70b",
-    date: "2026-01-03",
-    agentOrg: "Meta",
-    modelOrg: "Meta",
-    overall: 58.7,
-    variance: 3.2,
-    domains: {
-      Code: 65.4,
-      "OS Terminal": 67.1,
-      "OS GUI": 54.8,
-      "E-commerce": 59.2,
-      Workflow: 61.4,
-      HR: 56.1,
-      Recommendation: 57.8,
-      "Customer Service": 60.5,
-      Travel: 59.8,
-      Finance: 54.2,
-      Legal: 51.8,
-      Telecom: 59.1,
-      CRM: 61.8,
-      Healthcare: 49.8,
-      Research: 61.7,
-    },
-  },
-  {
-    rank: 6,
-    agent: "Codex CLI",
-    model: "gpt-5",
-    date: "2025-12-28",
-    agentOrg: "OpenAI",
-    modelOrg: "OpenAI",
-    overall: 56.2,
-    variance: 2.7,
-    domains: {
-      Code: 72.1,
-      "OS Terminal": 74.8,
-      "OS GUI": 48.2,
-      "E-commerce": 52.4,
-      Workflow: 58.1,
-      HR: 48.9,
-      Recommendation: 51.2,
-      "Customer Service": 54.8,
-      Travel: 53.1,
-      Finance: 51.8,
-      Legal: 48.2,
-      Telecom: 55.4,
-      CRM: 57.1,
-      Healthcare: 45.2,
-      Research: 71.4,
-    },
-  },
-  {
-    rank: 7,
-    agent: "Cursor Agent",
-    model: "claude-4-opus",
-    date: "2025-12-25",
-    agentOrg: "Cursor",
-    modelOrg: "Anthropic",
-    overall: 54.8,
-    variance: 3.1,
-    domains: {
-      Code: 69.8,
-      "OS Terminal": 71.2,
-      "OS GUI": 46.1,
-      "E-commerce": 50.8,
-      Workflow: 56.4,
-      HR: 46.2,
-      Recommendation: 49.8,
-      "Customer Service": 52.1,
-      Travel: 51.4,
-      Finance: 49.2,
-      Legal: 46.8,
-      Telecom: 53.2,
-      CRM: 55.8,
-      Healthcare: 43.1,
-      Research: 69.8,
-    },
-  },
-  {
-    rank: 8,
-    agent: "Claude Code",
-    model: "claude-4-opus",
-    date: "2026-01-02",
-    agentOrg: "Anthropic",
-    modelOrg: "Anthropic",
-    overall: 52.3,
-    variance: 2.5,
-    domains: {
-      Code: 67.2,
-      "OS Terminal": 68.9,
-      "OS GUI": 44.8,
-      "E-commerce": 48.2,
-      Workflow: 54.1,
-      HR: 44.8,
-      Recommendation: 47.2,
-      "Customer Service": 50.4,
-      Travel: 49.8,
-      Finance: 47.1,
-      Legal: 44.2,
-      Telecom: 51.8,
-      CRM: 53.2,
-      Healthcare: 41.8,
-      Research: 67.1,
-    },
-  },
-]
-
-export function LeaderboardSection() {
-  const [copied, setCopied] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedDomains, setSelectedDomains] = useState<Domain[]>([])
-  const [showDomainFilter, setShowDomainFilter] = useState(false)
-
-  const runCommand = `dta run -d dt-bench@1.0 -a "agent" -m "model" -k 5`
-
-  const copyCommand = () => {
-    navigator.clipboard.writeText(runCommand)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+function scoreTone(metricType: BenchmarkMetricType, value: number | null) {
+  if (value === null) {
+    return "text-muted-foreground"
   }
 
-  const toggleDomain = (domain: Domain) => {
-    setSelectedDomains((prev) => (prev.includes(domain) ? prev.filter((d) => d !== domain) : [...prev, domain]))
+  if (metricType === "bsr") {
+    if (value >= 90) return "text-emerald-500"
+    if (value >= 75) return "text-foreground"
+    return "text-amber-500"
+  }
+
+  if (value <= 15) return "text-emerald-500"
+  if (value <= 35) return "text-foreground"
+  return "text-amber-500"
+}
+
+export function LeaderboardSection() {
+  const [dataset, setDataset] = useState<BenchmarkDataset | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [metricType, setMetricType] = useState<BenchmarkMetricType>("bsr")
+  const [frameworkKey, setFrameworkKey] = useState("all")
+  const [modelKey, setModelKey] = useState("all")
+  const [selectedDomainKeys, setSelectedDomainKeys] = useState<string[]>([])
+  const [showDomainFilter, setShowDomainFilter] = useState(false)
+
+  useEffect(() => {
+    loadBenchmarkDataset()
+      .then((data) => setDataset(data))
+      .finally(() => setLoading(false))
+  }, [])
+
+  const availableModels = useMemo(() => {
+    if (!dataset) {
+      return []
+    }
+
+    const validModelKeys = new Set(
+      dataset.entries
+        .filter((entry) => entry.metricType === metricType)
+        .filter((entry) => frameworkKey === "all" || entry.frameworkKey === frameworkKey)
+        .map((entry) => entry.modelKey)
+    )
+
+    return dataset.models.filter((model) => validModelKeys.has(model.key))
+  }, [dataset, frameworkKey, metricType])
+
+  useEffect(() => {
+    if (modelKey === "all") {
+      return
+    }
+
+    const stillAvailable = availableModels.some((model) => model.key === modelKey)
+    if (!stillAvailable) {
+      setModelKey("all")
+    }
+  }, [availableModels, modelKey])
+
+  const filteredEntries = useMemo(() => {
+    if (!dataset) {
+      return []
+    }
+
+    return rankBenchmarkEntries(
+      filterBenchmarkEntries(dataset, {
+        metricType,
+        frameworkKey,
+        modelKey,
+        domainKeys: selectedDomainKeys,
+        searchQuery,
+      }),
+      selectedDomainKeys
+    )
+  }, [dataset, frameworkKey, metricType, modelKey, searchQuery, selectedDomainKeys])
+
+  const visibleDomains = useMemo(() => {
+    if (!dataset) {
+      return []
+    }
+
+    if (selectedDomainKeys.length === 0) {
+      return dataset.domains
+    }
+
+    const domainSet = new Set(selectedDomainKeys)
+    return dataset.domains.filter((domain) => domainSet.has(domain.key))
+  }, [dataset, selectedDomainKeys])
+
+  const toggleDomain = (domainKey: string) => {
+    setSelectedDomainKeys((previous) =>
+      previous.includes(domainKey)
+        ? previous.filter((key) => key !== domainKey)
+        : [...previous, domainKey]
+    )
   }
 
   const clearFilters = () => {
-    setSelectedDomains([])
     setSearchQuery("")
+    setFrameworkKey("all")
+    setModelKey("all")
+    setSelectedDomainKeys([])
   }
 
-  const filteredData = useMemo(() => {
-    return leaderboardData.filter(
-      (row) =>
-        row.agent.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        row.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        row.agentOrg.toLowerCase().includes(searchQuery.toLowerCase()),
-    )
-  }, [searchQuery])
+  const selectedMetric = METRIC_OPTIONS.find((metric) => metric.key === metricType)
+  const higherIsBetter = isHigherBetterMetric(metricType)
+  const hasFilters =
+    searchQuery.length > 0 ||
+    frameworkKey !== "all" ||
+    modelKey !== "all" ||
+    selectedDomainKeys.length > 0
 
-  // Columns to show based on selected domains
-  const visibleDomains =
-    selectedDomains.length > 0 ? selectedDomains : (["Code", "Finance", "Healthcare", "Legal", "CRM"] as Domain[])
+  if (loading) {
+    return (
+      <section className="min-h-screen">
+        <div className="mx-auto max-w-7xl px-4 py-16 lg:px-6">
+          <div className="flex min-h-[40vh] items-center justify-center">
+            <p className="text-muted-foreground">Loading benchmark results...</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (!dataset) {
+    return (
+      <section className="min-h-screen">
+        <div className="mx-auto max-w-7xl px-4 py-16 lg:px-6">
+          <div className="rounded-2xl border border-border bg-card p-8 text-center">
+            <p className="text-lg font-medium mb-2">Benchmark data unavailable</p>
+            <p className="text-muted-foreground">
+              Configure Supabase or keep the generated benchmark JSON in `public/data`.
+            </p>
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section className="min-h-screen">
       <div className="mx-auto max-w-7xl px-4 py-12 md:py-16">
-        {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
           <span>Home</span>
           <span className="text-muted-foreground/50">{">"}</span>
-          <span>Leaderboards</span>
-          <span className="text-muted-foreground/50">{">"}</span>
-          <span className="text-foreground">dt-bench@1.0</span>
+          <span className="text-foreground">Leaderboard</span>
         </div>
 
-        <h1 className="text-2xl md:text-3xl font-mono font-bold mb-6">dt-bench@1.0 Leaderboard</h1>
-
-        {/* Run command card */}
-        <div className="mb-6 p-4 rounded-lg border border-border bg-card">
-          <div className="flex gap-4 mb-3">
-            <button className="text-sm font-medium text-foreground border-b-2 border-foreground pb-1">New Model</button>
-            <button className="text-sm text-muted-foreground hover:text-foreground pb-1">Custom Agent</button>
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between mb-8">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-mono font-bold mb-2">DT-Bench Published Results</h1>
+            <p className="text-muted-foreground max-w-3xl">
+              Real paper-backed benchmark results with filtering by metric, agent framework, model, and domain.
+            </p>
           </div>
-          <p className="text-xs text-muted-foreground mb-2">Note: submissions may not modify timeouts or resources</p>
-          <div className="relative bg-secondary/50 rounded p-3">
-            <code className="text-sm font-mono">
-              <span className="text-primary">dta</span> run <span className="text-info">-d</span> dt-bench@1.0{" "}
-              <span className="text-info">-a</span> "agent" <span className="text-info">-m</span> "model"{" "}
-              <span className="text-info">-k</span> 5
-            </code>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7"
-              onClick={copyCommand}
-            >
-              {copied ? <Check className="h-3.5 w-3.5 text-success" /> : <Copy className="h-3.5 w-3.5" />}
-            </Button>
+          <div className="rounded-xl border border-border bg-card px-4 py-3 text-sm">
+            <div className="text-muted-foreground">Data source</div>
+            <div className="font-medium mt-1">{dataset.run.name}</div>
           </div>
         </div>
 
-        {/* Filters */}
-        <div className="flex flex-col gap-4 mb-6">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <p className="text-sm text-muted-foreground">Showing {filteredData.length} entries</p>
-            {(selectedDomains.length > 0 || searchQuery) && (
-              <button className="text-sm text-muted-foreground hover:text-foreground" onClick={clearFilters}>
-                Clear filters
+        <div className="rounded-2xl border border-border bg-card p-5 mb-6">
+          <div className="flex flex-wrap gap-2 mb-4">
+            {METRIC_OPTIONS.map((metric) => (
+              <button
+                key={metric.key}
+                onClick={() => setMetricType(metric.key)}
+                className={cn(
+                  "rounded-full border px-4 py-2 text-sm transition-colors",
+                  metric.key === metricType
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {metric.label}
               </button>
-            )}
+            ))}
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            {/* Search */}
-            <div className="relative w-full md:w-64">
+          <div className="grid gap-3 md:grid-cols-3 xl:grid-cols-5">
+            <div className="relative md:col-span-2 xl:col-span-2">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search leaderboard"
+                placeholder="Search framework or model"
                 className="pl-9 h-9 bg-background border-border"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(event) => setSearchQuery(event.target.value)}
               />
             </div>
 
-            {/* Domain filter dropdown */}
+            <Select value={frameworkKey} onValueChange={setFrameworkKey}>
+              <SelectTrigger className="h-9">
+                <SelectValue placeholder="Agent framework" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All frameworks</SelectItem>
+                {dataset.frameworks.map((framework) => (
+                  <SelectItem key={framework.key} value={framework.key}>
+                    {framework.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={modelKey} onValueChange={setModelKey}>
+              <SelectTrigger className="h-9">
+                <SelectValue placeholder="Model" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All models</SelectItem>
+                {availableModels.map((model) => (
+                  <SelectItem key={model.key} value={model.key}>
+                    {model.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
             <div className="relative">
               <Button
                 variant="outline"
                 size="sm"
-                className="h-9 gap-2 bg-transparent"
-                onClick={() => setShowDomainFilter(!showDomainFilter)}
+                className="h-9 w-full justify-between gap-2 bg-transparent"
+                onClick={() => setShowDomainFilter((open) => !open)}
               >
-                <Filter className="h-3.5 w-3.5" />
-                Domains
-                {selectedDomains.length > 0 && (
-                  <span className="bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full">
-                    {selectedDomains.length}
-                  </span>
-                )}
-                <ChevronDown className="h-3.5 w-3.5" />
+                <span className="inline-flex items-center gap-2">
+                  <Filter className="h-3.5 w-3.5" />
+                  Domains
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  {selectedDomainKeys.length > 0 && (
+                    <span className="rounded-full bg-primary px-1.5 py-0.5 text-xs text-primary-foreground">
+                      {selectedDomainKeys.length}
+                    </span>
+                  )}
+                  <ChevronDown className="h-3.5 w-3.5" />
+                </span>
               </Button>
 
               {showDomainFilter && (
-                <div className="absolute top-full left-0 mt-1 w-64 p-2 rounded-lg border border-border bg-popover shadow-lg z-50">
-                  <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto">
-                    {DOMAINS.map((domain) => (
+                <div className="absolute top-full left-0 right-0 mt-1 rounded-xl border border-border bg-popover p-3 shadow-lg z-50">
+                  <div className="flex flex-wrap gap-1.5 max-h-52 overflow-y-auto">
+                    {dataset.domains.map((domain) => (
                       <button
-                        key={domain}
-                        onClick={() => toggleDomain(domain)}
+                        key={domain.key}
+                        onClick={() => toggleDomain(domain.key)}
                         className={cn(
-                          "px-2 py-1 text-xs rounded-full border transition-colors",
-                          selectedDomains.includes(domain)
-                            ? "bg-primary text-primary-foreground border-primary"
-                            : "bg-secondary/50 text-muted-foreground border-border hover:border-primary/50",
+                          "rounded-full border px-2.5 py-1 text-xs transition-colors",
+                          selectedDomainKeys.includes(domain.key)
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "border-border text-muted-foreground hover:text-foreground"
                         )}
                       >
-                        {domain}
+                        {domain.shortLabel}
                       </button>
                     ))}
                   </div>
                 </div>
               )}
             </div>
-
-            {/* Selected domain chips */}
-            {selectedDomains.map((domain) => (
-              <span
-                key={domain}
-                className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-full bg-primary/10 text-primary border border-primary/20"
-              >
-                {domain}
-                <button onClick={() => toggleDomain(domain)} className="hover:text-primary/70">
-                  <X className="h-3 w-3" />
-                </button>
-              </span>
-            ))}
           </div>
+
+          <div className="flex flex-col gap-3 mt-4 md:flex-row md:items-center md:justify-between">
+            <p className="text-sm text-muted-foreground">
+              Showing <span className="font-medium text-foreground">{filteredEntries.length}</span> entries for{" "}
+              <span className="font-medium text-foreground">{selectedMetric?.label}</span>.{" "}
+              {getMetricDescription(metricType)}
+            </p>
+            {hasFilters && (
+              <button className="text-sm text-muted-foreground hover:text-foreground" onClick={clearFilters}>
+                Clear filters
+              </button>
+            )}
+          </div>
+
+          {selectedDomainKeys.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-2">
+              {selectedDomainKeys.map((domainKey) => {
+                const domain = dataset.domains.find((candidate) => candidate.key === domainKey)
+                if (!domain) {
+                  return null
+                }
+
+                return (
+                  <span
+                    key={domain.key}
+                    className="inline-flex items-center gap-1 rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs text-primary"
+                  >
+                    {domain.label}
+                    <button onClick={() => toggleDomain(domain.key)}>
+                      <X className="h-3 w-3" />
+                    </button>
+                  </span>
+                )
+              })}
+            </div>
+          )}
         </div>
 
-        {/* Leaderboard table */}
-        <div className="rounded-lg border border-border bg-card overflow-hidden">
+        <div className="rounded-2xl border border-border bg-card overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full min-w-[920px]">
               <thead>
                 <tr className="border-b border-border bg-secondary/30">
-                  <th className="px-3 py-2.5 text-left text-xs font-medium text-muted-foreground w-14">Rank</th>
-                  <th className="px-3 py-2.5 text-left text-xs font-medium text-muted-foreground min-w-[100px]">
-                    Agent
-                  </th>
-                  <th className="px-3 py-2.5 text-left text-xs font-medium text-muted-foreground">Model</th>
-                  <th className="px-3 py-2.5 text-left text-xs font-medium text-muted-foreground">Date</th>
-                  <th className="px-3 py-2.5 text-right text-xs font-medium text-muted-foreground">Overall</th>
-                  {/* Domain columns */}
-                  {visibleDomains.map((domain) => (
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Rank</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Agent framework</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Model</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground">Overall</th>
+                  {visibleDomains.map((domain: BenchmarkDomain) => (
                     <th
-                      key={domain}
-                      className="px-3 py-2.5 text-right text-xs font-medium text-muted-foreground whitespace-nowrap"
+                      key={domain.key}
+                      className="px-4 py-3 text-right text-xs font-medium text-muted-foreground whitespace-nowrap"
                     >
-                      {domain}
+                      {domain.shortLabel}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {filteredData.map((row) => (
+                {filteredEntries.map((entry, index) => (
                   <tr
-                    key={row.rank}
+                    key={entry.entryKey}
                     className="border-b border-border last:border-0 hover:bg-secondary/10 transition-colors"
                   >
-                    <td className="px-3 py-2.5 text-sm font-mono">
-                      <span className={cn(row.rank <= 3 && "font-semibold")}>{row.rank}</span>
-                    </td>
-                    <td className="px-3 py-2.5 text-sm font-medium">{row.agent}</td>
-                    <td className="px-3 py-2.5 text-sm font-mono text-muted-foreground">{row.model}</td>
-                    <td className="px-3 py-2.5 text-sm font-mono text-muted-foreground">{row.date}</td>
-                    <td className="px-3 py-2.5 text-right">
-                      <span className="text-sm font-mono font-semibold">{row.overall.toFixed(1)}%</span>
-                      <span className="text-xs text-muted-foreground ml-1">±{row.variance}</span>
+                    <td className="px-4 py-3 text-sm font-mono font-medium">{index + 1}</td>
+                    <td className="px-4 py-3 text-sm">{entry.frameworkName}</td>
+                    <td className="px-4 py-3 text-sm font-mono text-muted-foreground">{entry.modelName}</td>
+                    <td className="px-4 py-3 text-right">
+                      <span className={cn("text-sm font-mono font-semibold", scoreTone(metricType, entry.overallForSelection))}>
+                        {formatPercent(entry.overallForSelection)}
+                      </span>
                     </td>
                     {visibleDomains.map((domain) => (
-                      <td key={domain} className="px-3 py-2.5 text-right">
-                        <span
-                          className={cn(
-                            "text-sm font-mono",
-                            row.domains[domain] >= 70
-                              ? "text-success"
-                              : row.domains[domain] >= 55
-                                ? "text-foreground"
-                                : "text-muted-foreground",
-                          )}
-                        >
-                          {row.domains[domain].toFixed(1)}%
+                      <td key={domain.key} className="px-4 py-3 text-right">
+                        <span className={cn("text-sm font-mono", scoreTone(metricType, entry.domainScores[domain.key]))}>
+                          {formatPercent(entry.domainScores[domain.key])}
                         </span>
                       </td>
                     ))}
@@ -460,20 +368,17 @@ export function LeaderboardSection() {
               </tbody>
             </table>
           </div>
+
+          {filteredEntries.length === 0 && (
+            <div className="border-t border-border p-8 text-center text-muted-foreground">
+              No published results match the current filters.
+            </div>
+          )}
         </div>
 
-        {/* Legend */}
-        <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
-          <span>Defense Rate:</span>
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-success" /> ≥70%
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-foreground" /> 55-69%
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-muted-foreground" /> {"<"}55%
-          </span>
+        <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+          <span>{higherIsBetter ? "Higher is better." : "Lower is better."}</span>
+          <span>This table recalculates the overall score from the visible domains.</span>
         </div>
       </div>
     </section>

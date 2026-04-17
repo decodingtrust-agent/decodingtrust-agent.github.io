@@ -1,11 +1,37 @@
 "use client"
 
+import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight, FileText, Play, Database } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { loadBenchmarkDataset, type BenchmarkDataset } from "@/lib/benchmark"
 
 export function HeroSection() {
+  const [dataset, setDataset] = useState<BenchmarkDataset | null>(null)
+
+  useEffect(() => {
+    loadBenchmarkDataset()
+      .then((data) => setDataset(data))
+      .catch(() => setDataset(null))
+  }, [])
+
+  const benchmarkCounts = useMemo(() => {
+    if (!dataset) {
+      return {
+        domains: "13",
+        frameworks: "4",
+        models: "7",
+      }
+    }
+
+    return {
+      domains: String(dataset.domains.length),
+      frameworks: String(dataset.frameworks.length),
+      models: String(dataset.models.length),
+    }
+  }, [dataset])
+
   return (
     <section className="relative overflow-hidden min-h-[90vh] flex items-center">
       {/* Premium dark background with aurora effect */}
@@ -58,9 +84,9 @@ export function HeroSection() {
           <p className="mx-auto max-w-3xl text-base md:text-lg text-muted-foreground/80 leading-relaxed mt-6">
             Powered by <span className="text-[oklch(0.7_0.14_220)] font-semibold">DT-Red</span>, our autonomous red-teaming agent, and{" "}
             <span className="text-[oklch(0.7_0.14_220)] font-semibold">DT-Bench</span>, a comprehensive benchmark with{" "}
-            <span className="text-foreground font-medium">30+ sandbox environments</span>,{" "}
-            <span className="text-foreground font-medium">15+ domains</span>, and{" "}
-            <span className="text-foreground font-medium">500+ tasks</span> per domain.
+            <span className="text-foreground font-medium">{benchmarkCounts.domains} domains</span>,{" "}
+            <span className="text-foreground font-medium">{benchmarkCounts.frameworks} agent frameworks</span>, and{" "}
+            <span className="text-foreground font-medium">{benchmarkCounts.models} published foundation models</span>.
           </p>
         </div>
 
