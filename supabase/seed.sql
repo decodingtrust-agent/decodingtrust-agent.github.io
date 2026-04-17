@@ -49,20 +49,6 @@ on conflict (key) do update set
   sort_order = excluded.sort_order,
   updated_at = now();
 
-insert into public.benchmark_frameworks (key, name, sort_order)
-values ('openai-agents-sdk', '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK', 5)
-on conflict (key) do update set
-  name = excluded.name,
-  sort_order = excluded.sort_order,
-  updated_at = now();
-
-insert into public.benchmark_frameworks (key, name, sort_order)
-values ('claude-code-sdk', 'Claude Code SDK', 6)
-on conflict (key) do update set
-  name = excluded.name,
-  sort_order = excluded.sort_order,
-  updated_at = now();
-
 insert into public.benchmark_models (key, name, sort_order)
 values ('gpt-5-4', 'GPT-5.4', 1)
 on conflict (key) do update set

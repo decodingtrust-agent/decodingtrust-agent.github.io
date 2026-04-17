@@ -61,6 +61,7 @@ FRAMEWORK_NAME_ALIASES = {
     "OpenAI Agents SDK": "OpenAI Agents",
     "OpenAI SDK": "OpenAI Agents",
     "Claude SDK": "Claude Code",
+    "Claude Code SDK": "Claude Code",
     "Claude Code": "Claude Code",
     "Google ADK": "Google ADK",
     "OpenClaw": "OpenClaw",
@@ -126,7 +127,15 @@ def clean_cell(cell: str) -> str:
     return value.strip()
 
 
+def strip_latex_comments(text: str) -> str:
+    cleaned_lines = []
+    for line in text.splitlines():
+        cleaned_lines.append(re.sub(r"(?<!\\)%.*$", "", line))
+    return "\n".join(cleaned_lines)
+
+
 def split_latex_rows(text: str) -> list[str]:
+    text = strip_latex_comments(text)
     tabular_match = re.search(
         r"\\begin\{tabular\}\{[^{}]*\}(?P<body>.*)\\end\{tabular\}",
         text,

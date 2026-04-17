@@ -123,16 +123,6 @@
       "key": "openclaw",
       "name": "OpenClaw",
       "sortOrder": 4
-    },
-    {
-      "key": "openai-agents-sdk",
-      "name": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
-      "sortOrder": 5
-    },
-    {
-      "key": "claude-code-sdk",
-      "name": "Claude Code SDK",
-      "sortOrder": 6
     }
   ],
   "models": [
@@ -5838,8 +5828,8 @@
           "scoredCategories": 6
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-oss-120b",
           "modelName": "GPT-OSS-120B",
           "categoryScores": {
@@ -5886,8 +5876,8 @@
           "scoredCategories": 6
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-4",
           "modelName": "GPT-5.4",
           "categoryScores": {
@@ -5902,8 +5892,8 @@
           "scoredCategories": 6
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-2",
           "modelName": "GPT-5.2",
           "categoryScores": {
@@ -6004,8 +5994,8 @@
           "scoredCategories": 6
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-oss-120b",
           "modelName": "GPT-OSS-120B",
           "categoryScores": {
@@ -6020,8 +6010,8 @@
           "scoredCategories": 6
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-2",
           "modelName": "GPT-5.2",
           "categoryScores": {
@@ -6036,8 +6026,8 @@
           "scoredCategories": 6
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-4",
           "modelName": "GPT-5.4",
           "categoryScores": {
@@ -6154,8 +6144,8 @@
           "scoredCategories": 6
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-1",
           "modelName": "GPT-5.1",
           "categoryScores": {
@@ -6186,8 +6176,8 @@
           "scoredCategories": 6
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-4",
           "modelName": "GPT-5.4",
           "categoryScores": {
@@ -6202,8 +6192,8 @@
           "scoredCategories": 6
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-2",
           "modelName": "GPT-5.2",
           "categoryScores": {
@@ -6250,8 +6240,8 @@
           "scoredCategories": 6
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-oss-120b",
           "modelName": "GPT-OSS-120B",
           "categoryScores": {
@@ -7391,8 +7381,8 @@
           "scoredCategories": 5
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-oss-120b",
           "modelName": "GPT-OSS-120B",
           "categoryScores": {
@@ -7436,8 +7426,8 @@
           "scoredCategories": 5
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-2",
           "modelName": "GPT-5.2",
           "categoryScores": {
@@ -7466,8 +7456,8 @@
           "scoredCategories": 5
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-4",
           "modelName": "GPT-5.4",
           "categoryScores": {
@@ -7574,8 +7564,8 @@
           "scoredCategories": 5
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-2",
           "modelName": "GPT-5.2",
           "categoryScores": {
@@ -7604,8 +7594,8 @@
           "scoredCategories": 5
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-oss-120b",
           "modelName": "GPT-OSS-120B",
           "categoryScores": {
@@ -7619,8 +7609,8 @@
           "scoredCategories": 5
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-4",
           "modelName": "GPT-5.4",
           "categoryScores": {
@@ -7733,8 +7723,8 @@
           "scoredCategories": 4
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-1",
           "modelName": "GPT-5.1",
           "categoryScores": {
@@ -7747,8 +7737,8 @@
           "scoredCategories": 4
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-4",
           "modelName": "GPT-5.4",
           "categoryScores": {
@@ -7775,8 +7765,8 @@
           "scoredCategories": 4
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-2",
           "modelName": "GPT-5.2",
           "categoryScores": {
@@ -7789,8 +7779,8 @@
           "scoredCategories": 4
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-oss-120b",
           "modelName": "GPT-OSS-120B",
           "categoryScores": {
@@ -8527,8 +8517,8 @@
           "scoredCategories": 9
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-oss-120b",
           "modelName": "GPT-OSS-120B",
           "categoryScores": {
@@ -8565,8 +8555,8 @@
           "scoredCategories": 9
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-2",
           "modelName": "GPT-5.2",
           "categoryScores": {
@@ -8584,8 +8574,8 @@
           "scoredCategories": 9
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-4",
           "modelName": "GPT-5.4",
           "categoryScores": {
@@ -8751,8 +8741,8 @@
           "scoredCategories": 9
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-oss-120b",
           "modelName": "GPT-OSS-120B",
           "categoryScores": {
@@ -8770,8 +8760,8 @@
           "scoredCategories": 9
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-4",
           "modelName": "GPT-5.4",
           "categoryScores": {
@@ -8789,8 +8779,8 @@
           "scoredCategories": 9
         },
         {
-          "frameworkKey": "openai-agents-sdk",
-          "frameworkName": "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK",
+          "frameworkKey": "openai-agents",
+          "frameworkName": "OpenAI Agents",
           "modelKey": "gpt-5-2",
           "modelName": "GPT-5.2",
           "categoryScores": {
@@ -11810,8 +11800,8 @@
       ],
       "entries": [
         {
-          "frameworkKey": "claude-code-sdk",
-          "frameworkName": "Claude Code SDK",
+          "frameworkKey": "claude-code",
+          "frameworkName": "Claude Code",
           "modelKey": "opus-4-6",
           "modelName": "Opus-4.6",
           "categoryScores": {
@@ -11832,8 +11822,8 @@
           "scoredCategories": 12
         },
         {
-          "frameworkKey": "claude-code-sdk",
-          "frameworkName": "Claude Code SDK",
+          "frameworkKey": "claude-code",
+          "frameworkName": "Claude Code",
           "modelKey": "sonnet-4-5",
           "modelName": "Sonnet-4.5",
           "categoryScores": {
@@ -12054,8 +12044,8 @@
       ],
       "entries": [
         {
-          "frameworkKey": "claude-code-sdk",
-          "frameworkName": "Claude Code SDK",
+          "frameworkKey": "claude-code",
+          "frameworkName": "Claude Code",
           "modelKey": "opus-4-6",
           "modelName": "Opus-4.6",
           "categoryScores": {
@@ -12164,8 +12154,8 @@
           "scoredCategories": 12
         },
         {
-          "frameworkKey": "claude-code-sdk",
-          "frameworkName": "Claude Code SDK",
+          "frameworkKey": "claude-code",
+          "frameworkName": "Claude Code",
           "modelKey": "sonnet-4-5",
           "modelName": "Sonnet-4.5",
           "categoryScores": {
@@ -12320,8 +12310,8 @@
           "scoredCategories": 12
         },
         {
-          "frameworkKey": "claude-code-sdk",
-          "frameworkName": "Claude Code SDK",
+          "frameworkKey": "claude-code",
+          "frameworkName": "Claude Code",
           "modelKey": "sonnet-4-5",
           "modelName": "Sonnet-4.5",
           "categoryScores": {
@@ -12386,8 +12376,8 @@
           "scoredCategories": 12
         },
         {
-          "frameworkKey": "claude-code-sdk",
-          "frameworkName": "Claude Code SDK",
+          "frameworkKey": "claude-code",
+          "frameworkName": "Claude Code",
           "modelKey": "opus-4-6",
           "modelName": "Opus-4.6",
           "categoryScores": {
@@ -12754,8 +12744,8 @@
       ],
       "entries": [
         {
-          "frameworkKey": "claude-code-sdk",
-          "frameworkName": "Claude Code SDK",
+          "frameworkKey": "claude-code",
+          "frameworkName": "Claude Code",
           "modelKey": "opus-4-6",
           "modelName": "Opus-4.6",
           "categoryScores": {
@@ -12868,8 +12858,8 @@
           "scoredCategories": 9
         },
         {
-          "frameworkKey": "claude-code-sdk",
-          "frameworkName": "Claude Code SDK",
+          "frameworkKey": "claude-code",
+          "frameworkName": "Claude Code",
           "modelKey": "sonnet-4-5",
           "modelName": "Sonnet-4.5",
           "categoryScores": {
