@@ -73,6 +73,29 @@ export interface BenchmarkEntry {
   scoredDomains: number
 }
 
+export interface BenchmarkCategory {
+  key: string
+  label: string
+  taskCount: number | null
+}
+
+export interface BenchmarkCategoryEntry {
+  frameworkKey: string
+  frameworkName: string
+  modelKey: string
+  modelName: string
+  categoryScores: Record<string, number | null>
+  overall: number | null
+  scoredCategories: number
+}
+
+export interface BenchmarkCategoryTable {
+  domainKey: string
+  metricType: BenchmarkMetricType
+  categories: BenchmarkCategory[]
+  entries: BenchmarkCategoryEntry[]
+}
+
 export interface BenchmarkDataset {
   run: BenchmarkRun
   metrics: { key: BenchmarkMetricType; label: string; entryCount: number }[]
@@ -82,6 +105,7 @@ export interface BenchmarkDataset {
   scores: BenchmarkScore[]
   entries: BenchmarkEntry[]
   averages: Record<BenchmarkMetricType, BenchmarkMetricSummary>
+  categoryTables: BenchmarkCategoryTable[]
 }
 
 export interface BenchmarkFilters {
@@ -196,6 +220,13 @@ function buildDataset(source: BenchmarkDataset) {
     entryCount: entries.filter((entry) => entry.metricType === metric.key).length,
   }))
 
+  const categoryTables = [...(source.categoryTables ?? [])].sort((left, right) => {
+    return (
+      (domainOrder.get(left.domainKey) ?? 0) - (domainOrder.get(right.domainKey) ?? 0) ||
+      (metricOrder.get(left.metricType) ?? 0) - (metricOrder.get(right.metricType) ?? 0)
+    )
+  })
+
   return {
     ...source,
     metrics,
@@ -204,6 +235,7 @@ function buildDataset(source: BenchmarkDataset) {
     models: [...source.models].sort((left, right) => left.sortOrder - right.sortOrder),
     entries,
     averages,
+    categoryTables,
   }
 }
 
@@ -217,7 +249,18 @@ async function fetchStaticDataset() {
   return buildDataset(source)
 }
 
-async function fetchSupabaseDataset() {
+function mergeSortedByKey<T extends { key: string; sortOrder: number }>(preferred: T[], fallback: T[]) {
+  const byKey = new Map<string, T>()
+  for (const item of fallback) {
+    byKey.set(item.key, item)
+  }
+  for (const item of preferred) {
+    byKey.set(item.key, item)
+  }
+  return Array.from(byKey.values()).sort((left, right) => left.sortOrder - right.sortOrder)
+}
+
+async function fetchSupabaseDataset(staticDataset: BenchmarkDataset | null) {
   const supabase = getSupabaseBrowserClient()
   if (!supabase) {
     return null
@@ -314,6 +357,7 @@ async function fetchSupabaseDataset() {
         } satisfies BenchmarkScore,
       ]
     }),
+    categoryTables: staticDataset?.categoryTables ?? [],
     entries: [],
     averages: {
       bsr: {
@@ -343,18 +387,24 @@ async function fetchSupabaseDataset() {
     },
   }
 
+  if (staticDataset) {
+    source.frameworks = mergeSortedByKey(source.frameworks, staticDataset.frameworks)
+    source.models = mergeSortedByKey(source.models, staticDataset.models)
+  }
+
   return buildDataset(source)
 }
 
 export async function loadBenchmarkDataset(options?: { forceRefresh?: boolean }) {
   if (!datasetPromise || options?.forceRefresh) {
     datasetPromise = (async () => {
-      const remoteDataset = await fetchSupabaseDataset()
+      const staticDataset = await fetchStaticDataset()
+      const remoteDataset = await fetchSupabaseDataset(staticDataset)
       if (remoteDataset) {
         return remoteDataset
       }
 
-      return fetchStaticDataset()
+      return staticDataset
     })()
   }
 

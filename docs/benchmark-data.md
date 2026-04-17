@@ -32,12 +32,20 @@ The parser reads these paper source tables:
 
 - `table/main/asr_by_domain.tex`
 - `table/main/benign_acc_by_domain.tex`
+- `table/<domain>/direct_asr.tex`
+- `table/<domain>/indirect_asr.tex`
+- `table/<domain>/benign_*.tex`
 
 It emits three metric families:
 
 - `bsr`
 - `direct_asr`
 - `indirect_asr`
+
+The generated JSON now includes both:
+
+- domain-level leaderboard scores used by the top summary table
+- risk-category-level score matrices used by the per-domain leaderboard sections
 
 ## 2. Provision Supabase
 

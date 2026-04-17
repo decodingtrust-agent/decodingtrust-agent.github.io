@@ -9,7 +9,7 @@ values (
   'paper_v1',
   'DecodingTrust Agent Paper Results',
   'DecodingTrust_Agent.zip',
-  'table/main/asr_by_domain.tex + table/main/benign_acc_by_domain.tex',
+  'table/main/*.tex + table/<domain>/{direct_asr,indirect_asr,benign_*}.tex',
   true,
   now()
 )
@@ -44,6 +44,20 @@ on conflict (key) do update set
 
 insert into public.benchmark_frameworks (key, name, sort_order)
 values ('openclaw', 'OpenClaw', 4)
+on conflict (key) do update set
+  name = excluded.name,
+  sort_order = excluded.sort_order,
+  updated_at = now();
+
+insert into public.benchmark_frameworks (key, name, sort_order)
+values ('openai-agents-sdk', '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% OpenAI Agents SDK', 5)
+on conflict (key) do update set
+  name = excluded.name,
+  sort_order = excluded.sort_order,
+  updated_at = now();
+
+insert into public.benchmark_frameworks (key, name, sort_order)
+values ('claude-code-sdk', 'Claude Code SDK', 6)
 on conflict (key) do update set
   name = excluded.name,
   sort_order = excluded.sort_order,
@@ -93,6 +107,13 @@ on conflict (key) do update set
 
 insert into public.benchmark_models (key, name, sort_order)
 values ('gpt-5-1', 'GPT-5.1', 7)
+on conflict (key) do update set
+  name = excluded.name,
+  sort_order = excluded.sort_order,
+  updated_at = now();
+
+insert into public.benchmark_models (key, name, sort_order)
+values ('gemini-3-1-pro', 'Gemini-3.1-Pro', 8)
 on conflict (key) do update set
   name = excluded.name,
   sort_order = excluded.sort_order,
