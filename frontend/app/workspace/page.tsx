@@ -1,10 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { Shield, Target, Swords, Lock } from "lucide-react"
+import { useState } from "react"
+import { Shield, Target, Swords } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { useAuth } from "@/contexts/auth-context"
 import { BlueTeamTab } from "@/components/workspace/blue-team-tab"
 import { EvaluateAttacksTab } from "@/components/workspace/evaluate-attacks-tab"
 import { RedTeamingTab } from "@/components/workspace/red-teaming-tab"
@@ -33,41 +31,7 @@ const tabs = [
 ]
 
 export default function WorkspacePage() {
-  const router = useRouter()
-  const { isAuthenticated, isLoading } = useAuth()
   const [activeTab, setActiveTab] = useState<WorkspaceTab>("red-teaming")
-
-  // Redirect if not authenticated
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      router.push("/login")
-    }
-  }, [isLoading, isAuthenticated, router])
-
-  // Show loading while checking auth
-  if (isLoading) {
-    return (
-      <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center">
-        <div className="text-center">
-          <div className="h-8 w-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-muted-foreground">Loading...</p>
-        </div>
-      </div>
-    )
-  }
-
-  // Show auth required message if not authenticated
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center">
-        <div className="text-center">
-          <Lock className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <h2 className="text-xl font-semibold mb-2">Authentication Required</h2>
-          <p className="text-muted-foreground">Please sign in to access the workspace.</p>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-[calc(100vh-8rem)]">

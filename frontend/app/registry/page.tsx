@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo, useCallback, useRef } from "react"
+import { Suspense, useState, useEffect, useMemo, useCallback, useRef } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Search, Database, Copy, Check, SquareArrowOutUpRight, Globe, Terminal, FolderOpen, Plane, Monitor, GitBranch, Phone, HeartPulse, Code2, BookOpen, Headphones, Landmark, Scale, Laptop } from "lucide-react"
@@ -97,7 +97,7 @@ const DOMAIN_ICONS: Record<string, React.ReactNode> = {
 const MAX_VISIBLE_TAGS = 3
 const ITEMS_PER_PAGE = 60
 
-export default function RegistryPage() {
+function RegistryPageClient() {
   const searchParams = useSearchParams()
 
   const [data, setData] = useState<RegistryData | null>(null)
@@ -531,6 +531,23 @@ export default function RegistryPage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function RegistryPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center">
+          <div className="flex flex-col items-center gap-3">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+            <p className="text-sm text-muted-foreground">Loading registry...</p>
+          </div>
+        </div>
+      }
+    >
+      <RegistryPageClient />
+    </Suspense>
   )
 }
 

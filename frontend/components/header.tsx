@@ -1,14 +1,13 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { usePathname, useRouter } from "next/navigation"
+import { useState } from "react"
+import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { Github, MessageCircle, Menu, X, Sun, Moon, LogIn, User, Settings, LayoutDashboard, LogOut, ChevronDown } from "lucide-react"
+import { Github, MessageCircle, Menu, X, Sun, Moon, Settings, LayoutDashboard } from "lucide-react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useTheme } from "@/components/theme-provider"
-import { useAuth } from "@/contexts/auth-context"
 
 const navItems = [
   { label: "Quickstart", href: "/quickstart" },
@@ -22,29 +21,8 @@ const navItems = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [userMenuOpen, setUserMenuOpen] = useState(false)
   const { theme, toggleTheme } = useTheme()
   const pathname = usePathname()
-  const router = useRouter()
-  const { user, isAuthenticated, logout, isLoading } = useAuth()
-  const userMenuRef = useRef<HTMLDivElement>(null)
-
-  // Close user menu when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
-        setUserMenuOpen(false)
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
-
-  const handleLogout = async () => {
-    await logout()
-    setUserMenuOpen(false)
-    router.push("/")
-  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
@@ -106,79 +84,18 @@ export function Header() {
               <Github className="h-4 w-4" />
             </a>
           </Button>
-
-          {/* User Menu / Login Button */}
-          {!isLoading && (
-            isAuthenticated ? (
-              <div className="relative" ref={userMenuRef}>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 px-2 gap-1"
-                  onClick={() => setUserMenuOpen(!userMenuOpen)}
-                >
-                  <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
-                    <User className="h-3.5 w-3.5 text-primary" />
-                  </div>
-                  <span className="hidden sm:inline text-sm max-w-[100px] truncate">
-                    {user?.username}
-                  </span>
-                  <ChevronDown className={cn(
-                    "h-3 w-3 transition-transform",
-                    userMenuOpen && "rotate-180"
-                  )} />
-                </Button>
-
-                {/* Dropdown Menu */}
-                {userMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-56 rounded-lg border border-border bg-popover shadow-lg py-1 z-50">
-                    {/* User info header */}
-                    <div className="px-4 py-3 border-b border-border">
-                      <p className="text-sm font-medium">{user?.username}</p>
-                      <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
-                    </div>
-
-                    {/* Menu items */}
-                    <div className="py-1">
-                      <Link
-                        href="/workspace"
-                        onClick={() => setUserMenuOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-secondary/50 transition-colors"
-                      >
-                        <LayoutDashboard className="h-4 w-4" />
-                        Workspace
-                      </Link>
-                      <Link
-                        href="/settings"
-                        onClick={() => setUserMenuOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-secondary/50 transition-colors"
-                      >
-                        <Settings className="h-4 w-4" />
-                        Settings
-                      </Link>
-                    </div>
-
-                    {/* Logout */}
-                    <div className="border-t border-border py-1">
-                      <button
-                        onClick={handleLogout}
-                        className="flex items-center gap-3 px-4 py-2 text-sm w-full text-left hover:bg-secondary/50 transition-colors text-destructive"
-                      >
-                        <LogOut className="h-4 w-4" />
-                        Sign out
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
-                <Link href="/login" aria-label="Login">
-                  <LogIn className="h-4 w-4" />
-                </Link>
-              </Button>
-            )
-          )}
+          <Button variant="ghost" size="sm" className="hidden sm:inline-flex h-8 px-3" asChild>
+            <Link href="/workspace">
+              <LayoutDashboard className="h-4 w-4" />
+              Workspace
+            </Link>
+          </Button>
+          <Button variant="ghost" size="sm" className="hidden sm:inline-flex h-8 px-3" asChild>
+            <Link href="/settings">
+              <Settings className="h-4 w-4" />
+              Settings
+            </Link>
+          </Button>
 
           <Button
             variant="ghost"
@@ -211,51 +128,33 @@ export function Header() {
               </Link>
             ))}
 
-            {/* Mobile auth section */}
-            {isAuthenticated ? (
-              <>
-                <div className="border-t border-border my-2" />
-                <Link
-                  href="/workspace"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-4 py-2 text-sm transition-colors rounded text-left text-muted-foreground hover:text-foreground hover:bg-secondary/50 flex items-center gap-2"
-                >
-                  <LayoutDashboard className="h-4 w-4" />
-                  Workspace
-                </Link>
-                <Link
-                  href="/settings"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-4 py-2 text-sm transition-colors rounded text-left text-muted-foreground hover:text-foreground hover:bg-secondary/50 flex items-center gap-2"
-                >
-                  <Settings className="h-4 w-4" />
-                  Settings
-                </Link>
-                <button
-                  onClick={() => {
-                    handleLogout()
-                    setMobileMenuOpen(false)
-                  }}
-                  className="px-4 py-2 text-sm transition-colors rounded text-left text-destructive hover:bg-secondary/50 flex items-center gap-2"
-                >
-                  <LogOut className="h-4 w-4" />
-                  Sign out
-                </button>
-              </>
-            ) : (
-              <Link
-                href="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className={cn(
-                  "px-4 py-2 text-sm transition-colors rounded text-left",
-                  pathname === "/login"
-                    ? "text-foreground font-medium bg-secondary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50",
-                )}
-              >
-                Login
-              </Link>
-            )}
+            <div className="border-t border-border my-2" />
+            <Link
+              href="/workspace"
+              onClick={() => setMobileMenuOpen(false)}
+              className={cn(
+                "px-4 py-2 text-sm transition-colors rounded text-left flex items-center gap-2",
+                (pathname === "/workspace" || pathname?.startsWith("/workspace/"))
+                  ? "text-foreground font-medium bg-secondary"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50",
+              )}
+            >
+              <LayoutDashboard className="h-4 w-4" />
+              Workspace
+            </Link>
+            <Link
+              href="/settings"
+              onClick={() => setMobileMenuOpen(false)}
+              className={cn(
+                "px-4 py-2 text-sm transition-colors rounded text-left flex items-center gap-2",
+                (pathname === "/settings" || pathname?.startsWith("/settings/"))
+                  ? "text-foreground font-medium bg-secondary"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50",
+              )}
+            >
+              <Settings className="h-4 w-4" />
+              Settings
+            </Link>
           </nav>
         </div>
       )}

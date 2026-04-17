@@ -51,8 +51,6 @@ jobs:
         run: pnpm install
 
       - name: Build
-        env:
-          NEXT_PUBLIC_AUTH_API_URL: https://dt-auth.ngrok.app/api/v1
         run: pnpm build
 
       - name: Setup Pages

@@ -1,0 +1,1 @@
+self.__SSG_MANIFEST=new Set(["\u002Fdata-auditing\u002F0308\u002Fdomain\u002F[name]","\u002Fdata-auditing\u002F0313\u002Fdomain\u002F[name]","\u002Fregistry\u002F[slug]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
