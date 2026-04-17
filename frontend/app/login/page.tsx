@@ -41,11 +41,11 @@ export default function LoginPage() {
             Login hidden for now
           </h1>
           <p className="text-sm text-muted-foreground text-center mb-6">
-            The frontend authentication flow is temporarily disabled. You can continue using the workspace without signing in.
+            The frontend authentication flow is temporarily disabled. You can continue browsing the benchmark without signing in.
           </p>
 
           <Button className="w-full" asChild>
-            <Link href="/workspace">Go to workspace</Link>
+            <Link href="/registry">Browse registry</Link>
           </Button>
         </div>
       </div>

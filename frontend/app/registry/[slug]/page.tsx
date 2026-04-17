@@ -8,8 +8,8 @@ export function generateStaticParams() {
 export default async function TaskDetailPage({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
-  const { slug } = params
+  const { slug } = await params
   return <TaskDetailPageClient slug={decodeURIComponent(slug)} />
 }

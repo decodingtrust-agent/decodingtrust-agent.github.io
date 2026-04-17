@@ -8,8 +8,8 @@ export function generateStaticParams() {
 export default async function DomainPage({
   params,
 }: {
-  params: { name: string }
+  params: Promise<{ name: string }>
 }) {
-  const { name } = params
+  const { name } = await params
   return <DomainDetailPage name={decodeURIComponent(name)} />
 }

@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { Github, MessageCircle, Menu, X, Sun, Moon, Settings, LayoutDashboard } from "lucide-react"
+import { Github, MessageCircle, Menu, X, Sun, Moon } from "lucide-react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -84,19 +84,6 @@ export function Header() {
               <Github className="h-4 w-4" />
             </a>
           </Button>
-          <Button variant="ghost" size="sm" className="hidden sm:inline-flex h-8 px-3" asChild>
-            <Link href="/workspace">
-              <LayoutDashboard className="h-4 w-4" />
-              Workspace
-            </Link>
-          </Button>
-          <Button variant="ghost" size="sm" className="hidden sm:inline-flex h-8 px-3" asChild>
-            <Link href="/settings">
-              <Settings className="h-4 w-4" />
-              Settings
-            </Link>
-          </Button>
-
           <Button
             variant="ghost"
             size="icon"
@@ -127,34 +114,6 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-
-            <div className="border-t border-border my-2" />
-            <Link
-              href="/workspace"
-              onClick={() => setMobileMenuOpen(false)}
-              className={cn(
-                "px-4 py-2 text-sm transition-colors rounded text-left flex items-center gap-2",
-                (pathname === "/workspace" || pathname?.startsWith("/workspace/"))
-                  ? "text-foreground font-medium bg-secondary"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50",
-              )}
-            >
-              <LayoutDashboard className="h-4 w-4" />
-              Workspace
-            </Link>
-            <Link
-              href="/settings"
-              onClick={() => setMobileMenuOpen(false)}
-              className={cn(
-                "px-4 py-2 text-sm transition-colors rounded text-left flex items-center gap-2",
-                (pathname === "/settings" || pathname?.startsWith("/settings/"))
-                  ? "text-foreground font-medium bg-secondary"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50",
-              )}
-            >
-              <Settings className="h-4 w-4" />
-              Settings
-            </Link>
           </nav>
         </div>
       )}
