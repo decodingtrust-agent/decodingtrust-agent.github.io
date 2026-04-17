@@ -14,7 +14,6 @@ const navItems = [
   { label: "Quickstart", href: "/quickstart" },
   { label: "Registry", href: "/registry" },
   { label: "Leaderboard", href: "/leaderboard" },
-  { label: "Data Auditing", href: "/data-auditing/0308" },
   { label: "Docs", href: "/docs" },
   { label: "Competition", href: "/competition" },
   { label: "Community", href: "/community" },
@@ -48,39 +47,47 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
-      <div className="mx-auto flex h-14 max-w-7xl items-center px-4 lg:px-6">
+    <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
+      <div className="mx-auto flex h-20 max-w-7xl items-center px-4 lg:px-6">
         {/* Logo - left aligned */}
         <Link
           href="/"
           className="flex items-center gap-2 hover:opacity-80 transition-opacity mr-8"
         >
           <Image
-            src="/logo-no-text.png"
-            alt="DecodingTrust Agent Logo"
-            width={28}
-            height={28}
-            className="rounded"
+            src="/dt-agent-logo-circled.png"
+            alt="DT-Agent Logo"
+            width={48}
+            height={48}
+            className="rounded-full"
           />
-          <span className="text-sm font-semibold font-mono tracking-tight">decodingtrust-agent</span>
+          <span className="text-base font-semibold tracking-tight hidden sm:inline">
+            <span className="text-foreground">Decoding</span>
+            <span className="text-[oklch(0.7_0.14_220)]">Trust</span>
+            <span className="text-[oklch(0.7_0.14_220)]"> Agent</span>
+          </span>
         </Link>
 
         {/* Nav items - inline with logo */}
         <nav className="hidden lg:flex items-center gap-1">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "px-3 py-1.5 text-sm transition-colors",
-                (pathname === item.href || pathname?.startsWith(item.href + "/"))
-                  ? "text-foreground font-medium"
-                  : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {navItems.map((item) => {
+            const isActive = pathname === item.href || pathname?.startsWith(item.href + "/")
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "px-3 py-1.5 text-sm transition-colors",
+                  isActive
+                    ? "text-foreground font-medium"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {item.label}
+              </Link>
+            )
+          })}
         </nav>
 
         {/* Right side icons - pushed to far right */}

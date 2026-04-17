@@ -253,7 +253,7 @@ export function LeaderboardSection() {
   const [selectedDomains, setSelectedDomains] = useState<Domain[]>([])
   const [showDomainFilter, setShowDomainFilter] = useState(false)
 
-  const runCommand = `dta run -d decodingtrust@1.0 -a "agent" -m "model" -k 5`
+  const runCommand = `dta run -d dt-bench@1.0 -a "agent" -m "model" -k 5`
 
   const copyCommand = () => {
     navigator.clipboard.writeText(runCommand)
@@ -292,10 +292,10 @@ export function LeaderboardSection() {
           <span className="text-muted-foreground/50">{">"}</span>
           <span>Leaderboards</span>
           <span className="text-muted-foreground/50">{">"}</span>
-          <span className="text-foreground">decodingtrust@1.0</span>
+          <span className="text-foreground">dt-bench@1.0</span>
         </div>
 
-        <h1 className="text-2xl md:text-3xl font-mono font-bold mb-6">decodingtrust@1.0 Leaderboard</h1>
+        <h1 className="text-2xl md:text-3xl font-mono font-bold mb-6">dt-bench@1.0 Leaderboard</h1>
 
         {/* Run command card */}
         <div className="mb-6 p-4 rounded-lg border border-border bg-card">
@@ -306,7 +306,7 @@ export function LeaderboardSection() {
           <p className="text-xs text-muted-foreground mb-2">Note: submissions may not modify timeouts or resources</p>
           <div className="relative bg-secondary/50 rounded p-3">
             <code className="text-sm font-mono">
-              <span className="text-primary">dta</span> run <span className="text-info">-d</span> decodingtrust@1.0{" "}
+              <span className="text-primary">dta</span> run <span className="text-info">-d</span> dt-bench@1.0{" "}
               <span className="text-info">-a</span> "agent" <span className="text-info">-m</span> "model"{" "}
               <span className="text-info">-k</span> 5
             </code>

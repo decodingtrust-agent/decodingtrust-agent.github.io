@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 
 const competitions = [
   {
-    title: "DecodingTrust Agent Challenge 2026",
+    title: "DT-Agent Challenge 2026",
     status: "Active",
     deadline: "March 31, 2026",
     prize: "$50,000",
@@ -19,7 +19,7 @@ const competitions = [
     deadline: "Q2 2026",
     prize: "$25,000",
     participants: 0,
-    description: "Discover novel attack vectors using our autonomous red-teaming framework.",
+    description: "Discover novel attack vectors using DT-Red, our autonomous red-teaming agent.",
     tracks: ["Prompt Injection", "Policy Violation", "Data Exfiltration"],
   },
 ]

@@ -16,10 +16,14 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "DecodingTrust Agent Suite | Automated Security Auditing of AI Agents",
+  title: "DT-Agent | A Real-World Simulation Platform for Advanced Red-Teaming of AI Agents",
   description:
-    "A comprehensive, policy-based unified platform for agent red teaming with an advanced benchmark designed to evaluate AI agent security across diverse domains.",
+    "DecodingTrust Agent (DT-Agent) — a real-world simulation platform for advanced red-teaming of AI agents, featuring DT-Red autonomous red-teaming and DT-Bench comprehensive benchmark.",
   keywords: ["AI security", "agent evaluation", "red teaming", "benchmark", "AI safety", "LLM security"],
+  icons: {
+    icon: "/dt-agent-logo.png",
+    apple: "/dt-agent-logo.png",
+  },
   generator: 'v0.app'
 }
 

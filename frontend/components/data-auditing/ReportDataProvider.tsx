@@ -9,13 +9,13 @@ export function useReportData() {
   return useContext(ReportDataContext);
 }
 
-export function ReportDataProvider({ children }: { children: ReactNode }) {
+export function ReportDataProvider({ children, dataFile = '/data/report-data.json' }: { children: ReactNode; dataFile?: string }) {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/data/report-data.json')
+    fetch(dataFile)
       .then(res => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -23,7 +23,7 @@ export function ReportDataProvider({ children }: { children: ReactNode }) {
       .then(setData)
       .catch((e: Error) => setError(e.message))
       .finally(() => setLoading(false));
-  }, []);
+  }, [dataFile]);
 
   const derived = useMemo(() => {
     if (!data) return null;

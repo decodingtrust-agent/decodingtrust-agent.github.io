@@ -17,9 +17,9 @@ export function AboutSection() {
       <div className="mx-auto max-w-4xl px-4 py-16 md:py-24">
         <div className="text-center mb-12">
           <Shield className="h-12 w-12 text-accent mx-auto mb-4" />
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">About DecodingTrust Agent Suite</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">About DT-Agent</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A research initiative to advance AI agent security through comprehensive, policy-based evaluation.
+            DecodingTrust Agent — a real-world simulation platform for advanced red-teaming of AI agents.
           </p>
         </div>
 
@@ -29,7 +29,7 @@ export function AboutSection() {
             Our Mission
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-6">
-            DecodingTrust Agent Suite is a comprehensive, policy-based unified platform for agent red teaming. Our
+            DT-Agent is a real-world simulation platform for advanced red-teaming of AI agents. Our
             mission is to provide researchers and practitioners with the tools needed to rigorously evaluate AI agent
             security across diverse, real-world domains.
           </p>
@@ -104,9 +104,9 @@ export function AboutSection() {
         <div className="mt-12 p-6 rounded-lg border border-border bg-secondary/20">
           <h3 className="text-lg font-semibold mb-4">Citation</h3>
           <pre className="bg-secondary/50 rounded-lg p-4 overflow-x-auto text-sm font-mono">
-            {`@article{decodingtrust-agent2025,
-  title={DecodingTrust Agent Suite: Automated Security 
-         Auditing of AI Agents in Real Environments},
+            {`@article{dt-agent2025,
+  title={DT-Agent: A Real-World Simulation Platform for
+         Advanced Red-Teaming of AI Agents},
   author={Author1 and Author2 and Author3 and Author4},
   journal={arXiv preprint arXiv:2501.xxxxx},
   year={2025}

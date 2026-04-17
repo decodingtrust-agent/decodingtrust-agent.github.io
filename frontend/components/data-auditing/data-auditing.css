@@ -376,11 +376,35 @@
 }
 
 /* ── Table color cells ─────────────────────────────────────────────── */
-.da-cell-pass { color: var(--success); font-weight: 600; }
-.da-cell-fail { color: var(--destructive); font-weight: 600; }
+.da-cell-pass {
+  color: oklch(0.35 0.15 145);
+  background: oklch(0.95 0.05 145);
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+.da-cell-fail {
+  color: oklch(0.40 0.18 25);
+  background: oklch(0.94 0.06 25);
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
 .da-cell-error { color: var(--warning); font-weight: 600; }
-.da-cell-warn { color: var(--warning); font-weight: 600; }
-.da-cell-critical { color: oklch(0.45 0.25 25); font-weight: 700; }
+.da-cell-warn {
+  color: oklch(0.40 0.12 70);
+  background: oklch(0.95 0.05 70);
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+.da-cell-critical {
+  color: oklch(0.98 0 0);
+  background: oklch(0.45 0.22 25);
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
 .da-cell-rank {
   color: var(--muted-foreground);
   font-weight: 500;
@@ -669,9 +693,9 @@
   letter-spacing: 0.04em;
   border: 1px solid transparent;
 }
-.da-type-benign { background: oklch(0.55 0.15 145 / 0.08); color: var(--success); border-color: oklch(0.55 0.15 145 / 0.15); }
-.da-type-direct { background: oklch(0.55 0.22 25 / 0.08); color: var(--destructive); border-color: oklch(0.55 0.22 25 / 0.15); }
-.da-type-indirect { background: oklch(0.7 0.15 70 / 0.08); color: var(--warning); border-color: oklch(0.7 0.15 70 / 0.15); }
+.da-type-benign { background: oklch(0.55 0 0 / 0.08); color: oklch(0.35 0 0); border-color: oklch(0.55 0 0 / 0.2); }
+.da-type-direct { background: oklch(0.55 0 0 / 0.08); color: oklch(0.35 0 0); border-color: oklch(0.55 0 0 / 0.2); }
+.da-type-indirect { background: oklch(0.55 0 0 / 0.08); color: oklch(0.35 0 0); border-color: oklch(0.55 0 0 / 0.2); }
 
 .da-sev-badge {
   display: inline-flex;

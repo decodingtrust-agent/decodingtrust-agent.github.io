@@ -17,7 +17,7 @@ const features = [
   },
   {
     icon: Bot,
-    title: "Autonomous Red-Team Agent",
+    title: "DT-Red: Autonomous Red-Team Agent",
     description:
       "First autonomous agent that iteratively optimizes attack vectors and injection locations to uncover vulnerabilities.",
     highlight: "Novel approach",

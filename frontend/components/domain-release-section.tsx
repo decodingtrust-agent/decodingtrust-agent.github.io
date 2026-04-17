@@ -131,14 +131,14 @@ export function DomainReleaseSection() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 mb-6">
             <Sparkles className="h-4 w-4 text-primary animate-pulse" />
-            <span className="text-sm font-medium text-primary">DecodingTrust-Agent Suite Release</span>
+            <span className="text-sm font-medium text-primary">DT-Agent Platform Release</span>
           </div>
 
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             <span className="gradient-text">10 Days Release Count Down</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            We&apos;re unveiling the DecodingTrust Agent Suite one domain at a time.
+            We&apos;re unveiling DT-Agent one domain at a time.
             Follow along as we release comprehensive security benchmarks for each policy domain.
           </p>
         </div>

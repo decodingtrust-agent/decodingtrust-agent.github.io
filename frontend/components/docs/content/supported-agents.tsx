@@ -71,7 +71,7 @@ export function SupportedAgentsContent({ onNavigate }: SupportedAgentsContentPro
   return (
     <div>
       <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-        DecodingTrust Agent Suite supports multiple integration patterns depending on how your agent is built.
+        DT-Agent supports multiple integration patterns depending on how your agent is built.
         Choose the approach that best fits your use case.
       </p>
 

@@ -6,9 +6,9 @@ import { useReportData } from './ReportDataProvider';
 import { computeDomainStats } from '@/lib/data-auditing/dataHelpers';
 
 const EXCLUDED_DOMAINS = new Set(['dataset']);
-const BASE = '/data-auditing/0308';
 
-export default function Sidebar() {
+export default function Sidebar({ basePath = '/data-auditing/0308' }: { basePath?: string }) {
+  const BASE = basePath;
   const { derived } = useReportData();
   const pathname = usePathname();
   if (!derived) return null;

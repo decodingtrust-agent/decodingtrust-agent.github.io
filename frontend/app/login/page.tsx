@@ -103,7 +103,7 @@ export default function LoginPage() {
           <div className="flex justify-center mb-6">
             <Image
               src="/logo-no-text.png"
-              alt="DecodingTrust Agent Logo"
+              alt="DT-Agent Logo"
               width={48}
               height={48}
               className="rounded-lg"
@@ -116,8 +116,8 @@ export default function LoginPage() {
           </h1>
           <p className="text-sm text-muted-foreground text-center mb-6">
             {mode === "login"
-              ? "Sign in to your DecodingTrust Agent account"
-              : "Get started with DecodingTrust Agent Suite"}
+              ? "Sign in to your DT-Agent account"
+              : "Get started with DT-Agent"}
           </p>
 
           {/* Mode toggle */}

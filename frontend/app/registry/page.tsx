@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { Search, Database, Copy, Check, SquareArrowOutUpRight, Globe, Terminal, FolderOpen, Plane, Monitor, GitBranch, Phone, HeartPulse, Code2, BookOpen } from "lucide-react"
+import { Search, Database, Copy, Check, SquareArrowOutUpRight, Globe, Terminal, FolderOpen, Plane, Monitor, GitBranch, Phone, HeartPulse, Code2, BookOpen, Headphones, Landmark, Scale, Laptop } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -46,24 +46,50 @@ const DOMAIN_LABELS: Record<string, string> = {
   browser: "Browser",
   code: "Code",
   crm: "CRM",
+  "customer-service": "Customer Service",
+  finance: "Finance",
+  legal: "Legal",
+  macos: "macOS",
   medical: "Medical",
   "os-filesystem": "OS-Filesystem",
-  travel: "Travel",
   research: "Research",
   telecom: "Telecom",
+  travel: "Travel",
   windows: "Windows",
   workflow: "Workflow",
 }
+
+// Default display order: one indirect example per domain, following this rank
+const DOMAIN_DISPLAY_ORDER = [
+  "crm",
+  "workflow",
+  "customer-service",
+  "travel",
+  "code",
+  "browser",
+  "research",
+  "os-filesystem",
+  "windows",
+  "macos",
+  "finance",
+  "legal",
+  "telecom",
+  "medical",
+]
 
 const DOMAIN_ICONS: Record<string, React.ReactNode> = {
   browser: <Globe className="h-3 w-3" />,
   code: <Code2 className="h-3 w-3" />,
   crm: <Database className="h-3 w-3" />,
+  "customer-service": <Headphones className="h-3 w-3" />,
+  finance: <Landmark className="h-3 w-3" />,
+  legal: <Scale className="h-3 w-3" />,
+  macos: <Laptop className="h-3 w-3" />,
   medical: <HeartPulse className="h-3 w-3" />,
   "os-filesystem": <FolderOpen className="h-3 w-3" />,
-  travel: <Plane className="h-3 w-3" />,
   research: <BookOpen className="h-3 w-3" />,
   telecom: <Phone className="h-3 w-3" />,
+  travel: <Plane className="h-3 w-3" />,
   windows: <Monitor className="h-3 w-3" />,
   workflow: <GitBranch className="h-3 w-3" />,
 }
@@ -118,7 +144,8 @@ export default function RegistryPage() {
       .catch(() => setLoading(false))
   }, [])
 
-  // Seeded shuffle: interleave malicious tasks by domain (round-robin), then benign
+  // Ordered display: show one indirect example per domain (in DOMAIN_DISPLAY_ORDER),
+  // then remaining indirect tasks, then direct tasks, then benign tasks.
   const shuffledTasks = useMemo(() => {
     if (!data) return []
     const seed = (s: string) => {
@@ -126,35 +153,100 @@ export default function RegistryPage() {
       for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0
       return h
     }
-    // Separate malicious and benign
-    const malicious = data.tasks.filter((t) => t.type === "malicious")
-    const benign = data.tasks.filter((t) => t.type !== "malicious")
-    // Group malicious by domain, shuffle each group
-    const byDomain = new Map<string, Task[]>()
-    malicious.forEach((t) => {
-      if (!byDomain.has(t.domain)) byDomain.set(t.domain, [])
-      byDomain.get(t.domain)!.push(t)
+
+    // Categorize tasks
+    const indirect: Task[] = []
+    const direct: Task[] = []
+    const benign: Task[] = []
+    data.tasks.forEach((t) => {
+      if (t.type === "malicious" && t.threat_model === "indirect") indirect.push(t)
+      else if (t.type === "malicious") direct.push(t)
+      else benign.push(t)
     })
-    const domainQueues = Array.from(byDomain.entries())
-      .sort(([a], [b]) => a.localeCompare(b))
-      .map(([, tasks]) => tasks.sort((a, b) => seed(a.slug) - seed(b.slug)))
-    // Round-robin interleave across domains
-    const interleaved: Task[] = []
+
+    // Sort each group by seed for stable ordering
+    indirect.sort((a, b) => seed(a.slug) - seed(b.slug))
+    direct.sort((a, b) => seed(a.slug) - seed(b.slug))
+    benign.sort((a, b) => seed(a.slug) - seed(b.slug))
+
+    // Pick one indirect example per domain in display order
+    // For CRM, prefer a data-exfiltration example
+    const featured: Task[] = []
+    const usedSlugs = new Set<string>()
+    for (const domain of DOMAIN_DISPLAY_ORDER) {
+      let example: Task | undefined
+      if (domain === "crm") {
+        example = indirect.find((t) =>
+          t.domain === domain &&
+          !usedSlugs.has(t.slug) &&
+          (t.risk_category?.toLowerCase().includes("data-exfiltration") ||
+           t.risk_category?.toLowerCase().includes("data exfiltration"))
+        )
+      }
+      if (!example) {
+        example = indirect.find((t) => t.domain === domain && !usedSlugs.has(t.slug))
+      }
+      if (example) {
+        featured.push(example)
+        usedSlugs.add(example.slug)
+      }
+    }
+
+    // Remaining indirect (not featured), round-robin by domain in display order
+    const remainingIndirect = indirect.filter((t) => !usedSlugs.has(t.slug))
+    const indirectByDomain = new Map<string, Task[]>()
+    remainingIndirect.forEach((t) => {
+      if (!indirectByDomain.has(t.domain)) indirectByDomain.set(t.domain, [])
+      indirectByDomain.get(t.domain)!.push(t)
+    })
+    const indirectQueues = DOMAIN_DISPLAY_ORDER
+      .filter((d) => indirectByDomain.has(d))
+      .map((d) => indirectByDomain.get(d)!)
+    // Add any domains not in the display order
+    for (const [domain, tasks] of indirectByDomain) {
+      if (!DOMAIN_DISPLAY_ORDER.includes(domain)) indirectQueues.push(tasks)
+    }
+    const interleavedIndirect: Task[] = []
     let remaining = true
     let idx = 0
     while (remaining) {
       remaining = false
-      for (const queue of domainQueues) {
+      for (const queue of indirectQueues) {
         if (idx < queue.length) {
-          interleaved.push(queue[idx])
+          interleavedIndirect.push(queue[idx])
           if (idx + 1 < queue.length) remaining = true
         }
       }
       idx++
     }
-    // Append benign shuffled by hash
-    benign.sort((a, b) => seed(a.slug) - seed(b.slug))
-    return [...interleaved, ...benign]
+
+    // Round-robin direct tasks by domain in display order
+    const directByDomain = new Map<string, Task[]>()
+    direct.forEach((t) => {
+      if (!directByDomain.has(t.domain)) directByDomain.set(t.domain, [])
+      directByDomain.get(t.domain)!.push(t)
+    })
+    const directQueues = DOMAIN_DISPLAY_ORDER
+      .filter((d) => directByDomain.has(d))
+      .map((d) => directByDomain.get(d)!)
+    for (const [domain, tasks] of directByDomain) {
+      if (!DOMAIN_DISPLAY_ORDER.includes(domain)) directQueues.push(tasks)
+    }
+    const interleavedDirect: Task[] = []
+    remaining = true
+    idx = 0
+    while (remaining) {
+      remaining = false
+      for (const queue of directQueues) {
+        if (idx < queue.length) {
+          interleavedDirect.push(queue[idx])
+          if (idx + 1 < queue.length) remaining = true
+        }
+      }
+      idx++
+    }
+
+    return [...featured, ...interleavedIndirect, ...interleavedDirect, ...benign]
   }, [data])
 
   const filteredTasks = useMemo(() => {

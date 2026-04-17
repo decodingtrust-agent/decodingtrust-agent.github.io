@@ -24,7 +24,7 @@ export function LeaderboardPreview() {
             </div>
             <h2 className="text-3xl md:text-4xl font-bold mb-2">Security Robustness Leaderboard</h2>
             <p className="text-muted-foreground">
-              Defense rates for top AI agents on DecodingTrust-Agent@1.0 benchmark
+              Defense rates for top AI agents on DT-Bench v1.0
             </p>
           </div>
           <Button

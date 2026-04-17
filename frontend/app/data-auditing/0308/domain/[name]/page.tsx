@@ -24,6 +24,31 @@ const RULE_LABELS: Record<string, string> = {
 
 const DEFAULT_FILTERS = { result: 'all', severity: 'all', check: 'all', taskType: 'all', search: '' };
 
+const RULE_PAGE_SIZE = 20;
+
+function RuleIssuesList({ issues }: { issues: any[] }) {
+  const [showAll, setShowAll] = useState(false);
+  const visible = showAll ? issues : issues.slice(0, RULE_PAGE_SIZE);
+  const remaining = issues.length - RULE_PAGE_SIZE;
+
+  return (
+    <div className="da-rule-issues-list">
+      {visible.map((issue: any, i: number) => (
+        <RuleIssueCard key={issue.id || i} issue={issue} />
+      ))}
+      {!showAll && remaining > 0 && (
+        <button
+          className="da-more-hint"
+          onClick={() => setShowAll(true)}
+          style={{ cursor: 'pointer', background: 'none', border: '1px solid #d1d5db', borderRadius: 6, padding: '8px 16px', width: '100%', fontStyle: 'italic', color: '#6b7280' }}
+        >
+          Show {remaining} more rule issues
+        </button>
+      )}
+    </div>
+  );
+}
+
 export default function DomainDetailPage() {
   const params = useParams();
   const name = params.name as string;
@@ -35,10 +60,36 @@ export default function DomainDetailPage() {
 
   const stats = useMemo(() => computeDomainStats(instances), [instances]);
 
-  const filtered = useMemo(
-    () => instances.filter((r: any) => filterInstance(r, filters)),
-    [instances, filters],
-  );
+  const filtered = useMemo(() => {
+    const SEV_ORDER: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 };
+    const matchedInstances = instances.filter((r: any) => filterInstance(r, filters));
+
+    return matchedInstances.sort((a: any, b: any) => {
+      // Get worst severity and whether any check failed for each instance
+      let aWorst = 4, bWorst = 4;  // 4 = no issues (pass/error only)
+      let aHasFail = false, bHasFail = false;
+
+      for (const c of Object.values(a.checks || {}) as any[]) {
+        if (c.result === 'fail') {
+          aHasFail = true;
+          const s = SEV_ORDER[c.severity] ?? 3;
+          if (s < aWorst) aWorst = s;
+        }
+      }
+      for (const c of Object.values(b.checks || {}) as any[]) {
+        if (c.result === 'fail') {
+          bHasFail = true;
+          const s = SEV_ORDER[c.severity] ?? 3;
+          if (s < bWorst) bWorst = s;
+        }
+      }
+
+      // Failures first, then sort by worst severity (critical < high < medium < low)
+      if (aHasFail !== bHasFail) return aHasFail ? -1 : 1;
+      if (aWorst !== bWorst) return aWorst - bWorst;
+      return 0;
+    });
+  }, [instances, filters]);
 
   const filteredRules = useMemo(
     () => ruleIssues.filter((r: any) => filterRuleIssue(r, filters)),
@@ -230,14 +281,7 @@ export default function DomainDetailPage() {
               </table>
             </div>
           </div>
-          <div className="da-rule-issues-list">
-            {ruleIssues.slice(0, 20).map((issue: any, i: number) => (
-              <RuleIssueCard key={issue.id || i} issue={issue} />
-            ))}
-            {ruleIssues.length > 20 && (
-              <p className="da-more-hint">{ruleIssues.length - 20} more rule issues not shown. Use filters to narrow down.</p>
-            )}
-          </div>
+          <RuleIssuesList issues={ruleIssues} />
         </section>
       )}
 

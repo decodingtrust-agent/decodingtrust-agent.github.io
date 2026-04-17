@@ -45,33 +45,33 @@
 }
 
 .dark {
-  --background: oklch(0.08 0.02 260);
-  --foreground: oklch(0.95 0.01 260);
-  --card: oklch(0.12 0.02 260);
-  --card-foreground: oklch(0.95 0.01 260);
-  --popover: oklch(0.12 0.02 260);
-  --popover-foreground: oklch(0.95 0.01 260);
-  --primary: oklch(0.7 0.15 260);
-  --primary-foreground: oklch(0.08 0.02 260);
-  --secondary: oklch(0.18 0.02 260);
-  --secondary-foreground: oklch(0.95 0.01 260);
-  --muted: oklch(0.18 0.02 260);
-  --muted-foreground: oklch(0.6 0.01 260);
-  --accent: oklch(0.6 0.2 25);
+  --background: oklch(0.05 0.01 250);
+  --foreground: oklch(0.95 0.005 240);
+  --card: oklch(0.09 0.015 250);
+  --card-foreground: oklch(0.95 0.005 240);
+  --popover: oklch(0.09 0.015 250);
+  --popover-foreground: oklch(0.95 0.005 240);
+  --primary: oklch(0.7 0.14 220);
+  --primary-foreground: oklch(0.05 0.01 250);
+  --secondary: oklch(0.14 0.015 250);
+  --secondary-foreground: oklch(0.95 0.005 240);
+  --muted: oklch(0.14 0.015 250);
+  --muted-foreground: oklch(0.6 0.015 240);
+  --accent: oklch(0.65 0.15 220);
   --accent-foreground: oklch(0.98 0 0);
   --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.22 0.02 260);
-  --input: oklch(0.15 0.02 260);
-  --ring: oklch(0.7 0.15 260);
-  --sidebar: oklch(0.1 0.02 260);
-  --sidebar-foreground: oklch(0.95 0.01 260);
-  --sidebar-primary: oklch(0.7 0.15 260);
-  --sidebar-primary-foreground: oklch(0.08 0.02 260);
-  --sidebar-accent: oklch(0.18 0.02 260);
-  --sidebar-accent-foreground: oklch(0.95 0.01 260);
-  --sidebar-border: oklch(0.22 0.02 260);
-  --sidebar-ring: oklch(0.7 0.15 260);
+  --border: oklch(0.18 0.02 250);
+  --input: oklch(0.12 0.015 250);
+  --ring: oklch(0.7 0.14 220);
+  --sidebar: oklch(0.07 0.015 250);
+  --sidebar-foreground: oklch(0.95 0.005 240);
+  --sidebar-primary: oklch(0.7 0.14 220);
+  --sidebar-primary-foreground: oklch(0.05 0.01 250);
+  --sidebar-accent: oklch(0.14 0.015 250);
+  --sidebar-accent-foreground: oklch(0.95 0.005 240);
+  --sidebar-border: oklch(0.18 0.02 250);
+  --sidebar-ring: oklch(0.7 0.14 220);
   --success: oklch(0.65 0.18 145);
   --warning: oklch(0.75 0.15 70);
   --danger: oklch(0.6 0.2 25);
@@ -141,8 +141,8 @@
 }
 
 .dark .grid-pattern {
-  background-image: linear-gradient(to right, oklch(0.2 0.02 260 / 0.3) 1px, transparent 1px),
-    linear-gradient(to bottom, oklch(0.2 0.02 260 / 0.3) 1px, transparent 1px);
+  background-image: linear-gradient(to right, oklch(0.15 0.02 250 / 0.3) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0.15 0.02 250 / 0.3) 1px, transparent 1px);
 }
 
 /* Gradient text - works in both modes */
@@ -154,10 +154,61 @@
 }
 
 .dark .gradient-text {
-  background: linear-gradient(135deg, oklch(0.8 0.15 260), oklch(0.7 0.15 220));
+  background: linear-gradient(135deg, oklch(0.85 0.12 220), oklch(0.7 0.15 230));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Premium glow effect for hero */
+.hero-glow {
+  position: relative;
+}
+
+.hero-glow::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, oklch(0.4 0.14 220 / 0.15) 0%, oklch(0.3 0.1 230 / 0.08) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Animated gradient border */
+@keyframes gradient-rotate {
+  0% { --angle: 0deg; }
+  100% { --angle: 360deg; }
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.gradient-border {
+  background: linear-gradient(var(--angle), oklch(0.7 0.14 220), oklch(0.65 0.12 230), oklch(0.5 0.1 210), oklch(0.7 0.14 220));
+  animation: gradient-rotate 4s linear infinite;
+}
+
+/* Floating particles effect */
+@keyframes float-up {
+  0% { transform: translateY(100%) scale(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+}
+
+/* Dark aurora effect */
+.aurora-bg {
+  background:
+    radial-gradient(ellipse at 20% 50%, oklch(0.2 0.1 220 / 0.25) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, oklch(0.15 0.08 230 / 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, oklch(0.12 0.06 210 / 0.12) 0%, transparent 50%);
 }
 
 /* Domain Release Section Animations */
@@ -203,7 +254,7 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    oklch(0.7 0.15 260 / 0.1) 50%,
+    oklch(0.7 0.14 220 / 0.12) 50%,
     transparent 100%
   );
   background-size: 200% 100%;
@@ -216,5 +267,5 @@
 }
 
 .dark {
-  --success-foreground: oklch(0.08 0.02 260);
+  --success-foreground: oklch(0.05 0.01 250);
 }

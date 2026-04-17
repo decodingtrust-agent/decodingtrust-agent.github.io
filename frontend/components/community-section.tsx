@@ -6,7 +6,7 @@ const resources = [
   {
     icon: Github,
     title: "Source Code",
-    description: "Explore and contribute to the DecodingTrust Agent codebase.",
+    description: "Explore and contribute to the DT-Agent codebase.",
     link: "https://github.com",
     linkText: "github.com/decodingtrust-agent",
   },

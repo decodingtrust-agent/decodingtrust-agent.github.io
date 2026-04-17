@@ -10,19 +10,19 @@ export function Footer() {
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <Image
-                src="/logo-no-text.png"
-                alt="DecodingTrust Agent Logo"
+                src="/dt-agent-logo-circled.png"
+                alt="DT-Agent Logo"
                 width={36}
                 height={36}
-                className="rounded-lg"
+                className="rounded-full"
               />
               <div>
-                <span className="text-sm font-semibold">DecodingTrust Agent Suite</span>
+                <span className="text-sm font-semibold">DT-Agent</span>
               </div>
             </div>
             <p className="text-sm text-muted-foreground max-w-sm mb-6">
-              A comprehensive, policy-based unified platform for agent red teaming with an advanced benchmark designed
-              to evaluate AI agent security across diverse domains.
+              DecodingTrust Agent — a real-world simulation platform for advanced red-teaming of AI agents,
+              powered by DT-Red and DT-Bench.
             </p>
             <div className="flex gap-3">
               <a
@@ -112,7 +112,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-border/50 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} DecodingTrust Agent Suite. Research collaboration.
+            © {new Date().getFullYear()} DT-Agent. Research collaboration.
           </p>
           <div className="flex gap-6 text-sm text-muted-foreground">
             <a href="#" className="hover:text-foreground transition-colors">
