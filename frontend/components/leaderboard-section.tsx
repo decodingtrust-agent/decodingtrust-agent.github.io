@@ -1,6 +1,6 @@
 "use client"
 
-import { type ReactNode, useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import {
   BarChart3,
   BookOpen,
@@ -75,22 +75,22 @@ const FRAMEWORK_COLORS: Record<string, string> = {
   openclaw: "#a855f7",
 }
 
-const FRAMEWORK_BADGE_STYLES: Record<string, string> = {
-  "openai-agents": "bg-emerald-50 text-emerald-700 ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/30",
-  "claude-code": "bg-orange-50 text-orange-700 ring-orange-200 dark:bg-orange-500/10 dark:text-orange-300 dark:ring-orange-500/30",
-  "google-adk": "bg-blue-50 text-blue-700 ring-blue-200 dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-500/30",
-  openclaw: "bg-violet-50 text-violet-700 ring-violet-200 dark:bg-violet-500/10 dark:text-violet-300 dark:ring-violet-500/30",
+const FRAMEWORK_LOGO_PATHS: Record<string, string> = {
+  "openai-agents": "/logo/openai-monoblossom.svg",
+  "claude-code": "/logo/claude.svg",
+  "google-adk": "/logo/gemini.svg",
+  openclaw: "/logo/openclaw.svg",
 }
 
-const MODEL_BADGE_STYLES: Record<string, string> = {
-  "gpt-5-4": FRAMEWORK_BADGE_STYLES["openai-agents"],
-  "gpt-5-2": FRAMEWORK_BADGE_STYLES["openai-agents"],
-  "gpt-5-1": FRAMEWORK_BADGE_STYLES["openai-agents"],
-  "gpt-oss-120b": "bg-zinc-100 text-zinc-800 ring-zinc-200 dark:bg-zinc-500/10 dark:text-zinc-200 dark:ring-zinc-500/30",
-  "opus-4-6": FRAMEWORK_BADGE_STYLES["claude-code"],
-  "sonnet-4-5": FRAMEWORK_BADGE_STYLES["claude-code"],
-  "gemini-3-pro": FRAMEWORK_BADGE_STYLES["google-adk"],
-  "gemini-3-1-pro": FRAMEWORK_BADGE_STYLES["google-adk"],
+const MODEL_LOGO_PATHS: Record<string, string> = {
+  "gpt-5-4": FRAMEWORK_LOGO_PATHS["openai-agents"],
+  "gpt-5-2": FRAMEWORK_LOGO_PATHS["openai-agents"],
+  "gpt-5-1": FRAMEWORK_LOGO_PATHS["openai-agents"],
+  "gpt-oss-120b": FRAMEWORK_LOGO_PATHS["openai-agents"],
+  "opus-4-6": FRAMEWORK_LOGO_PATHS["claude-code"],
+  "sonnet-4-5": FRAMEWORK_LOGO_PATHS["claude-code"],
+  "gemini-3-pro": FRAMEWORK_LOGO_PATHS["google-adk"],
+  "gemini-3-1-pro": FRAMEWORK_LOGO_PATHS["google-adk"],
 }
 
 const DOMAIN_VISUALS: Record<string, { icon: typeof Workflow; glow: string }> = {
@@ -125,97 +125,22 @@ function scoreTone(metricType: BenchmarkMetricType, value: number | null) {
   return "text-amber-500"
 }
 
-function OpenAIGlyph() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth="1.7">
-      <circle cx="12" cy="5.4" r="2.3" />
-      <circle cx="17.7" cy="8.7" r="2.3" />
-      <circle cx="17.7" cy="15.3" r="2.3" />
-      <circle cx="12" cy="18.6" r="2.3" />
-      <circle cx="6.3" cy="15.3" r="2.3" />
-      <circle cx="6.3" cy="8.7" r="2.3" />
-    </svg>
-  )
-}
-
-function AnthropicGlyph() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="currentColor">
-      <path d="M12 3 5 21h3.3l1.4-3.9h4.8l1.5 3.9H19L12 3Zm-1.2 10.8L12 10l1.2 3.8h-2.4Z" />
-    </svg>
-  )
-}
-
-function GeminiGlyph() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="currentColor">
-      <path d="M12 2.8 14.8 9.2 21.2 12l-6.4 2.8L12 21.2l-2.8-6.4L2.8 12l6.4-2.8L12 2.8Z" />
-    </svg>
-  )
-}
-
-function ClawGlyph() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round">
-      <path d="M6 18 9 6" />
-      <path d="M11 19 14 7" />
-      <path d="M16 18 19 9" />
-    </svg>
-  )
-}
-
-function OssGlyph() {
-  return (
-    <span className="text-[9px] font-bold tracking-[0.18em]">OSS</span>
-  )
-}
-
-function getFrameworkGlyph(frameworkKey: string) {
-  switch (frameworkKey) {
-    case "openai-agents":
-      return <OpenAIGlyph />
-    case "claude-code":
-      return <AnthropicGlyph />
-    case "google-adk":
-      return <GeminiGlyph />
-    case "openclaw":
-      return <ClawGlyph />
-    default:
-      return <BrainCircuit className="h-4.5 w-4.5" />
-  }
-}
-
-function getModelGlyph(modelKey: string) {
-  if (modelKey.startsWith("gpt-oss")) {
-    return <OssGlyph />
-  }
-  if (modelKey.startsWith("gpt-")) {
-    return <OpenAIGlyph />
-  }
-  if (modelKey.startsWith("opus-") || modelKey.startsWith("sonnet-")) {
-    return <AnthropicGlyph />
-  }
-  if (modelKey.startsWith("gemini-")) {
-    return <GeminiGlyph />
-  }
-  return <BrainCircuit className="h-4.5 w-4.5" />
-}
-
 function BrandBadge({
-  badgeClassName,
-  children,
+  logoPath,
+  alt,
 }: {
-  badgeClassName: string
-  children: ReactNode
+  logoPath: string | undefined
+  alt: string
 }) {
   return (
     <span
-      className={cn(
-        "inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ring-1 shadow-sm shadow-black/5",
-        badgeClassName
-      )}
+      className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-border/70 bg-white p-1.5 shadow-sm shadow-black/5"
     >
-      {children}
+      {logoPath ? (
+        <img src={logoPath} alt={alt} className="h-full w-full object-contain" />
+      ) : (
+        <BrainCircuit className="h-4.5 w-4.5 text-muted-foreground" />
+      )}
     </span>
   )
 }
@@ -223,9 +148,7 @@ function BrandBadge({
 function FrameworkLabel({ frameworkKey, frameworkName }: { frameworkKey: string; frameworkName: string }) {
   return (
     <div className="flex items-center gap-3">
-      <BrandBadge badgeClassName={FRAMEWORK_BADGE_STYLES[frameworkKey] ?? "bg-muted text-foreground ring-border"}>
-        {getFrameworkGlyph(frameworkKey)}
-      </BrandBadge>
+      <BrandBadge logoPath={FRAMEWORK_LOGO_PATHS[frameworkKey]} alt={`${frameworkName} logo`} />
       <div className="min-w-0">
         <div className="font-medium truncate">{frameworkName}</div>
         <div className="text-xs text-muted-foreground">Agent framework</div>
@@ -237,9 +160,7 @@ function FrameworkLabel({ frameworkKey, frameworkName }: { frameworkKey: string;
 function ModelLabel({ modelKey, modelName }: { modelKey: string; modelName: string }) {
   return (
     <div className="flex items-center gap-3">
-      <BrandBadge badgeClassName={MODEL_BADGE_STYLES[modelKey] ?? "bg-muted text-foreground ring-border"}>
-        {getModelGlyph(modelKey)}
-      </BrandBadge>
+      <BrandBadge logoPath={MODEL_LOGO_PATHS[modelKey]} alt={`${modelName} logo`} />
       <div className="min-w-0">
         <div className="font-medium truncate">{modelName}</div>
         <div className="text-xs text-muted-foreground">Foundation model</div>
