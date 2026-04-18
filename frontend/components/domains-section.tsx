@@ -1,6 +1,7 @@
 "use client"
 
 import type { CSSProperties } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import {
   Building2,
@@ -53,80 +54,175 @@ type DomainShowcase = {
   shots: ShowcaseShot[]
 }
 
-const featuredEnvironmentShots = [
+type FlowingFeatureShot = ShowcaseShot & {
+  domain: string
+  accentClass: string
+}
+
+type PreviewShot = ShowcaseShot & {
+  domain: string
+}
+
+const flowingFeatureShowcases: FlowingFeatureShot[] = [
   {
     name: "PayPal",
-    category: "Workflow",
+    domain: "Workflow",
     src: "/env-showcase/paypal-1.png",
-    layoutClass: "left-[4%] top-[8%] w-[48%] sm:w-[42%]",
-    shadowClass: "shadow-[0_30px_90px_-42px_rgba(37,99,235,0.85)]",
-    rotate: "-7deg",
-    offsetY: "0px",
-    floatY: "20px",
-    delay: "0s",
-    duration: "13s",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.72_0.15_235/0.2),transparent_58%),radial-gradient(circle_at_bottom_right,oklch(0.66_0.15_280/0.14),transparent_52%)]",
   },
   {
     name: "Trade Desk",
-    category: "Finance",
+    domain: "Finance",
     src: "/env-showcase/ui_trade.png",
-    layoutClass: "right-[6%] top-[5%] w-[38%] sm:w-[32%]",
-    shadowClass: "shadow-[0_30px_90px_-42px_rgba(14,165,233,0.8)]",
-    rotate: "7deg",
-    offsetY: "8px",
-    floatY: "16px",
-    delay: "1.5s",
-    duration: "12s",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.74_0.14_220/0.22),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.7_0.12_190/0.12),transparent_50%)]",
   },
   {
     name: "E-commerce Home",
-    category: "Browser",
+    domain: "Browser",
     src: "/env-showcase/ecommerce-home.png",
-    layoutClass: "left-[26%] top-[35%] w-[52%] sm:w-[48%]",
-    shadowClass: "shadow-[0_30px_90px_-42px_rgba(249,115,22,0.8)]",
-    rotate: "-2deg",
-    offsetY: "0px",
-    floatY: "24px",
-    delay: "0.8s",
-    duration: "15s",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.76_0.16_65/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.72_0.13_25/0.12),transparent_52%)]",
   },
   {
     name: "CRM Leads",
-    category: "CRM",
+    domain: "CRM",
     src: "/env-showcase/leads_page.png",
-    layoutClass: "left-[8%] bottom-[8%] w-[40%] sm:w-[34%]",
-    shadowClass: "shadow-[0_30px_90px_-42px_rgba(59,130,246,0.75)]",
-    rotate: "-10deg",
-    offsetY: "0px",
-    floatY: "18px",
-    delay: "2.4s",
-    duration: "14s",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.72_0.13_235/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.68_0.12_270/0.12),transparent_52%)]",
   },
   {
     name: "Windows Desktop",
-    category: "Desktop OS",
+    domain: "Desktop OS",
     src: "/env-showcase/windows-screenshot.png",
-    layoutClass: "right-[14%] bottom-[17%] hidden w-[28%] sm:block",
-    shadowClass: "shadow-[0_30px_90px_-42px_rgba(99,102,241,0.75)]",
-    rotate: "9deg",
-    offsetY: "10px",
-    floatY: "22px",
-    delay: "3.1s",
-    duration: "16s",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.72_0.14_255/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.68_0.12_215/0.12),transparent_52%)]",
   },
   {
     name: "Case Details",
-    category: "Customer Service",
+    domain: "Customer Service",
     src: "/env-showcase/ui_case_details.png",
-    layoutClass: "right-[3%] bottom-[4%] hidden w-[34%] md:block",
-    shadowClass: "shadow-[0_30px_90px_-42px_rgba(16,185,129,0.75)]",
-    rotate: "4deg",
-    offsetY: "0px",
-    floatY: "14px",
-    delay: "1.2s",
-    duration: "11s",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.74_0.12_165/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.69_0.12_205/0.12),transparent_52%)]",
+  },
+  {
+    name: "Slack",
+    domain: "Workflow",
+    src: "/env-showcase/slack-1.png",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.72_0.17_300/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.72_0.16_185/0.12),transparent_50%)]",
+  },
+  {
+    name: "Calendar",
+    domain: "Workflow",
+    src: "/env-showcase/calendar-2.png",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.75_0.15_240/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.7_0.14_200/0.12),transparent_50%)]",
+  },
+  {
+    name: "Google Sheets",
+    domain: "Workflow",
+    src: "/env-showcase/googlesheets-2.png",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.72_0.15_150/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.7_0.12_190/0.12),transparent_50%)]",
+  },
+  {
+    name: "Zoom",
+    domain: "Workflow",
+    src: "/env-showcase/zoom-2.png",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.74_0.15_230/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.7_0.13_210/0.12),transparent_50%)]",
+  },
+  {
+    name: "Google Drive",
+    domain: "Workflow",
+    src: "/env-showcase/googledrive-1.png",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.72_0.15_150/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.76_0.14_75/0.12),transparent_50%)]",
+  },
+  {
+    name: "Atlassian Jira",
+    domain: "Workflow",
+    src: "/env-showcase/atlassian-4.png",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.74_0.14_235/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.68_0.12_260/0.12),transparent_50%)]",
+  },
+  {
+    name: "Google Form",
+    domain: "Workflow",
+    src: "/env-showcase/googleform-1.png",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.76_0.15_35/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.72_0.12_15/0.12),transparent_50%)]",
+  },
+  {
+    name: "Gmail",
+    domain: "Workflow",
+    src: "/env-showcase/gmail-1.png",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.76_0.13_20/0.16),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.72_0.14_220/0.12),transparent_50%)]",
+  },
+  {
+    name: "Portfolio",
+    domain: "Finance",
+    src: "/env-showcase/ui_portfolio.png",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.73_0.14_235/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.69_0.13_175/0.12),transparent_50%)]",
+  },
+  {
+    name: "Markets",
+    domain: "Finance",
+    src: "/env-showcase/ui_markets.png",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.74_0.15_220/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.68_0.13_185/0.12),transparent_50%)]",
+  },
+  {
+    name: "Create Lead",
+    domain: "CRM",
+    src: "/env-showcase/create_page.png",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.72_0.13_225/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.68_0.12_270/0.12),transparent_50%)]",
+  },
+  {
+    name: "ServiceNow",
+    domain: "Customer Service",
+    src: "/env-showcase/servicenow-store-credit-ff-attack.png",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.73_0.12_170/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.69_0.12_210/0.12),transparent_50%)]",
+  },
+  {
+    name: "Review Page",
+    domain: "Browser",
+    src: "/env-showcase/ecommerce-review.png",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.76_0.16_60/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.72_0.14_30/0.12),transparent_50%)]",
+  },
+  {
+    name: "Account Center",
+    domain: "Browser",
+    src: "/env-showcase/ecommerce-account.png",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.75_0.16_55/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.7_0.13_28/0.12),transparent_50%)]",
+  },
+  {
+    name: "macOS Desktop",
+    domain: "Desktop OS",
+    src: "/env-showcase/macos_screenshot.png",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.72_0.14_260/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.68_0.12_205/0.12),transparent_50%)]",
+  },
+  {
+    name: "Arxiv",
+    domain: "Research",
+    src: "/env-showcase/arxiv_DT.png",
+    accentClass:
+      "bg-[radial-gradient(circle_at_top_left,oklch(0.73_0.14_190/0.18),transparent_56%),radial-gradient(circle_at_bottom_right,oklch(0.69_0.12_145/0.12),transparent_50%)]",
   },
 ] as const
+
+const flowingFeatureColumns = [0, 1, 2].map((columnIndex) =>
+  flowingFeatureShowcases.filter((_, index) => index % 3 === columnIndex),
+)
 
 const featuredSandboxEnvironments = [
   "Gmail",
@@ -245,16 +341,6 @@ const domainShowcases: DomainShowcase[] = [
 const coveredShowcaseDomains = domainShowcases.map((group) => group.domain)
 const groupedScreenshotCount = domainShowcases.reduce((count, group) => count + group.shots.length, 0)
 
-function getShowcaseStyle(rotate: string, offsetY: string, floatY: string, delay: string, duration: string): CSSProperties {
-  return {
-    "--card-rotate": rotate,
-    "--card-offset-y": offsetY,
-    "--card-float-y": floatY,
-    animationDelay: delay,
-    animationDuration: duration,
-  } as CSSProperties
-}
-
 function getAtlasShotClass(index: number, total: number) {
   if (total === 1) {
     return "sm:col-span-2 aspect-[16/10]"
@@ -272,8 +358,36 @@ function getAtlasShotClass(index: number, total: number) {
 }
 
 export function DomainsSection() {
+  const [spotlightIndex, setSpotlightIndex] = useState(0)
+  const [previewShot, setPreviewShot] = useState<PreviewShot | null>(null)
+  const spotlightShot = flowingFeatureShowcases[spotlightIndex]
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setSpotlightIndex((currentIndex) => (currentIndex + 1) % flowingFeatureShowcases.length)
+    }, 2600)
+
+    return () => window.clearInterval(intervalId)
+  }, [])
+
+  useEffect(() => {
+    if (!previewShot) {
+      return
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setPreviewShot(null)
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [previewShot])
+
   return (
-    <section className="border-t border-border/50">
+    <>
+      <section className="border-t border-border/50">
       <div className="mx-auto max-w-7xl px-4 py-20 md:py-28">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Spanning 15+ Real-World Domains</h2>
@@ -319,7 +433,7 @@ export function DomainsSection() {
               </div>
 
               <h3 className="max-w-xl text-2xl font-semibold tracking-tight md:text-3xl">
-                Floating previews of the environments agents actually operate in
+                A flowing wall of real product interfaces
               </h3>
 
               <p className="mt-4 max-w-2xl text-sm leading-6 text-muted-foreground md:text-base">
@@ -371,47 +485,120 @@ export function DomainsSection() {
             </div>
           </div>
 
-          <div className="env-showcase-stage relative min-h-[420px] overflow-hidden rounded-[30px] border border-white/10 bg-[linear-gradient(160deg,oklch(0.11_0.025_248),oklch(0.08_0.018_245))] p-4 sm:min-h-[500px] md:p-5">
+          <div className="env-showcase-stage relative min-h-[500px] overflow-hidden rounded-[30px] border border-white/10 bg-[linear-gradient(160deg,oklch(0.11_0.025_248),oklch(0.08_0.018_245))] p-4 sm:min-h-[560px] md:p-5">
             <div className="env-showcase-grid absolute inset-0 opacity-40" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,oklch(0.76_0.16_220/0.22),transparent_35%),radial-gradient(circle_at_82%_18%,oklch(0.68_0.16_280/0.18),transparent_28%),radial-gradient(circle_at_50%_100%,oklch(0.68_0.14_180/0.14),transparent_42%)]" />
             <div className="absolute left-5 top-5 rounded-full border border-white/[0.12] bg-black/30 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/70 backdrop-blur-md">
-              Curated cross-domain highlights
+              Flowing cross-domain environment wall
             </div>
             <div className="absolute bottom-5 left-5 rounded-full border border-white/[0.12] bg-white/[0.08] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/70 backdrop-blur-md">
-              {domainShowcases.length} grouped domains • environment-only curation
+              {flowingFeatureShowcases.length} interfaces • auto-rotating spotlight
             </div>
             <div className="pointer-events-none absolute inset-x-6 top-16 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
             <div className="pointer-events-none absolute inset-x-8 bottom-20 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-
-            {featuredEnvironmentShots.map((shot) => (
-              <div
-                key={shot.name}
-                className={`env-showcase-card absolute ${shot.layoutClass}`}
-                style={getShowcaseStyle(shot.rotate, shot.offsetY, shot.floatY, shot.delay, shot.duration)}
-              >
-                <div
-                  className={`group relative overflow-hidden rounded-[24px] border border-white/[0.12] bg-white/[0.06] backdrop-blur-md ${shot.shadowClass}`}
-                >
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),transparent_36%,rgba(3,7,18,0.28))]" />
-                  <div className="absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-black/30 via-black/10 to-transparent" />
-                  <div className="absolute left-3 top-3 z-10 inline-flex items-center gap-2 rounded-full border border-white/[0.12] bg-black/50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/90 backdrop-blur-md">
-                    <span>{shot.name}</span>
-                    <span className="text-white/35">/</span>
-                    <span className="text-white/[0.65]">{shot.category}</span>
-                  </div>
-
-                  <div className="relative aspect-[16/9]">
-                    <Image
-                      src={shot.src}
-                      alt={`${shot.name} sandbox screenshot`}
-                      fill
-                      sizes="(min-width: 1280px) 26vw, (min-width: 1024px) 32vw, (min-width: 640px) 42vw, 74vw"
-                      className="env-showcase-image object-cover object-top"
-                    />
+            <div className="pointer-events-none absolute inset-x-[18%] top-[18%] bottom-[16%] z-[1]">
+              <div className={`env-spotlight-aura absolute inset-0 opacity-80 ${spotlightShot.accentClass}`} />
+            </div>
+            <div className="absolute inset-0 grid grid-cols-3 gap-3 px-3 py-16 sm:gap-4 sm:px-4">
+              {flowingFeatureColumns.map((column, columnIndex) => (
+                <div key={columnIndex} className="env-flow-column">
+                  <div
+                    className={`env-flow-track ${columnIndex % 2 === 1 ? "env-flow-track-reverse" : ""}`}
+                    style={{ animationDuration: `${30 + columnIndex * 5}s` }}
+                  >
+                    {[...column, ...column].map((shot, shotIndex) => (
+                      <div
+                        key={`${shot.domain}-${shot.name}-${shotIndex}`}
+                        className="env-flow-card"
+                        style={{ "--env-flow-tilt": `${shotIndex % 2 === 0 ? -1.2 : 1.2}deg` } as CSSProperties}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setPreviewShot({ name: shot.name, domain: shot.domain, src: shot.src })}
+                          className="group relative block w-full overflow-hidden rounded-[22px] border border-white/[0.12] bg-black/20 text-left shadow-[0_24px_80px_-46px_rgba(15,23,42,0.9)] backdrop-blur-md"
+                          aria-label={`Open ${shot.domain} screenshot ${shot.name}`}
+                        >
+                          <div className={`absolute inset-0 opacity-80 ${shot.accentClass}`} />
+                          <div className="relative aspect-[16/10] overflow-hidden">
+                            <Image
+                              src={shot.src}
+                              alt={`${shot.domain} environment screenshot: ${shot.name}`}
+                              fill
+                              sizes="(min-width: 1280px) 18vw, (min-width: 1024px) 24vw, 28vw"
+                              className="env-showcase-image object-cover object-top"
+                            />
+                          </div>
+                          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent px-3 pb-3 pt-8 text-white">
+                            <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/60">
+                              {shot.domain}
+                            </div>
+                            <div className="mt-1 text-sm font-medium">{shot.name}</div>
+                          </div>
+                        </button>
+                      </div>
+                    ))}
                   </div>
                 </div>
+              ))}
+            </div>
+
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_8%,rgba(2,6,23,0.14)_36%,rgba(2,6,23,0.74)_72%,rgba(2,6,23,0.94)_100%)]" />
+
+            <div className="absolute inset-x-4 top-1/2 z-10 -translate-y-1/2 sm:left-1/2 sm:max-w-[420px] sm:-translate-x-1/2">
+              <div className="env-spotlight-shell rounded-[28px] border border-white/[0.14] bg-black/35 p-3 backdrop-blur-xl sm:p-4">
+                <div key={`${spotlightShot.domain}-${spotlightShot.name}-${spotlightIndex}`} className="env-spotlight-animate">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setPreviewShot({ name: spotlightShot.name, domain: spotlightShot.domain, src: spotlightShot.src })
+                    }
+                    className="group relative block w-full overflow-hidden rounded-[24px] border border-white/[0.12] bg-white/[0.06] text-left shadow-[0_28px_90px_-46px_rgba(15,23,42,0.95)]"
+                    aria-label={`Open spotlight screenshot ${spotlightShot.name}`}
+                  >
+                    <div className={`absolute inset-0 opacity-90 ${spotlightShot.accentClass}`} />
+                    <div className="absolute left-4 top-4 z-10 inline-flex items-center gap-2 rounded-full border border-white/[0.14] bg-black/45 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/90 backdrop-blur-md">
+                      <span>{spotlightShot.domain}</span>
+                      <span className="text-white/35">/</span>
+                      <span className="text-white/[0.68]">Now rotating</span>
+                    </div>
+
+                    <div className="relative aspect-[16/10] overflow-hidden">
+                      <Image
+                        src={spotlightShot.src}
+                        alt={`${spotlightShot.domain} spotlight screenshot: ${spotlightShot.name}`}
+                        fill
+                        sizes="(min-width: 1280px) 28vw, (min-width: 1024px) 34vw, 82vw"
+                        className="env-showcase-image object-cover object-top"
+                      />
+                    </div>
+
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/38 to-transparent px-4 pb-4 pt-12 text-white">
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/65">
+                        Featured Sandbox Environments
+                      </div>
+                      <div className="mt-1 text-xl font-semibold tracking-tight">{spotlightShot.name}</div>
+                      <p className="mt-1 text-sm text-white/68">
+                        The wall keeps flowing while the spotlight cycles across real benchmark interfaces.
+                      </p>
+                    </div>
+                  </button>
+                </div>
+
+                <div className="mt-4 flex items-center justify-center gap-2">
+                  {flowingFeatureShowcases.map((shot, index) => {
+                    const isActive = spotlightIndex === index
+                    return (
+                      <span
+                        key={shot.name}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${
+                          isActive ? "w-6 bg-white" : "w-1.5 bg-white/28"
+                        }`}
+                      />
+                    )
+                  })}
+                </div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
 
@@ -464,9 +651,12 @@ export function DomainsSection() {
 
                   <div className="mt-5 grid gap-3 sm:grid-cols-2">
                     {group.shots.map((shot, index) => (
-                      <div
+                      <button
+                        type="button"
+                        onClick={() => setPreviewShot({ name: shot.name, domain: group.domain, src: shot.src })}
                         key={shot.name}
-                        className={`group/shot relative overflow-hidden rounded-[22px] border border-border/60 bg-card/80 shadow-[0_20px_60px_-40px_rgba(15,23,42,0.55)] ${getAtlasShotClass(index, group.shots.length)}`}
+                        className={`group/shot relative overflow-hidden rounded-[22px] border border-border/60 bg-card/80 text-left shadow-[0_20px_60px_-40px_rgba(15,23,42,0.55)] ${getAtlasShotClass(index, group.shots.length)}`}
+                        aria-label={`Open ${group.domain} screenshot ${shot.name}`}
                       >
                         <div className="relative h-full min-h-[160px] overflow-hidden">
                           <Image
@@ -483,7 +673,7 @@ export function DomainsSection() {
                           </div>
                           <div className="mt-1 text-sm font-medium">{shot.name}</div>
                         </div>
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -492,6 +682,49 @@ export function DomainsSection() {
           </div>
         </div>
       </div>
-    </section>
+      </section>
+
+      {previewShot ? (
+        <div
+          className="env-preview-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-md"
+          onClick={() => setPreviewShot(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${previewShot.domain} screenshot preview`}
+        >
+          <div
+            className="env-preview-panel relative w-full max-w-6xl overflow-hidden rounded-[28px] border border-white/[0.14] bg-[oklch(0.09_0.015_250/0.94)] shadow-[0_40px_120px_-60px_rgba(15,23,42,1)]"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center justify-between gap-4 border-b border-white/[0.08] px-5 py-4 text-white">
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/55">
+                  {previewShot.domain}
+                </div>
+                <div className="mt-1 text-lg font-semibold tracking-tight">{previewShot.name}</div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setPreviewShot(null)}
+                className="rounded-full border border-white/[0.12] bg-white/[0.06] px-3 py-1.5 text-sm font-medium text-white/85 transition hover:bg-white/[0.12]"
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="relative aspect-[16/9] w-full bg-black">
+              <Image
+                src={previewShot.src}
+                alt={`${previewShot.domain} preview ${previewShot.name}`}
+                fill
+                sizes="90vw"
+                className="object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </>
   )
 }

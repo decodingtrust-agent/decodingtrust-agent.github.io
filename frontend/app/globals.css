@@ -282,6 +282,26 @@
   }
 }
 
+@keyframes env-flow-vertical {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-50% - 0.5rem));
+  }
+}
+
+@keyframes env-spotlight-aura {
+  0%, 100% {
+    opacity: 0.42;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 0.72;
+    transform: scale(1.04);
+  }
+}
+
 @keyframes env-marquee-scroll {
   from {
     transform: translateX(0);
@@ -323,33 +343,89 @@
   mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
 }
 
-.env-showcase-card {
-  animation: env-card-float 14s ease-in-out infinite;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-.env-showcase-card > div {
-  transition:
-    transform 350ms ease,
-    box-shadow 350ms ease,
-    border-color 350ms ease;
-}
-
-.env-showcase-card:hover > div {
-  transform: translateY(-8px) scale(1.02);
-  border-color: oklch(1 0 0 / 0.2);
-}
-
 .env-showcase-image {
   transition:
     transform 700ms ease,
     filter 700ms ease;
 }
 
-.env-showcase-card:hover .env-showcase-image {
+.env-flow-card:hover .env-showcase-image,
+.env-spotlight-shell:hover .env-showcase-image {
   transform: scale(1.06);
   filter: saturate(1.08) contrast(1.04);
+}
+
+.env-flow-column {
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+}
+
+.env-flow-track {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 1rem;
+  animation: env-flow-vertical 34s linear infinite;
+  will-change: transform;
+}
+
+.env-flow-track-reverse {
+  animation-direction: reverse;
+}
+
+.env-flow-card {
+  transform: rotate(var(--env-flow-tilt, 0deg));
+  transform-origin: center;
+  transition: transform 250ms ease;
+}
+
+.env-flow-card:hover {
+  transform: translateY(-4px) rotate(var(--env-flow-tilt, 0deg)) scale(1.01);
+}
+
+.env-spotlight-shell {
+  box-shadow:
+    inset 0 1px 0 oklch(1 0 0 / 0.1),
+    0 30px 100px -52px oklch(0.1 0.03 250 / 0.98);
+}
+
+.env-spotlight-aura {
+  filter: blur(52px);
+  animation: env-spotlight-aura 4.8s ease-in-out infinite;
+}
+
+@keyframes env-spotlight-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+    filter: blur(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.env-spotlight-animate {
+  animation: env-spotlight-enter 500ms ease;
+}
+
+@keyframes env-preview-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+    filter: blur(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.env-preview-panel {
+  animation: env-preview-enter 260ms ease;
 }
 
 .env-marquee {
@@ -371,19 +447,25 @@
 }
 
 @media (hover: hover) {
-  .env-marquee:hover .env-marquee-track {
+  .env-marquee:hover .env-marquee-track,
+  .env-flow-column:hover .env-flow-track {
     animation-play-state: paused;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .env-showcase-stage::before,
-  .env-showcase-card,
+  .env-flow-track,
+  .env-spotlight-aura,
+  .env-spotlight-animate,
+  .env-preview-panel,
   .env-marquee-track {
     animation: none;
   }
 
-  .env-showcase-card > div,
+  .env-flow-card,
+  .env-spotlight-animate,
+  .env-preview-panel,
   .env-showcase-image {
     transition: none;
   }

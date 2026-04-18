@@ -28,6 +28,7 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  ReferenceLine,
   ResponsiveContainer,
   Scatter,
   ScatterChart,
@@ -67,15 +68,24 @@ type RankedEntry = BenchmarkEntry & { overallForSelection: number | null }
 type RankedCategoryEntry = BenchmarkCategoryEntry & { overallForSelection: number | null }
 type DomainViewMode = "table" | "scatter" | "bar"
 type DomainMetricState = { table: BenchmarkCategoryTable | undefined; rows: RankedCategoryEntry[] }
+type DomainSeries = RankedCategoryEntry & {
+  chartKey: string
+  fill: string
+  stroke: string
+  rank: number
+}
 
 const DOMAIN_METRIC_ORDER: BenchmarkMetricType[] = ["bsr", "direct_asr", "indirect_asr"]
+const DOMAIN_VIEW_ORDER: DomainViewMode[] = ["table", "bar", "scatter"]
 
-const FRAMEWORK_COLORS: Record<string, string> = {
-  "openai-agents": "#10b981",
-  "claude-code": "#f97316",
-  "google-adk": "#3b82f6",
-  openclaw: "#a855f7",
-}
+const SERIES_STYLES = [
+  { fill: "#38bdf8", stroke: "#0ea5e9" },
+  { fill: "#34d399", stroke: "#10b981" },
+  { fill: "#f59e0b", stroke: "#f97316" },
+  { fill: "#a78bfa", stroke: "#8b5cf6" },
+  { fill: "#fb7185", stroke: "#f43f5e" },
+  { fill: "#22c55e", stroke: "#16a34a" },
+] as const
 
 const FRAMEWORK_LOGO_PATHS: Record<string, string> = {
   "openai-agents": "/logo/openai-monoblossom.svg",
@@ -185,27 +195,64 @@ function ModelLabel({ modelKey, modelName }: { modelKey: string; modelName: stri
   )
 }
 
+function averageValues(values: Array<number | null>) {
+  const cleanValues = values.filter((value): value is number => typeof value === "number" && !Number.isNaN(value))
+  if (cleanValues.length === 0) {
+    return null
+  }
+  return cleanValues.reduce((sum, value) => sum + value, 0) / cleanValues.length
+}
+
+function buildDomainSeries(rows: RankedCategoryEntry[], limit: number) {
+  return rows.slice(0, limit).map((row, index) => ({
+    ...row,
+    chartKey: `series_${index}`,
+    fill: SERIES_STYLES[index % SERIES_STYLES.length].fill,
+    stroke: SERIES_STYLES[index % SERIES_STYLES.length].stroke,
+    rank: index + 1,
+  })) satisfies DomainSeries[]
+}
+
 function SeriesLegend({
   rows,
+  metricType,
 }: {
-  rows: Array<{
-    frameworkKey: string
-    frameworkName: string
-    modelKey: string
-    modelName: string
-    fill: string
-  }>
+  rows: DomainSeries[]
+  metricType: BenchmarkMetricType
 }) {
   return (
-    <div className="mb-4 flex flex-wrap gap-2">
+    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
       {rows.map((row) => (
         <div
           key={`${row.frameworkKey}:${row.modelKey}`}
-          className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/85 px-3 py-1.5 shadow-sm shadow-black/5"
+          className="rounded-2xl border border-border/70 bg-background/85 px-4 py-3 shadow-sm shadow-black/5"
         >
-          <span className="inline-flex h-2.5 w-2.5 rounded-full" style={{ backgroundColor: row.fill }} />
-          <BrandBadge logoPath={FRAMEWORK_LOGO_PATHS[row.frameworkKey]} alt={`${row.frameworkName} logo`} variant="model" />
-          <span className="text-xs font-medium text-foreground">{row.modelName}</span>
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-center gap-2 min-w-0">
+              <span
+                className="mt-1 inline-flex h-2.5 w-2.5 rounded-full ring-4 ring-background"
+                style={{ backgroundColor: row.fill, boxShadow: `0 0 0 1px ${row.stroke}` }}
+              />
+              <BrandBadge
+                logoPath={FRAMEWORK_LOGO_PATHS[row.frameworkKey]}
+                alt={`${row.frameworkName} logo`}
+                variant="model"
+              />
+              <div className="min-w-0">
+                <div className="truncate text-sm font-medium text-foreground">{row.modelName}</div>
+                <div className="truncate text-[11px] text-muted-foreground">{row.frameworkName}</div>
+              </div>
+            </div>
+            <div className="rounded-full border border-border/60 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+              #{row.rank}
+            </div>
+          </div>
+          <div className="mt-3 flex items-center justify-between gap-3">
+            <span className="text-[11px] uppercase tracking-wide text-muted-foreground">Current overall</span>
+            <span className={cn("text-sm font-mono font-semibold", scoreTone(metricType, row.overallForSelection))}>
+              {formatPercent(row.overallForSelection)}
+            </span>
+          </div>
         </div>
       ))}
     </div>
@@ -227,6 +274,8 @@ type ScatterTooltipPayloadItem = {
     categoryLabel: string
     x: number
     y: number
+    fill: string
+    stroke: string
   }
 }
 
@@ -236,16 +285,19 @@ function ChartTooltipRow({
   modelKey,
   modelName,
   value,
+  fill,
 }: {
   frameworkKey: string
   frameworkName: string
   modelKey: string
   modelName: string
   value: number | null
+  fill: string
 }) {
   return (
     <div className="flex items-center justify-between gap-4">
       <div className="flex items-center gap-2 min-w-0">
+        <span className="inline-flex h-2.5 w-2.5 rounded-full" style={{ backgroundColor: fill }} />
         <BrandBadge logoPath={FRAMEWORK_LOGO_PATHS[frameworkKey]} alt={`${frameworkName} logo`} variant="model" />
         <BrandBadge logoPath={MODEL_LOGO_PATHS[modelKey]} alt={`${modelName} logo`} variant="model" />
         <div className="min-w-0">
@@ -318,6 +370,17 @@ function getMetricPanelDescription(metricType: BenchmarkMetricType) {
       return "Lower is more secure."
     case "indirect_asr":
       return "Lower is more secure."
+  }
+}
+
+function getViewLabel(viewMode: DomainViewMode) {
+  switch (viewMode) {
+    case "table":
+      return "Table"
+    case "bar":
+      return "Bar"
+    case "scatter":
+      return "Scatter"
   }
 }
 
@@ -396,9 +459,11 @@ function CategoryMatrixTable({
 function CategoryGroupedBarView({
   table,
   rows,
+  metricType,
 }: {
   table: BenchmarkCategoryTable | undefined
   rows: RankedCategoryEntry[]
+  metricType: BenchmarkMetricType
 }) {
   if (!table || rows.length === 0) {
     return (
@@ -408,14 +473,27 @@ function CategoryGroupedBarView({
     )
   }
 
-  const plottedRows = rows.slice(0, 5).map((row, index) => ({
-    ...row,
-    chartKey: `series_${index}`,
-    fill: FRAMEWORK_COLORS[row.frameworkKey] ?? ["#10b981", "#3b82f6", "#f97316", "#a855f7", "#ec4899"][index % 5],
-  }))
+  const plottedRows = buildDomainSeries(rows, 4)
   const seriesByKey = new Map(plottedRows.map((row) => [row.chartKey, row] as const))
 
-  const chartRows = table.categories.map((category) => {
+  const sortedCategories = [...table.categories].sort((left, right) => {
+    const leftAverage = averageValues(plottedRows.map((row) => row.categoryScores[left.key] ?? null))
+    const rightAverage = averageValues(plottedRows.map((row) => row.categoryScores[right.key] ?? null))
+    if (leftAverage === null && rightAverage === null) {
+      return left.label.localeCompare(right.label)
+    }
+    if (leftAverage === null) {
+      return 1
+    }
+    if (rightAverage === null) {
+      return -1
+    }
+    return isHigherBetterMetric(metricType)
+      ? rightAverage - leftAverage || left.label.localeCompare(right.label)
+      : leftAverage - rightAverage || left.label.localeCompare(right.label)
+  })
+
+  const chartRows = sortedCategories.map((category) => {
     const row: Record<string, number | string | null> = {
       category: compactCategoryLabel(category.label),
       fullLabel: category.label,
@@ -425,33 +503,53 @@ function CategoryGroupedBarView({
     }
     return row
   })
-  const chartHeight = Math.max(340, table.categories.length * 56)
+  const chartHeight = Math.max(360, sortedCategories.length * 64)
 
   return (
     <div className="space-y-4">
-      <SeriesLegend rows={plottedRows} />
-      <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(16,185,129,0.12),transparent_40%)] p-3">
-        <div className="absolute inset-0 bg-grid-white/[0.03]" />
+      <SeriesLegend rows={plottedRows} metricType={metricType} />
+      <div className="grid gap-3 md:grid-cols-3">
+        <div className="rounded-2xl border border-border/70 bg-background/80 px-4 py-3">
+          <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Category ordering</div>
+          <div className="mt-1 text-sm font-medium text-foreground">
+            {isHigherBetterMetric(metricType) ? "Highest averages first" : "Lowest risk first"}
+          </div>
+        </div>
+        <div className="rounded-2xl border border-border/70 bg-background/80 px-4 py-3">
+          <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Series scope</div>
+          <div className="mt-1 text-sm font-medium text-foreground">Top {plottedRows.length} visible configurations</div>
+        </div>
+        <div className="rounded-2xl border border-border/70 bg-background/80 px-4 py-3">
+          <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Reading guide</div>
+          <div className="mt-1 text-sm font-medium text-foreground">
+            Compare one category across rows to see the safest or strongest setup quickly.
+          </div>
+        </div>
+      </div>
+      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-background/90 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.08),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.08),transparent_32%)]" />
         <div className="relative" style={{ height: chartHeight }}>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartRows} layout="vertical" margin={{ top: 8, right: 20, left: 20, bottom: 8 }} barCategoryGap="22%">
-              <CartesianGrid horizontal={false} strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.22} />
+            <BarChart data={chartRows} layout="vertical" margin={{ top: 8, right: 28, left: 24, bottom: 8 }} barCategoryGap="28%">
+              <CartesianGrid horizontal={false} strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.14} />
               <XAxis
                 type="number"
                 domain={[0, 100]}
                 tickFormatter={(value: number) => `${value}%`}
                 tick={{ fontSize: 12 }}
+                axisLine={false}
+                tickLine={false}
               />
               <YAxis
                 type="category"
                 dataKey="category"
-                width={170}
+                width={240}
                 tick={{ fontSize: 12 }}
                 axisLine={false}
                 tickLine={false}
               />
               <Tooltip
-                cursor={{ fill: "rgba(255,255,255,0.04)" }}
+                cursor={{ fill: "rgba(148,163,184,0.08)" }}
                 content={(props) => {
                   const active = props.active
                   const payload = props.payload as BarTooltipPayloadItem[] | undefined
@@ -471,9 +569,12 @@ function CategoryGroupedBarView({
                       }
                     })
                     .filter((item): item is { row: (typeof plottedRows)[number]; value: number } => item !== null)
+                    .sort((left, right) =>
+                      isHigherBetterMetric(metricType) ? right.value - left.value : left.value - right.value
+                    )
 
                   return (
-                    <div className="w-[280px] rounded-2xl border border-border/70 bg-background/95 p-3 shadow-2xl shadow-black/20 backdrop-blur">
+                    <div className="w-[300px] rounded-2xl border border-border/70 bg-background/95 p-3 shadow-xl shadow-black/15 backdrop-blur">
                       <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</div>
                       <div className="space-y-2">
                         {entries.map(({ row, value }: { row: (typeof plottedRows)[number]; value: number }) => (
@@ -484,6 +585,7 @@ function CategoryGroupedBarView({
                             modelKey={row.modelKey}
                             modelName={row.modelName}
                             value={value}
+                            fill={row.fill}
                           />
                         ))}
                       </div>
@@ -497,9 +599,13 @@ function CategoryGroupedBarView({
                   dataKey={row.chartKey}
                   name={`${row.frameworkName} · ${row.modelName}`}
                   fill={row.fill}
-                  radius={[0, 10, 10, 0]}
-                  animationDuration={900}
+                  stroke={row.stroke}
+                  strokeWidth={1.25}
+                  radius={[999, 999, 999, 999]}
+                  maxBarSize={16}
+                  animationDuration={850}
                   animationBegin={index * 120}
+                  background={{ fill: "rgba(148,163,184,0.08)", radius: 999 }}
                 />
               ))}
             </BarChart>
@@ -513,9 +619,11 @@ function CategoryGroupedBarView({
 function CategoryScatterView({
   table,
   rows,
+  metricType,
 }: {
   table: BenchmarkCategoryTable | undefined
   rows: RankedCategoryEntry[]
+  metricType: BenchmarkMetricType
 }) {
   if (!table || rows.length === 0) {
     return (
@@ -525,10 +633,7 @@ function CategoryScatterView({
     )
   }
 
-  const plottedRows = rows.slice(0, 6).map((row, index) => ({
-    ...row,
-    fill: FRAMEWORK_COLORS[row.frameworkKey] ?? ["#10b981", "#3b82f6", "#f97316", "#a855f7", "#ec4899", "#14b8a6"][index % 6],
-  }))
+  const plottedRows = buildDomainSeries(rows, 5)
 
   const series = Array.from(
     plottedRows.reduce(
@@ -549,6 +654,7 @@ function CategoryScatterView({
             modelName: row.modelName,
             categoryLabel: category.label,
             fill: row.fill,
+            stroke: row.stroke,
           })
         }
         groups.set(`${row.frameworkKey}:${row.modelKey}`, items)
@@ -566,6 +672,7 @@ function CategoryScatterView({
           modelName: string
           categoryLabel: string
           fill: string
+          stroke: string
         }>
       >()
     )
@@ -573,13 +680,35 @@ function CategoryScatterView({
 
   return (
     <div className="space-y-4">
-      <SeriesLegend rows={plottedRows} />
-      <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-[radial-gradient(circle_at_top_left,rgba(168,85,247,0.14),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.14),transparent_40%)] p-3">
-        <div className="absolute inset-0 bg-grid-white/[0.03]" />
-        <div className="relative h-[420px]">
+      <SeriesLegend rows={plottedRows} metricType={metricType} />
+      <div className="flex flex-wrap gap-2">
+        <Badge variant="outline" className="rounded-full bg-background/80">
+          x-axis: overall score
+        </Badge>
+        <Badge variant="outline" className="rounded-full bg-background/80">
+          y-axis: category score
+        </Badge>
+        <Badge variant="outline" className="rounded-full bg-background/80">
+          dashed diagonal: equal overall and category score
+        </Badge>
+        <Badge variant="outline" className="rounded-full bg-background/80">
+          larger points: more tasks in that category
+        </Badge>
+      </div>
+      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-background/92 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(168,85,247,0.08),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.08),transparent_34%)]" />
+        <div className="relative h-[460px]">
           <ResponsiveContainer width="100%" height="100%">
-            <ScatterChart margin={{ top: 18, right: 20, left: 12, bottom: 16 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.22} />
+            <ScatterChart margin={{ top: 18, right: 28, left: 18, bottom: 24 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.14} />
+              <ReferenceLine
+                segment={[
+                  { x: 0, y: 0 },
+                  { x: 100, y: 100 },
+                ]}
+                stroke="rgba(148,163,184,0.45)"
+                strokeDasharray="6 6"
+              />
               <XAxis
                 type="number"
                 dataKey="x"
@@ -587,6 +716,8 @@ function CategoryScatterView({
                 domain={[0, 100]}
                 tickFormatter={(value: number) => `${value}%`}
                 tick={{ fontSize: 12 }}
+                axisLine={false}
+                tickLine={false}
               />
               <YAxis
                 type="number"
@@ -595,9 +726,11 @@ function CategoryScatterView({
                 domain={[0, 100]}
                 tickFormatter={(value: number) => `${value}%`}
                 tick={{ fontSize: 12 }}
+                axisLine={false}
+                tickLine={false}
               />
               <Tooltip
-                cursor={{ strokeDasharray: "3 3", stroke: "rgba(255,255,255,0.35)" }}
+                cursor={{ strokeDasharray: "4 4", stroke: "rgba(148,163,184,0.45)" }}
                 content={(props) => {
                   const active = props.active
                   const payload = props.payload as ScatterTooltipPayloadItem[] | undefined
@@ -607,7 +740,7 @@ function CategoryScatterView({
                   }
 
                   return (
-                    <div className="w-[280px] rounded-2xl border border-border/70 bg-background/95 p-3 shadow-2xl shadow-black/20 backdrop-blur">
+                    <div className="w-[300px] rounded-2xl border border-border/70 bg-background/95 p-3 shadow-xl shadow-black/15 backdrop-blur">
                       <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                         {item.categoryLabel}
                       </div>
@@ -618,6 +751,7 @@ function CategoryScatterView({
                           modelKey={item.modelKey}
                           modelName={item.modelName}
                           value={item.y}
+                          fill={item.fill}
                         />
                         <div className="flex items-center justify-between rounded-xl bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
                           <span>Overall</span>
@@ -635,6 +769,22 @@ function CategoryScatterView({
                   data={items}
                   fill={items[0]?.fill}
                   line={false}
+                  shape={(props: { cx?: number; cy?: number; size?: number; fill?: string }) => {
+                    const cx = typeof props.cx === "number" ? props.cx : 0
+                    const cy = typeof props.cy === "number" ? props.cy : 0
+                    const size = typeof props.size === "number" ? props.size : 80
+                    const radius = Math.max(6, Math.min(14, Math.sqrt(size) * 0.9))
+                    const fill = typeof props.fill === "string" ? props.fill : items[0]?.fill ?? "#38bdf8"
+                    const stroke = items[0]?.stroke ?? fill
+
+                    return (
+                      <g>
+                        <circle cx={cx} cy={cy} r={radius + 4} fill={fill} opacity={0.14} />
+                        <circle cx={cx} cy={cy} r={radius} fill={fill} fillOpacity={0.28} stroke={stroke} strokeWidth={2} />
+                        <circle cx={cx} cy={cy} r={Math.max(2.5, radius * 0.36)} fill="white" opacity={0.92} />
+                      </g>
+                    )
+                  }}
                   animationDuration={900}
                   animationBegin={index * 110}
                 />
@@ -723,9 +873,9 @@ function DomainMetricPanel({
           {viewMode === "table" ? (
             <CategoryMatrixTable table={categoryTable} rows={rows} metricType={metricType} />
           ) : viewMode === "bar" ? (
-            <CategoryGroupedBarView table={categoryTable} rows={rows} />
+            <CategoryGroupedBarView table={categoryTable} rows={rows} metricType={metricType} />
           ) : (
-            <CategoryScatterView table={categoryTable} rows={rows} />
+            <CategoryScatterView table={categoryTable} rows={rows} metricType={metricType} />
           )}
         </CardContent>
       </Card>
@@ -735,19 +885,20 @@ function DomainMetricPanel({
 
 function DomainSection({
   domain,
-  viewMode,
   metricStates,
 }: {
   domain: BenchmarkDomain
-  viewMode: DomainViewMode
   metricStates: Partial<Record<BenchmarkMetricType, DomainMetricState>>
 }) {
   const domainVisual = DOMAIN_VISUALS[domain.key]
   const DomainIcon = domainVisual?.icon ?? BrainCircuit
   const glowClass = domainVisual?.glow ?? "from-primary/20 via-transparent to-transparent"
+  const [activeMetric, setActiveMetric] = useState<BenchmarkMetricType>("bsr")
+  const [viewMode, setViewMode] = useState<DomainViewMode>("table")
+  const activeState = metricStates[activeMetric]
 
   return (
-    <section className="scroll-mt-24">
+    <section id={`domain-${domain.key}`} className="scroll-mt-24">
       <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card/70 backdrop-blur-xl shadow-lg shadow-black/5 transition-transform duration-300 hover:-translate-y-0.5">
         <div className={cn("absolute inset-x-0 top-0 h-28 bg-gradient-to-r", glowClass)} />
         <div className="relative p-6 md:p-8">
@@ -762,22 +913,74 @@ function DomainSection({
                 </Badge>
               </div>
               <h2 className="text-2xl font-semibold tracking-tight">{domain.label}</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Tune the metric and visualization for this domain only.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-2xl border border-border/60 bg-background/55 p-4">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <div className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                  Metric filter
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {DOMAIN_METRIC_ORDER.map((metric) => (
+                    <button
+                      key={metric}
+                      onClick={() => setActiveMetric(metric)}
+                      className={cn(
+                        "rounded-full border px-4 py-2 text-sm transition-all duration-300",
+                        activeMetric === metric
+                          ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                          : "border-border text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      {getMetricPanelTitle(metric)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                  View filter
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {DOMAIN_VIEW_ORDER.map((mode) => (
+                    <button
+                      key={mode}
+                      onClick={() => setViewMode(mode)}
+                      className={cn(
+                        "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-all duration-300",
+                        viewMode === mode
+                          ? "border-primary/40 bg-primary/10 text-foreground"
+                          : "border-border text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      {mode === "table" ? (
+                        <Grid3X3 className="h-3.5 w-3.5" />
+                      ) : mode === "scatter" ? (
+                        <BrainCircuit className="h-3.5 w-3.5" />
+                      ) : (
+                        <BarChart3 className="h-3.5 w-3.5" />
+                      )}
+                      {getViewLabel(mode)}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
           <div className="mt-6 space-y-8">
-            {DOMAIN_METRIC_ORDER.map((metric) => {
-              const state = metricStates[metric]
-              return (
-                <DomainMetricPanel
-                  key={metric}
-                  metricType={metric}
-                  viewMode={viewMode}
-                  categoryTable={state?.table}
-                  rows={state?.rows ?? []}
-                />
-              )
-            })}
+            <DomainMetricPanel
+              metricType={activeMetric}
+              viewMode={viewMode}
+              categoryTable={activeState?.table}
+              rows={activeState?.rows ?? []}
+            />
           </div>
         </div>
       </div>
@@ -790,7 +993,6 @@ export function LeaderboardSection() {
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [metricType, setMetricType] = useState<BenchmarkMetricType>("bsr")
-  const [viewMode, setViewMode] = useState<DomainViewMode>("table")
   const [frameworkKey, setFrameworkKey] = useState("all")
   const [modelKey, setModelKey] = useState("all")
   const [selectedDomainKeys, setSelectedDomainKeys] = useState<string[]>([])
@@ -1017,28 +1219,6 @@ export function LeaderboardSection() {
                     {metric.label}
                   </button>
                 ))}
-                <div className="mx-2 hidden h-8 w-px bg-border md:block" />
-                {(["table", "scatter", "bar"] as DomainViewMode[]).map((mode) => (
-                  <button
-                    key={mode}
-                    onClick={() => setViewMode(mode)}
-                    className={cn(
-                      "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-all duration-300",
-                      viewMode === mode
-                        ? "border-primary/40 bg-primary/10 text-foreground"
-                        : "border-border text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {mode === "table" ? (
-                      <Grid3X3 className="h-3.5 w-3.5" />
-                    ) : mode === "scatter" ? (
-                      <BrainCircuit className="h-3.5 w-3.5" />
-                    ) : (
-                      <BarChart3 className="h-3.5 w-3.5" />
-                    )}
-                    {mode}
-                  </button>
-                ))}
               </div>
 
               <div className="grid gap-3 md:grid-cols-3 xl:grid-cols-5">
@@ -1251,7 +1431,6 @@ export function LeaderboardSection() {
               >
                 <DomainSection
                   domain={domain}
-                  viewMode={viewMode}
                   metricStates={categoryState ?? {}}
                 />
               </div>
