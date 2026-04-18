@@ -105,14 +105,6 @@ const MODEL_LOGO_PATHS: Record<string, string> = {
   "gemini-3-1-pro": "/logo/gemini.svg",
 }
 
-const FRAMEWORK_BADGE_CONTAINER_CLASSES: Record<string, string> = {
-  "claude-code": "w-14 rounded-xl px-2.5",
-}
-
-const FRAMEWORK_BADGE_IMAGE_CLASSES: Record<string, string> = {
-  "claude-code": "h-[34%] w-full",
-}
-
 const DOMAIN_VISUALS: Record<string, { icon: typeof Workflow; glow: string }> = {
   workflow: { icon: Workflow, glow: "from-cyan-500/20 via-transparent to-transparent" },
   crm: { icon: Database, glow: "from-emerald-500/20 via-transparent to-transparent" },
@@ -149,14 +141,10 @@ function BrandBadge({
   logoPath,
   alt,
   variant = "framework",
-  containerClassName,
-  imageClassName,
 }: {
   logoPath: string | undefined
   alt: string
   variant?: "framework" | "model"
-  containerClassName?: string
-  imageClassName?: string
 }) {
   return (
     <span
@@ -164,19 +152,14 @@ function BrandBadge({
         "inline-flex shrink-0 items-center justify-center overflow-hidden bg-white",
         variant === "framework"
           ? "h-8 w-8 rounded-xl border border-border/70 p-1.5 shadow-sm shadow-black/5"
-          : "h-7 w-7 rounded-lg border border-border/40 bg-muted/25 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]",
-        containerClassName
+          : "h-7 w-7 rounded-lg border border-border/40 bg-muted/25 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]"
       )}
     >
       {logoPath ? (
         <img
           src={logoPath}
           alt={alt}
-          className={cn(
-            "object-contain",
-            variant === "framework" ? "h-full w-full" : "h-[78%] w-[78%] opacity-85",
-            imageClassName
-          )}
+          className={cn("object-contain", variant === "framework" ? "h-full w-full" : "h-[78%] w-[78%] opacity-85")}
         />
       ) : (
         <BrainCircuit className={cn("text-muted-foreground", variant === "framework" ? "h-4.5 w-4.5" : "h-4 w-4")} />
@@ -188,13 +171,7 @@ function BrandBadge({
 function FrameworkLabel({ frameworkKey, frameworkName }: { frameworkKey: string; frameworkName: string }) {
   return (
     <div className="flex items-center gap-3">
-      <BrandBadge
-        logoPath={FRAMEWORK_LOGO_PATHS[frameworkKey]}
-        alt={`${frameworkName} logo`}
-        variant="framework"
-        containerClassName={FRAMEWORK_BADGE_CONTAINER_CLASSES[frameworkKey]}
-        imageClassName={FRAMEWORK_BADGE_IMAGE_CLASSES[frameworkKey]}
-      />
+      <BrandBadge logoPath={FRAMEWORK_LOGO_PATHS[frameworkKey]} alt={`${frameworkName} logo`} variant="framework" />
       <div className="min-w-0">
         <div className="font-medium truncate">{frameworkName}</div>
         <div className="text-xs text-muted-foreground">Agent framework</div>
