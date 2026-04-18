@@ -261,6 +261,134 @@
   animation: shimmer 3s infinite;
 }
 
+@keyframes env-stage-glow {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.98) rotate(0deg);
+  }
+  50% {
+    opacity: 0.34;
+    transform: scale(1.04) rotate(6deg);
+  }
+}
+
+@keyframes env-card-float {
+  0%, 100% {
+    transform: translate3d(0, var(--card-offset-y, 0px), 0) rotate(var(--card-rotate, 0deg)) scale(1);
+  }
+  50% {
+    transform: translate3d(0, calc(var(--card-offset-y, 0px) - var(--card-float-y, 16px)), 0)
+      rotate(calc(var(--card-rotate, 0deg) + 1.5deg)) scale(1.018);
+  }
+}
+
+@keyframes env-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.env-showcase-stage {
+  box-shadow:
+    inset 0 1px 0 oklch(1 0 0 / 0.08),
+    0 32px 120px -56px oklch(0.16 0.08 245 / 0.9);
+}
+
+.env-showcase-stage::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background:
+    conic-gradient(
+      from 180deg at 50% 50%,
+      transparent 0deg,
+      oklch(0.72 0.14 220 / 0.12) 70deg,
+      transparent 145deg,
+      oklch(0.74 0.12 285 / 0.12) 240deg,
+      transparent 360deg
+    );
+  filter: blur(70px);
+  animation: env-stage-glow 18s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.env-showcase-grid {
+  background-image:
+    linear-gradient(to right, oklch(1 0 0 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(1 0 0 / 0.06) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
+}
+
+.env-showcase-card {
+  animation: env-card-float 14s ease-in-out infinite;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.env-showcase-card > div {
+  transition:
+    transform 350ms ease,
+    box-shadow 350ms ease,
+    border-color 350ms ease;
+}
+
+.env-showcase-card:hover > div {
+  transform: translateY(-8px) scale(1.02);
+  border-color: oklch(1 0 0 / 0.2);
+}
+
+.env-showcase-image {
+  transition:
+    transform 700ms ease,
+    filter 700ms ease;
+}
+
+.env-showcase-card:hover .env-showcase-image {
+  transform: scale(1.06);
+  filter: saturate(1.08) contrast(1.04);
+}
+
+.env-marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+.env-marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 0.75rem;
+  animation: env-marquee-scroll 36s linear infinite;
+  will-change: transform;
+}
+
+.env-marquee-track-reverse {
+  animation-direction: reverse;
+  animation-duration: 42s;
+}
+
+@media (hover: hover) {
+  .env-marquee:hover .env-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .env-showcase-stage::before,
+  .env-showcase-card,
+  .env-marquee-track {
+    animation: none;
+  }
+
+  .env-showcase-card > div,
+  .env-showcase-image {
+    transition: none;
+  }
+}
+
 /* Success foreground color for domain release */
 :root {
   --success-foreground: oklch(0.99 0 0);

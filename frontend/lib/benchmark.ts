@@ -420,9 +420,9 @@ export function getMetricDescription(metricType: BenchmarkMetricType) {
     case "bsr":
       return "Benign task success rate. Higher is better."
     case "direct_asr":
-      return "Attack success rate under direct malicious prompts. Lower is better."
+      return "Attack success rate under direct malicious prompts. Lower is more secure."
     case "indirect_asr":
-      return "Attack success rate under indirect prompt injection. Lower is better."
+      return "Attack success rate under indirect prompt injection. Lower is more secure."
   }
 }
 

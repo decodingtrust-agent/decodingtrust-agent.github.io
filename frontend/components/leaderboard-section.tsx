@@ -28,7 +28,6 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Legend,
   ResponsiveContainer,
   Scatter,
   ScatterChart,
@@ -67,6 +66,9 @@ import { cn } from "@/lib/utils"
 type RankedEntry = BenchmarkEntry & { overallForSelection: number | null }
 type RankedCategoryEntry = BenchmarkCategoryEntry & { overallForSelection: number | null }
 type DomainViewMode = "table" | "scatter" | "bar"
+type DomainMetricState = { table: BenchmarkCategoryTable | undefined; rows: RankedCategoryEntry[] }
+
+const DOMAIN_METRIC_ORDER: BenchmarkMetricType[] = ["bsr", "direct_asr", "indirect_asr"]
 
 const FRAMEWORK_COLORS: Record<string, string> = {
   "openai-agents": "#10b981",
@@ -128,18 +130,32 @@ function scoreTone(metricType: BenchmarkMetricType, value: number | null) {
 function BrandBadge({
   logoPath,
   alt,
+  variant = "framework",
 }: {
   logoPath: string | undefined
   alt: string
+  variant?: "framework" | "model"
 }) {
   return (
     <span
-      className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-border/70 bg-white p-1.5 shadow-sm shadow-black/5"
+      className={cn(
+        "inline-flex shrink-0 items-center justify-center overflow-hidden bg-white",
+        variant === "framework"
+          ? "h-8 w-8 rounded-xl border border-border/70 p-1.5 shadow-sm shadow-black/5"
+          : "h-7 w-7 rounded-lg border border-border/40 bg-muted/25 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]"
+      )}
     >
       {logoPath ? (
-        <img src={logoPath} alt={alt} className="h-full w-full object-contain" />
+        <img
+          src={logoPath}
+          alt={alt}
+          className={cn(
+            "object-contain",
+            variant === "framework" ? "h-full w-full" : "h-[78%] w-[78%] opacity-85"
+          )}
+        />
       ) : (
-        <BrainCircuit className="h-4.5 w-4.5 text-muted-foreground" />
+        <BrainCircuit className={cn("text-muted-foreground", variant === "framework" ? "h-4.5 w-4.5" : "h-4 w-4")} />
       )}
     </span>
   )
@@ -148,7 +164,7 @@ function BrandBadge({
 function FrameworkLabel({ frameworkKey, frameworkName }: { frameworkKey: string; frameworkName: string }) {
   return (
     <div className="flex items-center gap-3">
-      <BrandBadge logoPath={FRAMEWORK_LOGO_PATHS[frameworkKey]} alt={`${frameworkName} logo`} />
+      <BrandBadge logoPath={FRAMEWORK_LOGO_PATHS[frameworkKey]} alt={`${frameworkName} logo`} variant="framework" />
       <div className="min-w-0">
         <div className="font-medium truncate">{frameworkName}</div>
         <div className="text-xs text-muted-foreground">Agent framework</div>
@@ -160,11 +176,84 @@ function FrameworkLabel({ frameworkKey, frameworkName }: { frameworkKey: string;
 function ModelLabel({ modelKey, modelName }: { modelKey: string; modelName: string }) {
   return (
     <div className="flex items-center gap-3">
-      <BrandBadge logoPath={MODEL_LOGO_PATHS[modelKey]} alt={`${modelName} logo`} />
+      <BrandBadge logoPath={MODEL_LOGO_PATHS[modelKey]} alt={`${modelName} logo`} variant="model" />
       <div className="min-w-0">
         <div className="font-medium truncate">{modelName}</div>
         <div className="text-xs text-muted-foreground">Foundation model</div>
       </div>
+    </div>
+  )
+}
+
+function SeriesLegend({
+  rows,
+}: {
+  rows: Array<{
+    frameworkKey: string
+    frameworkName: string
+    modelKey: string
+    modelName: string
+    fill: string
+  }>
+}) {
+  return (
+    <div className="mb-4 flex flex-wrap gap-2">
+      {rows.map((row) => (
+        <div
+          key={`${row.frameworkKey}:${row.modelKey}`}
+          className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/85 px-3 py-1.5 shadow-sm shadow-black/5"
+        >
+          <span className="inline-flex h-2.5 w-2.5 rounded-full" style={{ backgroundColor: row.fill }} />
+          <BrandBadge logoPath={FRAMEWORK_LOGO_PATHS[row.frameworkKey]} alt={`${row.frameworkName} logo`} variant="model" />
+          <span className="text-xs font-medium text-foreground">{row.modelName}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+type BarTooltipPayloadItem = {
+  dataKey?: string | number
+  value?: number | string | null
+  payload?: { fullLabel?: string; category?: string }
+}
+
+type ScatterTooltipPayloadItem = {
+  payload?: {
+    frameworkKey: string
+    frameworkName: string
+    modelKey: string
+    modelName: string
+    categoryLabel: string
+    x: number
+    y: number
+  }
+}
+
+function ChartTooltipRow({
+  frameworkKey,
+  frameworkName,
+  modelKey,
+  modelName,
+  value,
+}: {
+  frameworkKey: string
+  frameworkName: string
+  modelKey: string
+  modelName: string
+  value: number | null
+}) {
+  return (
+    <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center gap-2 min-w-0">
+        <BrandBadge logoPath={FRAMEWORK_LOGO_PATHS[frameworkKey]} alt={`${frameworkName} logo`} variant="model" />
+        <BrandBadge logoPath={MODEL_LOGO_PATHS[modelKey]} alt={`${modelName} logo`} variant="model" />
+        <div className="min-w-0">
+          <div className="truncate text-xs font-medium text-foreground">{modelName}</div>
+          <div className="truncate text-[11px] text-muted-foreground">{frameworkName}</div>
+        </div>
+      </div>
+      <span className="text-xs font-mono font-semibold text-foreground">{formatPercent(value)}</span>
     </div>
   )
 }
@@ -203,33 +292,33 @@ function rankCategoryEntries(entries: BenchmarkCategoryEntry[], metricType: Benc
     })
 }
 
-function average(values: Array<number | null>) {
-  const cleanValues = values.filter((value): value is number => typeof value === "number")
-  if (cleanValues.length === 0) {
-    return null
-  }
-  return Math.round((cleanValues.reduce((sum, value) => sum + value, 0) / cleanValues.length) * 10) / 10
-}
-
-function getCategoryAverageRows(table: BenchmarkCategoryTable | undefined, rows: RankedCategoryEntry[]) {
-  if (!table) {
-    return []
-  }
-
-  return table.categories
-    .map((category) => ({
-      ...category,
-      average: average(rows.map((row) => row.categoryScores[category.key] ?? null)),
-    }))
-    .filter((category) => category.average !== null)
-    .sort((left, right) => Number(right.average) - Number(left.average) || left.label.localeCompare(right.label))
-}
-
 function compactCategoryLabel(label: string) {
   return label
     .replace("Windows · ", "Win · ")
     .replace("macOS · ", "macOS · ")
     .replace("Customer Service", "CS")
+}
+
+function getMetricPanelTitle(metricType: BenchmarkMetricType) {
+  switch (metricType) {
+    case "bsr":
+      return "Benign task success rate"
+    case "direct_asr":
+      return "Direct ASR"
+    case "indirect_asr":
+      return "Indirect ASR"
+  }
+}
+
+function getMetricPanelDescription(metricType: BenchmarkMetricType) {
+  switch (metricType) {
+    case "bsr":
+      return "Higher is better."
+    case "direct_asr":
+      return "Lower is more secure."
+    case "indirect_asr":
+      return "Lower is more secure."
+  }
 }
 
 function CategoryMatrixTable({
@@ -253,12 +342,16 @@ function CategoryMatrixTable({
     <div className="overflow-x-auto">
       <table className="w-full min-w-[980px]">
         <thead>
-          <tr className="border-b border-border/60">
-            <th className="py-2 text-left text-xs font-medium text-muted-foreground">Agent</th>
-            <th className="py-2 text-left text-xs font-medium text-muted-foreground">Model</th>
-            <th className="py-2 text-right text-xs font-medium text-muted-foreground">Overall</th>
+          <tr className="border-b border-border bg-secondary/20">
+            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Rank</th>
+            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Agent</th>
+            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Model</th>
+            <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground">Overall</th>
             {table.categories.map((category) => (
-              <th key={category.key} className="min-w-[120px] px-2 py-2 text-right text-xs font-medium text-muted-foreground">
+              <th
+                key={category.key}
+                className="min-w-[120px] px-4 py-3 text-right text-xs font-medium text-muted-foreground whitespace-nowrap"
+              >
                 <div>{category.label}</div>
                 {category.taskCount !== null ? (
                   <div className="mt-1 text-[10px] text-muted-foreground/70">{category.taskCount} tasks</div>
@@ -268,21 +361,25 @@ function CategoryMatrixTable({
           </tr>
         </thead>
         <tbody>
-          {rows.slice(0, 8).map((row) => (
-            <tr key={`${row.frameworkKey}:${row.modelKey}`} className="border-b border-border/50 last:border-0">
-              <td className="py-3 pr-4">
+          {rows.map((row, index) => (
+            <tr
+              key={`${row.frameworkKey}:${row.modelKey}`}
+              className="border-b border-border/60 last:border-0 transition-colors hover:bg-secondary/10"
+            >
+              <td className="px-4 py-3 text-sm font-mono font-medium">{index + 1}</td>
+              <td className="px-4 py-3 min-w-[220px]">
                 <FrameworkLabel frameworkKey={row.frameworkKey} frameworkName={row.frameworkName} />
               </td>
-              <td className="py-3 pr-4">
+              <td className="px-4 py-3 min-w-[220px]">
                 <ModelLabel modelKey={row.modelKey} modelName={row.modelName} />
               </td>
-              <td className="py-3 text-right">
+              <td className="px-4 py-3 text-right">
                 <span className={cn("text-sm font-mono font-semibold", scoreTone(metricType, row.overallForSelection))}>
                   {formatPercent(row.overallForSelection)}
                 </span>
               </td>
               {table.categories.map((category) => (
-                <td key={category.key} className="px-2 py-3 text-right">
+                <td key={category.key} className="px-4 py-3 text-right">
                   <span className={cn("text-sm font-mono", scoreTone(metricType, row.categoryScores[category.key] ?? null))}>
                     {formatPercent(row.categoryScores[category.key] ?? null)}
                   </span>
@@ -316,6 +413,7 @@ function CategoryGroupedBarView({
     chartKey: `series_${index}`,
     fill: FRAMEWORK_COLORS[row.frameworkKey] ?? ["#10b981", "#3b82f6", "#f97316", "#a855f7", "#ec4899"][index % 5],
   }))
+  const seriesByKey = new Map(plottedRows.map((row) => [row.chartKey, row] as const))
 
   const chartRows = table.categories.map((category) => {
     const row: Record<string, number | string | null> = {
@@ -327,34 +425,87 @@ function CategoryGroupedBarView({
     }
     return row
   })
+  const chartHeight = Math.max(340, table.categories.length * 56)
 
   return (
-    <div className="h-[360px]">
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={chartRows} margin={{ top: 12, right: 18, left: 0, bottom: 40 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.25} />
-          <XAxis dataKey="category" angle={-25} textAnchor="end" interval={0} height={72} tick={{ fontSize: 11 }} />
-          <YAxis domain={[0, 100]} tickFormatter={(value) => `${value}%`} />
-          <Tooltip
-            labelFormatter={(value) => String(value)}
-            formatter={(value) => [
-              formatPercent(typeof value === "number" ? value : Number(value)),
-              "Score",
-            ]}
-            contentStyle={{ borderRadius: 16, borderColor: "hsl(var(--border))" }}
-          />
-          <Legend />
-          {plottedRows.map((row) => (
-            <Bar
-              key={row.chartKey}
-              dataKey={row.chartKey}
-              name={`${row.frameworkName} · ${row.modelName}`}
-              fill={row.fill}
-              radius={[6, 6, 0, 0]}
-            />
-          ))}
-        </BarChart>
-      </ResponsiveContainer>
+    <div className="space-y-4">
+      <SeriesLegend rows={plottedRows} />
+      <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(16,185,129,0.12),transparent_40%)] p-3">
+        <div className="absolute inset-0 bg-grid-white/[0.03]" />
+        <div className="relative" style={{ height: chartHeight }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartRows} layout="vertical" margin={{ top: 8, right: 20, left: 20, bottom: 8 }} barCategoryGap="22%">
+              <CartesianGrid horizontal={false} strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.22} />
+              <XAxis
+                type="number"
+                domain={[0, 100]}
+                tickFormatter={(value: number) => `${value}%`}
+                tick={{ fontSize: 12 }}
+              />
+              <YAxis
+                type="category"
+                dataKey="category"
+                width={170}
+                tick={{ fontSize: 12 }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <Tooltip
+                cursor={{ fill: "rgba(255,255,255,0.04)" }}
+                content={(props) => {
+                  const active = props.active
+                  const payload = props.payload as BarTooltipPayloadItem[] | undefined
+                  if (!active || !payload?.length) {
+                    return null
+                  }
+                  const label = String(payload[0]?.payload?.fullLabel ?? payload[0]?.payload?.category ?? "")
+                  const entries = payload
+                    .map((item: BarTooltipPayloadItem) => {
+                      const row = seriesByKey.get(String(item.dataKey))
+                      if (!row) {
+                        return null
+                      }
+                      return {
+                        row,
+                        value: typeof item.value === "number" ? item.value : Number(item.value),
+                      }
+                    })
+                    .filter((item): item is { row: (typeof plottedRows)[number]; value: number } => item !== null)
+
+                  return (
+                    <div className="w-[280px] rounded-2xl border border-border/70 bg-background/95 p-3 shadow-2xl shadow-black/20 backdrop-blur">
+                      <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</div>
+                      <div className="space-y-2">
+                        {entries.map(({ row, value }: { row: (typeof plottedRows)[number]; value: number }) => (
+                          <ChartTooltipRow
+                            key={row.chartKey}
+                            frameworkKey={row.frameworkKey}
+                            frameworkName={row.frameworkName}
+                            modelKey={row.modelKey}
+                            modelName={row.modelName}
+                            value={value}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )
+                }}
+              />
+              {plottedRows.map((row, index) => (
+                <Bar
+                  key={row.chartKey}
+                  dataKey={row.chartKey}
+                  name={`${row.frameworkName} · ${row.modelName}`}
+                  fill={row.fill}
+                  radius={[0, 10, 10, 0]}
+                  animationDuration={900}
+                  animationBegin={index * 120}
+                />
+              ))}
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </div>
   )
 }
@@ -374,10 +525,15 @@ function CategoryScatterView({
     )
   }
 
-  const frameworkGroups = Array.from(
-    rows.slice(0, 8).reduce(
+  const plottedRows = rows.slice(0, 6).map((row, index) => ({
+    ...row,
+    fill: FRAMEWORK_COLORS[row.frameworkKey] ?? ["#10b981", "#3b82f6", "#f97316", "#a855f7", "#ec4899", "#14b8a6"][index % 6],
+  }))
+
+  const series = Array.from(
+    plottedRows.reduce(
       (groups, row) => {
-        const items = groups.get(row.frameworkKey) ?? []
+        const items = groups.get(`${row.frameworkKey}:${row.modelKey}`) ?? []
         for (const category of table.categories) {
           const score = row.categoryScores[category.key]
           if (score === null || row.overallForSelection === null) {
@@ -387,13 +543,15 @@ function CategoryScatterView({
             x: row.overallForSelection,
             y: score,
             z: Math.max(56, (category.taskCount ?? 8) * 4),
+            frameworkKey: row.frameworkKey,
             frameworkName: row.frameworkName,
+            modelKey: row.modelKey,
             modelName: row.modelName,
             categoryLabel: category.label,
-            fill: FRAMEWORK_COLORS[row.frameworkKey] ?? "#94a3b8",
+            fill: row.fill,
           })
         }
-        groups.set(row.frameworkKey, items)
+        groups.set(`${row.frameworkKey}:${row.modelKey}`, items)
         return groups
       },
       new Map<
@@ -402,7 +560,9 @@ function CategoryScatterView({
           x: number
           y: number
           z: number
+          frameworkKey: string
           frameworkName: string
+          modelKey: string
           modelName: string
           categoryLabel: string
           fill: string
@@ -412,217 +572,212 @@ function CategoryScatterView({
   )
 
   return (
-    <div className="h-[360px]">
-      <ResponsiveContainer width="100%" height="100%">
-        <ScatterChart margin={{ top: 16, right: 18, left: 8, bottom: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.25} />
-          <XAxis type="number" dataKey="x" name="Overall" domain={[0, 100]} tickFormatter={(value) => `${value}%`} />
-          <YAxis type="number" dataKey="y" name="Category" domain={[0, 100]} tickFormatter={(value) => `${value}%`} />
-          <Tooltip
-            cursor={{ strokeDasharray: "3 3" }}
-            formatter={(value: number, key: string) => [formatPercent(value), key === "x" ? "Overall" : "Category score"]}
-            labelFormatter={(_value, payload) => {
-              const item = payload?.[0]?.payload as
-                | { modelName?: string; frameworkName?: string; categoryLabel?: string }
-                | undefined
-              return item ? `${item.frameworkName} · ${item.modelName} · ${item.categoryLabel}` : ""
-            }}
-            contentStyle={{ borderRadius: 16, borderColor: "hsl(var(--border))" }}
-          />
-          <Legend />
-          {frameworkGroups.map(([frameworkKey, items]) => (
-            <Scatter
-              key={frameworkKey}
-              name={items[0]?.frameworkName ?? frameworkKey}
-              data={items}
-              fill={items[0]?.fill}
-            />
-          ))}
-        </ScatterChart>
-      </ResponsiveContainer>
+    <div className="space-y-4">
+      <SeriesLegend rows={plottedRows} />
+      <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-[radial-gradient(circle_at_top_left,rgba(168,85,247,0.14),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.14),transparent_40%)] p-3">
+        <div className="absolute inset-0 bg-grid-white/[0.03]" />
+        <div className="relative h-[420px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <ScatterChart margin={{ top: 18, right: 20, left: 12, bottom: 16 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.22} />
+              <XAxis
+                type="number"
+                dataKey="x"
+                name="Overall"
+                domain={[0, 100]}
+                tickFormatter={(value: number) => `${value}%`}
+                tick={{ fontSize: 12 }}
+              />
+              <YAxis
+                type="number"
+                dataKey="y"
+                name="Category"
+                domain={[0, 100]}
+                tickFormatter={(value: number) => `${value}%`}
+                tick={{ fontSize: 12 }}
+              />
+              <Tooltip
+                cursor={{ strokeDasharray: "3 3", stroke: "rgba(255,255,255,0.35)" }}
+                content={(props) => {
+                  const active = props.active
+                  const payload = props.payload as ScatterTooltipPayloadItem[] | undefined
+                  const item = payload?.[0]?.payload
+                  if (!active || !item) {
+                    return null
+                  }
+
+                  return (
+                    <div className="w-[280px] rounded-2xl border border-border/70 bg-background/95 p-3 shadow-2xl shadow-black/20 backdrop-blur">
+                      <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        {item.categoryLabel}
+                      </div>
+                      <div className="space-y-2">
+                        <ChartTooltipRow
+                          frameworkKey={item.frameworkKey}
+                          frameworkName={item.frameworkName}
+                          modelKey={item.modelKey}
+                          modelName={item.modelName}
+                          value={item.y}
+                        />
+                        <div className="flex items-center justify-between rounded-xl bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
+                          <span>Overall</span>
+                          <span className="font-mono">{formatPercent(item.x)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                }}
+              />
+              {series.map(([seriesKey, items], index) => (
+                <Scatter
+                  key={seriesKey}
+                  name={items[0]?.modelName ?? seriesKey}
+                  data={items}
+                  fill={items[0]?.fill}
+                  line={false}
+                  animationDuration={900}
+                  animationBegin={index * 110}
+                />
+              ))}
+            </ScatterChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </div>
   )
 }
 
-function CategoryHighlightsCard({
-  table,
-  rows,
-  metricType,
-}: {
-  table: BenchmarkCategoryTable | undefined
-  rows: RankedCategoryEntry[]
-  metricType: BenchmarkMetricType
-}) {
-  const categoryRows = getCategoryAverageRows(table, rows)
-  const visibleRows = isHigherBetterMetric(metricType) ? categoryRows.slice(0, 6) : categoryRows.slice(0, 6)
-  const totalTasks = table?.categories.reduce((sum, category) => sum + (category.taskCount ?? 0), 0) ?? 0
-
-  return (
-    <Card className="overflow-hidden border-border/70 bg-background/60 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-0.5">
-      <CardHeader className="gap-2">
-        <CardTitle className="text-base">
-          {metricType === "bsr" ? "Category capability map" : "Category risk map"}
-        </CardTitle>
-        <CardDescription>
-          {metricType === "bsr"
-            ? "Average benign success rate by category across the visible model configurations."
-            : "Average attack success rate by category across the visible model configurations."}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid gap-3 sm:grid-cols-3">
-          <div className="rounded-2xl border border-border/60 bg-background/70 p-3">
-            <div className="text-xs uppercase tracking-wide text-muted-foreground">Categories</div>
-            <div className="mt-1 text-2xl font-semibold">{table?.categories.length ?? 0}</div>
-          </div>
-          <div className="rounded-2xl border border-border/60 bg-background/70 p-3">
-            <div className="text-xs uppercase tracking-wide text-muted-foreground">Tasks represented</div>
-            <div className="mt-1 text-2xl font-semibold">{totalTasks}</div>
-          </div>
-          <div className="rounded-2xl border border-border/60 bg-background/70 p-3">
-            <div className="text-xs uppercase tracking-wide text-muted-foreground">Visible configs</div>
-            <div className="mt-1 text-2xl font-semibold">{rows.length}</div>
-          </div>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[320px]">
-            <thead>
-              <tr className="border-b border-border/60">
-                <th className="py-2 text-left text-xs font-medium text-muted-foreground">Category</th>
-                <th className="py-2 text-right text-xs font-medium text-muted-foreground">Tasks</th>
-                <th className="py-2 text-right text-xs font-medium text-muted-foreground">Avg</th>
-              </tr>
-            </thead>
-            <tbody>
-              {visibleRows.map((row) => (
-                <tr key={row.key} className="border-b border-border/50 last:border-0">
-                  <td className="py-3 pr-4">
-                    <div className="font-medium">{row.label}</div>
-                  </td>
-                  <td className="py-3 text-right font-mono text-muted-foreground">{row.taskCount ?? "--"}</td>
-                  <td className="py-3 text-right">
-                    <span className={cn("text-sm font-mono font-semibold", scoreTone(metricType, row.average))}>
-                      {formatPercent(row.average)}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {visibleRows.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-border px-4 py-6 text-sm text-muted-foreground">
-            No category averages are available for the current filter combination.
-          </div>
-        ) : null}
-      </CardContent>
-    </Card>
-  )
-}
-
-function DomainSection({
-  domain,
+function DomainMetricPanel({
   metricType,
   viewMode,
   categoryTable,
   rows,
 }: {
-  domain: BenchmarkDomain
   metricType: BenchmarkMetricType
   viewMode: DomainViewMode
   categoryTable: BenchmarkCategoryTable | undefined
   rows: RankedCategoryEntry[]
 }) {
   const topRow = rows[0]
+  const totalTasks = categoryTable?.categories.reduce((sum, category) => sum + (category.taskCount ?? 0), 0) ?? 0
+
+  return (
+    <div className="space-y-5">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <div className="flex flex-wrap items-center gap-2 mb-2">
+            <Badge variant={metricType === "bsr" ? "secondary" : "outline"} className="rounded-full">
+              {getMetricPanelTitle(metricType)}
+            </Badge>
+            <Badge variant="outline" className="rounded-full">
+              {rows.length} configs
+            </Badge>
+            {categoryTable ? (
+              <Badge variant="outline" className="rounded-full">
+                {categoryTable.categories.length} categories
+              </Badge>
+            ) : null}
+            {totalTasks > 0 ? (
+              <Badge variant="outline" className="rounded-full">
+                {totalTasks} tasks
+              </Badge>
+            ) : null}
+          </div>
+          <div className="text-sm text-muted-foreground">{getMetricPanelDescription(metricType)}</div>
+        </div>
+
+        {topRow ? (
+          <div className="rounded-2xl border border-border/70 bg-background/70 px-4 py-3 shadow-sm">
+            <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">Top configuration</div>
+            <div className="space-y-3">
+              <FrameworkLabel frameworkKey={topRow.frameworkKey} frameworkName={topRow.frameworkName} />
+              <div className="flex items-center justify-between gap-4">
+                <ModelLabel modelKey={topRow.modelKey} modelName={topRow.modelName} />
+                <span className={cn("text-lg font-mono font-semibold", scoreTone(metricType, topRow.overallForSelection))}>
+                  {formatPercent(topRow.overallForSelection)}
+                </span>
+              </div>
+            </div>
+          </div>
+        ) : null}
+      </div>
+
+      <Card className="overflow-hidden border-border/70 bg-background/60 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-0.5">
+        <CardHeader className="gap-2">
+          <CardTitle className="text-base">
+            {viewMode === "table"
+              ? "Risk-category matrix"
+              : viewMode === "bar"
+                ? "Grouped bar comparison"
+                : "Overall vs category scatter"}
+          </CardTitle>
+          <CardDescription>
+            {viewMode === "scatter"
+              ? "Each point is a model-category pair: overall score versus individual category score."
+              : viewMode === "bar"
+                ? "Top configurations across each paper-defined category."
+                : "Best visible configurations across the paper-defined categories."}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {viewMode === "table" ? (
+            <CategoryMatrixTable table={categoryTable} rows={rows} metricType={metricType} />
+          ) : viewMode === "bar" ? (
+            <CategoryGroupedBarView table={categoryTable} rows={rows} />
+          ) : (
+            <CategoryScatterView table={categoryTable} rows={rows} />
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+function DomainSection({
+  domain,
+  viewMode,
+  metricStates,
+}: {
+  domain: BenchmarkDomain
+  viewMode: DomainViewMode
+  metricStates: Partial<Record<BenchmarkMetricType, DomainMetricState>>
+}) {
   const domainVisual = DOMAIN_VISUALS[domain.key]
   const DomainIcon = domainVisual?.icon ?? BrainCircuit
   const glowClass = domainVisual?.glow ?? "from-primary/20 via-transparent to-transparent"
-  const totalTasks = categoryTable?.categories.reduce((sum, category) => sum + (category.taskCount ?? 0), 0) ?? 0
 
   return (
     <section className="scroll-mt-24">
       <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card/70 backdrop-blur-xl shadow-lg shadow-black/5 transition-transform duration-300 hover:-translate-y-0.5">
         <div className={cn("absolute inset-x-0 top-0 h-28 bg-gradient-to-r", glowClass)} />
         <div className="relative p-6 md:p-8">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-            <div className="flex items-start gap-4">
-              <div className="rounded-2xl border border-border/70 bg-background/70 p-3 shadow-sm">
-                <DomainIcon className="h-6 w-6 text-primary" />
-              </div>
-              <div>
-                <div className="flex flex-wrap items-center gap-2 mb-2">
-                  <Badge variant="outline" className="rounded-full bg-background/70">
-                    {domain.shortLabel}
-                  </Badge>
-                  <Badge variant="secondary" className="rounded-full">
-                    {rows.length} configs
-                  </Badge>
-                  {categoryTable ? (
-                    <Badge variant="outline" className="rounded-full">
-                      {categoryTable.categories.length} categories
-                    </Badge>
-                  ) : null}
-                  {totalTasks > 0 ? (
-                    <Badge variant="outline" className="rounded-full">
-                      {totalTasks} tasks
-                    </Badge>
-                  ) : null}
-                </div>
-                <h2 className="text-2xl font-semibold tracking-tight">{domain.label}</h2>
-                <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-                  Real category-level scores parsed from the paper tables, with table, grouped-bar, and scatter views.
-                </p>
-              </div>
+          <div className="flex items-start gap-4">
+            <div className="rounded-2xl border border-border/70 bg-background/70 p-3 shadow-sm">
+              <DomainIcon className="h-6 w-6 text-primary" />
             </div>
-
-            {topRow ? (
-              <div className="rounded-2xl border border-border/70 bg-background/70 px-4 py-3 shadow-sm">
-                <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">Top configuration</div>
-                <div className="space-y-3">
-                  <FrameworkLabel frameworkKey={topRow.frameworkKey} frameworkName={topRow.frameworkName} />
-                  <div className="flex items-center justify-between gap-4">
-                    <ModelLabel modelKey={topRow.modelKey} modelName={topRow.modelName} />
-                    <span className={cn("text-lg font-mono font-semibold", scoreTone(metricType, topRow.overallForSelection))}>
-                      {formatPercent(topRow.overallForSelection)}
-                    </span>
-                  </div>
-                </div>
+            <div>
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                <Badge variant="outline" className="rounded-full bg-background/70">
+                  {domain.shortLabel}
+                </Badge>
               </div>
-            ) : null}
+              <h2 className="text-2xl font-semibold tracking-tight">{domain.label}</h2>
+            </div>
           </div>
 
-          <div className="mt-6 grid gap-5 xl:grid-cols-[1.5fr_1fr]">
-            <Card className="overflow-hidden border-border/70 bg-background/60 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-0.5">
-              <CardHeader className="gap-2">
-                <CardTitle className="text-base">
-                  {viewMode === "table"
-                    ? "Risk-category matrix"
-                    : viewMode === "bar"
-                      ? "Grouped bar comparison"
-                      : "Overall vs category scatter"}
-                </CardTitle>
-                <CardDescription>
-                  {viewMode === "scatter"
-                    ? "Each point is a model-category pair: overall score versus individual category score."
-                    : viewMode === "bar"
-                      ? "Top configurations across each paper-defined category."
-                      : "Paper-backed category-level matrix for the strongest visible configurations."}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {viewMode === "table" ? (
-                  <CategoryMatrixTable table={categoryTable} rows={rows} metricType={metricType} />
-                ) : viewMode === "bar" ? (
-                  <CategoryGroupedBarView table={categoryTable} rows={rows} />
-                ) : (
-                  <CategoryScatterView table={categoryTable} rows={rows} />
-                )}
-              </CardContent>
-            </Card>
-
-            <CategoryHighlightsCard table={categoryTable} rows={rows} metricType={metricType} />
+          <div className="mt-6 space-y-8">
+            {DOMAIN_METRIC_ORDER.map((metric) => {
+              const state = metricStates[metric]
+              return (
+                <DomainMetricPanel
+                  key={metric}
+                  metricType={metric}
+                  viewMode={viewMode}
+                  categoryTable={state?.table}
+                  rows={state?.rows ?? []}
+                />
+              )
+            })}
           </div>
         </div>
       </div>
@@ -709,15 +864,11 @@ export function LeaderboardSection() {
 
   const categoryRowsByDomain = useMemo(() => {
     if (!dataset) {
-      return new Map<string, { table: BenchmarkCategoryTable; rows: RankedCategoryEntry[] }>()
+      return new Map<string, Partial<Record<BenchmarkMetricType, DomainMetricState>>>()
     }
 
-    const byDomain = new Map<string, { table: BenchmarkCategoryTable; rows: RankedCategoryEntry[] }>()
+    const byDomain = new Map<string, Partial<Record<BenchmarkMetricType, DomainMetricState>>>()
     for (const table of dataset.categoryTables) {
-      if (table.metricType !== metricType) {
-        continue
-      }
-
       const rows = rankCategoryEntries(
         table.entries.filter((entry) => {
           if (frameworkKey !== "all" && entry.frameworkKey !== frameworkKey) {
@@ -728,14 +879,16 @@ export function LeaderboardSection() {
           }
           return matchesSearchQuery(searchQuery, entry.frameworkName, entry.modelName, `${entry.frameworkName} ${entry.modelName}`)
         }),
-        metricType
+        table.metricType
       )
 
-      byDomain.set(table.domainKey, { table, rows })
+      const domainState = byDomain.get(table.domainKey) ?? {}
+      domainState[table.metricType] = { table, rows }
+      byDomain.set(table.domainKey, domainState)
     }
 
     return byDomain
-  }, [dataset, frameworkKey, metricType, modelKey, searchQuery])
+  }, [dataset, frameworkKey, modelKey, searchQuery])
 
   const visibleDomains = useMemo(() => {
     if (!dataset) {
@@ -751,7 +904,6 @@ export function LeaderboardSection() {
   }, [dataset, selectedDomainKeys])
 
   const selectedMetric = METRIC_OPTIONS.find((metric) => metric.key === metricType)
-  const higherIsBetter = isHigherBetterMetric(metricType)
   const hasFilters =
     searchQuery.length > 0 ||
     frameworkKey !== "all" ||
@@ -1080,11 +1232,11 @@ export function LeaderboardSection() {
           <div>
             <h2 className="text-2xl font-semibold tracking-tight">Domain sections</h2>
             <p className="text-sm text-muted-foreground mt-1">
-              Fancy per-domain views with real paper-backed category matrices and charts.
+              Each domain includes benign task success rate plus direct and indirect attack success rate views.
             </p>
           </div>
           <div className="text-xs text-muted-foreground">
-            {higherIsBetter ? "Higher is better." : "Lower is better."}
+            BSR higher is better. ASR lower is more secure.
           </div>
         </div>
 
@@ -1099,10 +1251,8 @@ export function LeaderboardSection() {
               >
                 <DomainSection
                   domain={domain}
-                  metricType={metricType}
                   viewMode={viewMode}
-                  categoryTable={categoryState?.table}
-                  rows={categoryState?.rows ?? []}
+                  metricStates={categoryState ?? {}}
                 />
               </div>
             )
