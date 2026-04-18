@@ -2,22 +2,29 @@
 
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
-import { Activity, ArrowUpRight, ChevronRight, ExternalLink, ShieldAlert, ShieldCheck } from "lucide-react"
+import { Activity, ArrowUpRight, ChevronRight, ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import {
   METRIC_OPTIONS,
   formatPercent,
-  getMetricDescription,
   isHigherBetterMetric,
   loadBenchmarkDataset,
   type BenchmarkDataset,
-  type BenchmarkDomain,
   type BenchmarkMetricType,
 } from "@/lib/benchmark"
 
-const HOMEPAGE_TABLE_METRICS: BenchmarkMetricType[] = ["bsr", "direct_asr", "indirect_asr"]
 const HOMEPAGE_CARD_METRICS: BenchmarkMetricType[] = ["direct_asr", "indirect_asr", "bsr"]
+const HOMEPAGE_TABLE_METRICS: BenchmarkMetricType[] = ["bsr", "direct_asr", "indirect_asr"]
+
+type HomepageComboRow = {
+  key: string
+  frameworkKey: string
+  frameworkName: string
+  modelKey: string
+  modelName: string
+  metrics: Record<BenchmarkMetricType, number | null>
+}
 
 function scoreTone(metricType: BenchmarkMetricType, value: number | null) {
   if (value === null) {
@@ -36,6 +43,41 @@ function scoreTone(metricType: BenchmarkMetricType, value: number | null) {
 
 function getMetricRankLabel(metricType: BenchmarkMetricType) {
   return metricType === "bsr" ? "higher is better" : "lower is better"
+}
+
+function sortComboRows(rows: HomepageComboRow[], metricType: BenchmarkMetricType) {
+  return [...rows].sort((left, right) => {
+    const leftValue = left.metrics[metricType]
+    const rightValue = right.metrics[metricType]
+
+    if (leftValue === null && rightValue === null) {
+      return (
+        left.frameworkName.localeCompare(right.frameworkName) ||
+        left.modelName.localeCompare(right.modelName)
+      )
+    }
+    if (leftValue === null) {
+      return 1
+    }
+    if (rightValue === null) {
+      return -1
+    }
+
+    const primaryOrder = isHigherBetterMetric(metricType) ? rightValue - leftValue : leftValue - rightValue
+    if (primaryOrder !== 0) {
+      return primaryOrder
+    }
+
+    const bsrTieBreak = (right.metrics.bsr ?? -1) - (left.metrics.bsr ?? -1)
+    if (bsrTieBreak !== 0) {
+      return bsrTieBreak
+    }
+
+    return (
+      left.frameworkName.localeCompare(right.frameworkName) ||
+      left.modelName.localeCompare(right.modelName)
+    )
+  })
 }
 
 function rankDomainValues(
@@ -61,6 +103,7 @@ function rankDomainValues(
 export function LeaderboardPreview() {
   const [dataset, setDataset] = useState<BenchmarkDataset | null>(null)
   const [loading, setLoading] = useState(true)
+  const [sortMetric, setSortMetric] = useState<BenchmarkMetricType>("bsr")
 
   useEffect(() => {
     loadBenchmarkDataset()
@@ -91,6 +134,36 @@ export function LeaderboardPreview() {
     }))
   }, [dataset])
 
+  const comboRows = useMemo(() => {
+    if (!dataset) {
+      return []
+    }
+
+    const byCombo = new Map<string, HomepageComboRow>()
+    for (const entry of dataset.entries) {
+      const rowKey = `${entry.frameworkKey}:${entry.modelKey}`
+      const existing =
+        byCombo.get(rowKey) ??
+        ({
+          key: rowKey,
+          frameworkKey: entry.frameworkKey,
+          frameworkName: entry.frameworkName,
+          modelKey: entry.modelKey,
+          modelName: entry.modelName,
+          metrics: {
+            bsr: null,
+            direct_asr: null,
+            indirect_asr: null,
+          },
+        } satisfies HomepageComboRow)
+
+      existing.metrics[entry.metricType] = entry.overall
+      byCombo.set(rowKey, existing)
+    }
+
+    return sortComboRows(Array.from(byCombo.values()), sortMetric)
+  }, [dataset, sortMetric])
+
   return (
     <section className="border-t border-border/50">
       <div className="mx-auto max-w-7xl px-4 py-20 md:py-28">
@@ -100,10 +173,9 @@ export function LeaderboardPreview() {
               <Activity className="h-3 w-3" />
               Published Benchmark Results
             </div>
-            <h2 className="mb-2 text-3xl font-bold md:text-4xl">Homepage Benchmark Snapshot</h2>
+            <h2 className="mb-2 text-3xl font-bold md:text-4xl">Benchmark Results</h2>
             <p className="max-w-3xl text-muted-foreground">
-              A single average table for the three headline metrics, followed by domain cards that jump straight into
-              the matching leaderboard section.
+              Average results across all benchmark domains for each published framework and model configuration.
             </p>
           </div>
           <Button
@@ -120,72 +192,101 @@ export function LeaderboardPreview() {
 
         <div className="mt-8 overflow-hidden rounded-3xl border border-border/60 bg-card/70 shadow-sm shadow-black/5 backdrop-blur-sm">
           <div className="border-b border-border/60 px-6 py-5">
-            <div className="text-lg font-semibold">Overall averages</div>
-            <div className="mt-1 text-sm text-muted-foreground">
-              Task success rate is ranked high to low. Direct and indirect ASR are ranked low to high.
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <div className="text-lg font-semibold">Framework and model ranking</div>
+                <div className="mt-1 text-sm text-muted-foreground">
+                  Compare average benign success rate and attack success rate across every published configuration.
+                </div>
+              </div>
+              <div>
+                <div className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                  Sort by
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {HOMEPAGE_TABLE_METRICS.map((metricType) => (
+                    <button
+                      key={metricType}
+                      onClick={() => setSortMetric(metricType)}
+                      className={cn(
+                        "rounded-full border px-4 py-2 text-sm transition-all duration-300",
+                        sortMetric === metricType
+                          ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                          : "border-border text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      {METRIC_OPTIONS.find((metric) => metric.key === metricType)?.label ?? metricType}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[720px]">
+            <table className="w-full min-w-[860px]">
               <thead>
                 <tr className="border-b border-border/60 bg-secondary/20">
                   <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    Metric
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    Average
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    Domains
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    Configs
+                    Rank
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    Interpretation
+                    Framework
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    Model
+                  </th>
+                  {HOMEPAGE_TABLE_METRICS.map((metricType) => (
+                    <th
+                      key={metricType}
+                      className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wide text-muted-foreground"
+                    >
+                      {METRIC_OPTIONS.find((metric) => metric.key === metricType)?.label ?? metricType}
+                    </th>
+                  ))}
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    Notes
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {HOMEPAGE_TABLE_METRICS.map((metricType) => {
-                  const metric = METRIC_OPTIONS.find((item) => item.key === metricType)
-                  const summary = dataset?.averages[metricType]
-                  const higherIsBetter = isHigherBetterMetric(metricType)
-                  return (
-                    <tr key={metricType} className="border-b border-border/50 last:border-0 hover:bg-secondary/10">
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          <div className="rounded-full border border-border/70 p-2">
-                            {higherIsBetter ? (
-                              <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                            ) : (
-                              <ShieldAlert className="h-4 w-4 text-amber-500" />
-                            )}
-                          </div>
-                          <div>
-                            <div className="font-medium">{metric?.label ?? metricType}</div>
-                            <div className="text-sm text-muted-foreground">{getMetricDescription(metricType)}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <span className={cn("text-lg font-mono font-semibold", scoreTone(metricType, summary?.overall ?? null))}>
-                          {loading ? "..." : formatPercent(summary?.overall ?? null)}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-right font-mono text-sm">
-                        {loading ? "..." : dataset?.domains.length ?? 0}
-                      </td>
-                      <td className="px-6 py-4 text-right font-mono text-sm">
-                        {loading ? "..." : summary?.entryCount ?? 0}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-muted-foreground">
-                        {higherIsBetter ? "Higher is better." : "Lower is more secure."}
-                      </td>
-                    </tr>
-                  )
-                })}
+                {loading
+                  ? Array.from({ length: 6 }).map((_, index) => (
+                      <tr key={`loading-row-${index}`} className="border-b border-border/50 last:border-0">
+                        {Array.from({ length: 7 }).map((__, cellIndex) => (
+                          <td key={cellIndex} className="px-6 py-4">
+                            <div className="h-5 rounded bg-muted/40" />
+                          </td>
+                        ))}
+                      </tr>
+                    ))
+                  : comboRows.map((row, index) => (
+                      <tr key={row.key} className="border-b border-border/50 last:border-0 hover:bg-secondary/10">
+                        <td className="px-6 py-4 font-mono text-sm font-medium">{index + 1}</td>
+                        <td className="px-6 py-4">
+                          <div className="font-medium text-foreground">{row.frameworkName}</div>
+                          <div className="text-xs text-muted-foreground">Agent framework</div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="font-medium text-foreground">{row.modelName}</div>
+                          <div className="text-xs text-muted-foreground">Foundation model</div>
+                        </td>
+                        {HOMEPAGE_TABLE_METRICS.map((metricType) => (
+                          <td key={metricType} className="px-6 py-4 text-right">
+                            <span className={cn("text-sm font-mono font-semibold", scoreTone(metricType, row.metrics[metricType]))}>
+                              {formatPercent(row.metrics[metricType])}
+                            </span>
+                          </td>
+                        ))}
+                        <td className="px-6 py-4 text-sm text-muted-foreground">
+                          {index === 0 && sortMetric === "bsr"
+                            ? "Top benign success rate."
+                            : index === 0
+                              ? `Lowest ${METRIC_OPTIONS.find((metric) => metric.key === sortMetric)?.label ?? sortMetric}.`
+                              : getMetricRankLabel(sortMetric)}
+                        </td>
+                      </tr>
+                    ))}
               </tbody>
             </table>
           </div>
@@ -195,11 +296,11 @@ export function LeaderboardPreview() {
           <div>
             <h3 className="text-2xl font-semibold tracking-tight">Domain cards</h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Each card shows per-domain averages for direct ASR, indirect ASR, and benign task success rate.
+              Per-domain averages for direct ASR, indirect ASR, and benign task success rate.
             </p>
           </div>
           <div className="hidden text-sm text-muted-foreground md:block">
-            Click any card to jump to the matching leaderboard section.
+            Click a card to open the matching leaderboard section.
           </div>
         </div>
 
