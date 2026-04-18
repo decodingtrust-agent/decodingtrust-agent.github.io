@@ -26,6 +26,14 @@ type HomepageComboRow = {
   metrics: Record<BenchmarkMetricType, number | null>
 }
 
+type HomepageDomainCardData = {
+  key: string
+  label: string
+  shortLabel: string
+  href: string
+  rows: HomepageComboRow[]
+}
+
 function scoreTone(metricType: BenchmarkMetricType, value: number | null) {
   if (value === null) {
     return "text-muted-foreground"
@@ -80,24 +88,98 @@ function sortComboRows(rows: HomepageComboRow[], metricType: BenchmarkMetricType
   })
 }
 
-function rankDomainValues(
-  dataset: BenchmarkDataset,
-  metricType: BenchmarkMetricType
-) {
-  const values = dataset.domains
-    .map((domain) => ({
-      domainKey: domain.key,
-      value: dataset.averages[metricType].domainAverages[domain.key] ?? null,
-    }))
-    .filter((item): item is { domainKey: string; value: number } => item.value !== null)
-    .sort((left, right) => {
-      if (metricType === "bsr") {
-        return right.value - left.value
-      }
-      return left.value - right.value
-    })
+function DomainLeaderboardCard({ card }: { card: HomepageDomainCardData }) {
+  const [sortMetric, setSortMetric] = useState<BenchmarkMetricType>("direct_asr")
+  const visibleRows = useMemo(() => sortComboRows(card.rows, sortMetric).slice(0, 4), [card.rows, sortMetric])
 
-  return new Map(values.map((item, index) => [item.domainKey, index + 1]))
+  return (
+    <div className="rounded-3xl border border-border/60 bg-card/70 p-6 shadow-sm shadow-black/5 backdrop-blur-sm">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <div className="inline-flex rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+            {card.shortLabel}
+          </div>
+          <h4 className="mt-3 text-2xl font-semibold tracking-tight">{card.label}</h4>
+          <p className="mt-1 text-sm text-muted-foreground">Top configurations in this domain without category-level breakdown.</p>
+        </div>
+        <Button variant="ghost" size="icon" asChild className="rounded-full border border-border/70 text-muted-foreground hover:text-primary">
+          <Link href={card.href} aria-label={`Open ${card.label} leaderboard section`}>
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
+        </Button>
+      </div>
+
+      <div className="mt-5">
+        <div className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Sort by</div>
+        <div className="flex flex-wrap gap-2">
+          {HOMEPAGE_CARD_METRICS.map((metricType) => (
+            <button
+              key={metricType}
+              onClick={() => setSortMetric(metricType)}
+              className={cn(
+                "rounded-full border px-3 py-1.5 text-xs transition-all duration-300",
+                sortMetric === metricType
+                  ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                  : "border-border text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {METRIC_OPTIONS.find((metric) => metric.key === metricType)?.label ?? metricType}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-5 overflow-x-auto">
+        <table className="w-full min-w-[560px]">
+          <thead>
+            <tr className="border-b border-border/60 bg-secondary/20">
+              <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">#</th>
+              <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">Framework</th>
+              <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">Model</th>
+              {HOMEPAGE_CARD_METRICS.map((metricType) => (
+                <th
+                  key={metricType}
+                  className="px-3 py-2 text-right text-xs font-medium uppercase tracking-wide text-muted-foreground"
+                >
+                  {METRIC_OPTIONS.find((metric) => metric.key === metricType)?.label ?? metricType}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {visibleRows.map((row, index) => (
+              <tr key={row.key} className="border-b border-border/50 last:border-0 hover:bg-secondary/10">
+                <td className="px-3 py-3 font-mono text-sm">{index + 1}</td>
+                <td className="px-3 py-3">
+                  <div className="font-medium text-foreground">{row.frameworkName}</div>
+                </td>
+                <td className="px-3 py-3">
+                  <div className="font-medium text-foreground">{row.modelName}</div>
+                </td>
+                {HOMEPAGE_CARD_METRICS.map((metricType) => (
+                  <td key={metricType} className="px-3 py-3 text-right">
+                    <span className={cn("text-sm font-mono font-semibold", scoreTone(metricType, row.metrics[metricType]))}>
+                      {formatPercent(row.metrics[metricType])}
+                    </span>
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="mt-4 flex items-center justify-between gap-3 border-t border-border/50 pt-4">
+        <span className="text-xs text-muted-foreground">{getMetricRankLabel(sortMetric)}</span>
+        <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-primary">
+          <Link href={card.href}>
+            Open domain leaderboard
+            <ChevronRight className="ml-1 h-4 w-4" />
+          </Link>
+        </Button>
+      </div>
+    </div>
+  )
 }
 
 export function LeaderboardPreview() {
@@ -116,22 +198,43 @@ export function LeaderboardPreview() {
       return []
     }
 
-    const rankMaps = {
-      bsr: rankDomainValues(dataset, "bsr"),
-      direct_asr: rankDomainValues(dataset, "direct_asr"),
-      indirect_asr: rankDomainValues(dataset, "indirect_asr"),
-    } satisfies Record<BenchmarkMetricType, Map<string, number>>
+    return dataset.domains.map((domain) => {
+      const byCombo = new Map<string, HomepageComboRow>()
 
-    return dataset.domains.map((domain) => ({
-      domain,
-      href: `/leaderboard#domain-${domain.key}`,
-      metrics: HOMEPAGE_CARD_METRICS.map((metricType) => ({
-        metricType,
-        label: METRIC_OPTIONS.find((metric) => metric.key === metricType)?.label ?? metricType,
-        value: dataset.averages[metricType].domainAverages[domain.key] ?? null,
-        rank: rankMaps[metricType].get(domain.key) ?? null,
-      })),
-    }))
+      for (const entry of dataset.entries) {
+        const domainValue = entry.domainScores[domain.key] ?? null
+        if (domainValue === null) {
+          continue
+        }
+
+        const rowKey = `${entry.frameworkKey}:${entry.modelKey}`
+        const existing =
+          byCombo.get(rowKey) ??
+          ({
+            key: rowKey,
+            frameworkKey: entry.frameworkKey,
+            frameworkName: entry.frameworkName,
+            modelKey: entry.modelKey,
+            modelName: entry.modelName,
+            metrics: {
+              bsr: null,
+              direct_asr: null,
+              indirect_asr: null,
+            },
+          } satisfies HomepageComboRow)
+
+        existing.metrics[entry.metricType] = domainValue
+        byCombo.set(rowKey, existing)
+      }
+
+      return {
+        key: domain.key,
+        label: domain.label,
+        shortLabel: domain.shortLabel,
+        href: `/leaderboard#domain-${domain.key}`,
+        rows: Array.from(byCombo.values()),
+      } satisfies HomepageDomainCardData
+    })
   }, [dataset])
 
   const comboRows = useMemo(() => {
@@ -296,7 +399,7 @@ export function LeaderboardPreview() {
           <div>
             <h3 className="text-2xl font-semibold tracking-tight">Domain cards</h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Per-domain averages for direct ASR, indirect ASR, and benign task success rate.
+              Small per-domain leaderboards for the published framework and model combinations.
             </p>
           </div>
           <div className="hidden text-sm text-muted-foreground md:block">
@@ -323,50 +426,7 @@ export function LeaderboardPreview() {
               )
             }
 
-            return (
-              <Link
-                key={card.domain.key}
-                href={card.href}
-                className="group rounded-3xl border border-border/60 bg-card/70 p-6 shadow-sm shadow-black/5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <div className="inline-flex rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                      {card.domain.shortLabel}
-                    </div>
-                    <h4 className="mt-3 text-2xl font-semibold tracking-tight">{card.domain.label}</h4>
-                    <p className="mt-1 text-sm text-muted-foreground">Open the full leaderboard matrix for this domain.</p>
-                  </div>
-                  <div className="rounded-full border border-border/70 p-2 text-muted-foreground transition-colors group-hover:border-primary/30 group-hover:text-primary">
-                    <ArrowUpRight className="h-4 w-4" />
-                  </div>
-                </div>
-
-                <div className="mt-6 space-y-3">
-                  {card.metrics.map((metric) => (
-                    <div
-                      key={metric.metricType}
-                      className="rounded-2xl border border-border/60 bg-background/70 px-4 py-3 transition-colors group-hover:border-primary/20"
-                    >
-                      <div className="flex items-center justify-between gap-4">
-                        <div>
-                          <div className="text-sm font-medium text-foreground">{metric.label}</div>
-                          <div className="mt-1 text-xs text-muted-foreground">
-                            {getMetricRankLabel(metric.metricType)}
-                            {metric.rank !== null ? ` · rank #${metric.rank}/${dataset?.domains.length ?? 0}` : ""}
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className={cn("text-lg font-mono font-semibold", scoreTone(metric.metricType, metric.value))}>
-                            {formatPercent(metric.value)}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </Link>
-            )
+            return <DomainLeaderboardCard key={card.key} card={card} />
           })}
         </div>
 
