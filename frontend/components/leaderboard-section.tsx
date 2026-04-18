@@ -88,21 +88,29 @@ const SERIES_STYLES = [
 ] as const
 
 const FRAMEWORK_LOGO_PATHS: Record<string, string> = {
-  "openai-agents": "/logo/openai-monoblossom.svg",
-  "claude-code": "/logo/claude.svg",
-  "google-adk": "/logo/gemini.svg",
+  "openai-agents": "/logo/framework-openai-agents.svg",
+  "claude-code": "/logo/framework-claude-code.svg",
+  "google-adk": "/logo/framework-google-adk.png",
   openclaw: "/logo/openclaw.svg",
 }
 
 const MODEL_LOGO_PATHS: Record<string, string> = {
-  "gpt-5-4": FRAMEWORK_LOGO_PATHS["openai-agents"],
-  "gpt-5-2": FRAMEWORK_LOGO_PATHS["openai-agents"],
-  "gpt-5-1": FRAMEWORK_LOGO_PATHS["openai-agents"],
-  "gpt-oss-120b": FRAMEWORK_LOGO_PATHS["openai-agents"],
-  "opus-4-6": FRAMEWORK_LOGO_PATHS["claude-code"],
-  "sonnet-4-5": FRAMEWORK_LOGO_PATHS["claude-code"],
-  "gemini-3-pro": FRAMEWORK_LOGO_PATHS["google-adk"],
-  "gemini-3-1-pro": FRAMEWORK_LOGO_PATHS["google-adk"],
+  "gpt-5-4": "/logo/openai-monoblossom.svg",
+  "gpt-5-2": "/logo/openai-monoblossom.svg",
+  "gpt-5-1": "/logo/openai-monoblossom.svg",
+  "gpt-oss-120b": "/logo/openai-monoblossom.svg",
+  "opus-4-6": "/logo/claude.svg",
+  "sonnet-4-5": "/logo/claude.svg",
+  "gemini-3-pro": "/logo/gemini.svg",
+  "gemini-3-1-pro": "/logo/gemini.svg",
+}
+
+const FRAMEWORK_BADGE_CONTAINER_CLASSES: Record<string, string> = {
+  "claude-code": "w-14 rounded-xl px-2.5",
+}
+
+const FRAMEWORK_BADGE_IMAGE_CLASSES: Record<string, string> = {
+  "claude-code": "h-[34%] w-full",
 }
 
 const DOMAIN_VISUALS: Record<string, { icon: typeof Workflow; glow: string }> = {
@@ -141,10 +149,14 @@ function BrandBadge({
   logoPath,
   alt,
   variant = "framework",
+  containerClassName,
+  imageClassName,
 }: {
   logoPath: string | undefined
   alt: string
   variant?: "framework" | "model"
+  containerClassName?: string
+  imageClassName?: string
 }) {
   return (
     <span
@@ -152,7 +164,8 @@ function BrandBadge({
         "inline-flex shrink-0 items-center justify-center overflow-hidden bg-white",
         variant === "framework"
           ? "h-8 w-8 rounded-xl border border-border/70 p-1.5 shadow-sm shadow-black/5"
-          : "h-7 w-7 rounded-lg border border-border/40 bg-muted/25 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]"
+          : "h-7 w-7 rounded-lg border border-border/40 bg-muted/25 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]",
+        containerClassName
       )}
     >
       {logoPath ? (
@@ -161,7 +174,8 @@ function BrandBadge({
           alt={alt}
           className={cn(
             "object-contain",
-            variant === "framework" ? "h-full w-full" : "h-[78%] w-[78%] opacity-85"
+            variant === "framework" ? "h-full w-full" : "h-[78%] w-[78%] opacity-85",
+            imageClassName
           )}
         />
       ) : (
@@ -174,7 +188,13 @@ function BrandBadge({
 function FrameworkLabel({ frameworkKey, frameworkName }: { frameworkKey: string; frameworkName: string }) {
   return (
     <div className="flex items-center gap-3">
-      <BrandBadge logoPath={FRAMEWORK_LOGO_PATHS[frameworkKey]} alt={`${frameworkName} logo`} variant="framework" />
+      <BrandBadge
+        logoPath={FRAMEWORK_LOGO_PATHS[frameworkKey]}
+        alt={`${frameworkName} logo`}
+        variant="framework"
+        containerClassName={FRAMEWORK_BADGE_CONTAINER_CLASSES[frameworkKey]}
+        imageClassName={FRAMEWORK_BADGE_IMAGE_CLASSES[frameworkKey]}
+      />
       <div className="min-w-0">
         <div className="font-medium truncate">{frameworkName}</div>
         <div className="text-xs text-muted-foreground">Agent framework</div>
