@@ -7,6 +7,46 @@ import { ArrowRight, FileText, Play, Database } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { loadBenchmarkDataset, type BenchmarkDataset } from "@/lib/benchmark"
 
+type WallShot = {
+  name: string
+  domain: string
+  src: string
+}
+
+const wallShots: WallShot[] = [
+  { name: "PayPal", domain: "Workflow", src: "/env-showcase/paypal-1.png" },
+  { name: "Trade Desk", domain: "Finance", src: "/env-showcase/ui_trade.png" },
+  { name: "E-commerce Home", domain: "Browser", src: "/env-showcase/ecommerce-home.png" },
+  { name: "CRM Leads", domain: "CRM", src: "/env-showcase/leads_page.png" },
+  { name: "Windows Desktop", domain: "Desktop OS", src: "/env-showcase/windows-screenshot.png" },
+  { name: "Case Details", domain: "Customer Service", src: "/env-showcase/ui_case_details.png" },
+  { name: "Slack", domain: "Workflow", src: "/env-showcase/slack-1.png" },
+  { name: "Calendar", domain: "Workflow", src: "/env-showcase/calendar-2.png" },
+  { name: "Google Sheets", domain: "Workflow", src: "/env-showcase/googlesheets-2.png" },
+  { name: "Zoom", domain: "Workflow", src: "/env-showcase/zoom-2.png" },
+  { name: "Google Drive", domain: "Workflow", src: "/env-showcase/googledrive-1.png" },
+  { name: "Atlassian Jira", domain: "Workflow", src: "/env-showcase/atlassian-4.png" },
+  { name: "Google Form", domain: "Workflow", src: "/env-showcase/googleform-1.png" },
+  { name: "Gmail", domain: "Workflow", src: "/env-showcase/gmail-1.png" },
+  { name: "Portfolio", domain: "Finance", src: "/env-showcase/ui_portfolio.png" },
+  { name: "Markets", domain: "Finance", src: "/env-showcase/ui_markets.png" },
+  { name: "News Feed", domain: "Finance", src: "/env-showcase/ui_news.png" },
+  { name: "Create Lead", domain: "CRM", src: "/env-showcase/create_page.png" },
+  { name: "ServiceNow", domain: "Customer Service", src: "/env-showcase/servicenow-store-credit-ff-attack.png" },
+  { name: "Case Queue", domain: "Customer Service", src: "/env-showcase/ui_case_list.png" },
+  { name: "Cases Dashboard", domain: "Customer Service", src: "/env-showcase/ui_cases.png" },
+  { name: "Review Page", domain: "Browser", src: "/env-showcase/ecommerce-review.png" },
+  { name: "Account Center", domain: "Browser", src: "/env-showcase/ecommerce-account.png" },
+  { name: "macOS Desktop", domain: "Desktop OS", src: "/env-showcase/macos_screenshot.png" },
+  { name: "VM Desktop", domain: "Desktop OS", src: "/env-showcase/vm_desktop.png" },
+  { name: "Arxiv", domain: "Research", src: "/env-showcase/arxiv_DT.png" },
+]
+
+const WALL_ROW_COUNT = 4
+const wallRows = Array.from({ length: WALL_ROW_COUNT }, (_, rowIndex) =>
+  wallShots.filter((_, shotIndex) => shotIndex % WALL_ROW_COUNT === rowIndex),
+)
+
 export function HeroSection() {
   const [dataset, setDataset] = useState<BenchmarkDataset | null>(null)
 
@@ -34,14 +74,57 @@ export function HeroSection() {
 
   return (
     <section className="relative overflow-hidden min-h-[90vh] flex items-center">
-      {/* Premium dark background with aurora effect */}
+      {/* Layer 1: soft aurora ambience */}
       <div className="absolute inset-0 aurora-bg" />
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[oklch(0.3_0.1_220/0.12)] rounded-full blur-[120px]" />
         <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[oklch(0.25_0.08_230/0.08)] rounded-full blur-[100px]" />
       </div>
 
-      <div className="mx-auto max-w-5xl px-4 py-20 md:py-28 lg:py-36 relative z-10">
+      {/* Layer 2: flowing screenshot wall (ambient / pointer-events-none) */}
+      <div className="hero-wall-mask pointer-events-none absolute inset-0 opacity-55">
+        <div className="relative flex h-full flex-col justify-start gap-3 pt-5 md:pt-8">
+          {wallRows.map((row, rowIndex) => (
+            <div key={rowIndex} className="env-wall-row">
+              <div
+                className={`env-wall-track ${rowIndex % 2 === 1 ? "env-wall-track-reverse" : ""}`}
+                style={{ animationDuration: `${60 + rowIndex * 8}s` }}
+              >
+                {[...row, ...row, ...row].map((shot, shotIndex) => (
+                  <div
+                    key={`${shot.name}-${shotIndex}`}
+                    className="env-wall-tile red-glow-tile relative block overflow-hidden rounded-xl bg-card/90 ring-1 ring-red-500/25"
+                  >
+                    <div className="relative aspect-[16/10] overflow-hidden">
+                      <Image
+                        src={shot.src}
+                        alt=""
+                        fill
+                        sizes="(min-width: 1280px) 22vw, (min-width: 1024px) 28vw, (min-width: 640px) 40vw, 60vw"
+                        className="env-showcase-image object-cover object-top"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Layer 3: red-team ambient glow */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-0 top-1/2 h-2/3 w-2/5 -translate-y-1/2 bg-[radial-gradient(ellipse_at_left_center,rgba(239,68,68,0.14),transparent_65%)] blur-3xl" />
+        <div className="absolute right-0 top-1/2 h-2/3 w-2/5 -translate-y-1/2 bg-[radial-gradient(ellipse_at_right_center,rgba(220,38,38,0.12),transparent_65%)] blur-3xl" />
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-[radial-gradient(ellipse_at_bottom,rgba(239,68,68,0.08),transparent_70%)]" />
+      </div>
+
+      {/* Layer 4: top fade under the header so the wall melts into the nav area */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent" />
+      {/* Layer 5: bottom fade into the next section */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-background" />
+
+      <div className="mx-auto max-w-5xl px-4 py-20 md:py-28 lg:py-36 relative z-10 -translate-y-16 md:-translate-y-24">
         {/* Announcement banner */}
         <div className="flex justify-center mb-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 backdrop-blur-sm px-5 py-2 shadow-lg shadow-primary/5">
@@ -81,12 +164,16 @@ export function HeroSection() {
             Advanced Red-Teaming of AI Agents
           </p>
 
-          <p className="mx-auto max-w-3xl text-base md:text-lg text-muted-foreground/80 leading-relaxed mt-6">
-            Powered by <span className="text-[oklch(0.7_0.14_220)] font-semibold">DT-Red</span>, our autonomous red-teaming agent, and{" "}
-            <span className="text-[oklch(0.7_0.14_220)] font-semibold">DT-Bench</span>, a comprehensive benchmark with{" "}
-            <span className="text-foreground font-medium">{benchmarkCounts.domains} domains</span>,{" "}
-            <span className="text-foreground font-medium">{benchmarkCounts.frameworks} agent frameworks</span>, and{" "}
-            <span className="text-foreground font-medium">{benchmarkCounts.models} published foundation models</span>.
+          <p className="mx-auto text-base md:text-lg text-muted-foreground/80 leading-relaxed mt-6 md:whitespace-nowrap">
+            The first dynamic red-teaming framework against AI Agents across{" "}
+            <span className="text-foreground font-medium">{benchmarkCounts.domains} domains</span> and{" "}
+            <span className="text-foreground font-medium">30 sandboxed environments</span>.
+          </p>
+          <p className="mx-auto text-base md:text-lg text-muted-foreground/80 leading-relaxed mt-3 md:whitespace-nowrap">
+            Covering Diverse{" "}
+            <span className="text-[oklch(0.7_0.14_220)] font-semibold">Indirect Injections</span>{" "}
+            in Environments, Tools, Skills, and{" "}
+            <span className="text-[oklch(0.7_0.14_220)] font-semibold">Direct Prompt Injections</span>.
           </p>
         </div>
 

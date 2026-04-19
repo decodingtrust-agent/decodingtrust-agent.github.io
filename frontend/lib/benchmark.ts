@@ -493,9 +493,8 @@ export function rankBenchmarkEntries(entries: BenchmarkEntry[], selectedDomainKe
       if (right.overallForSelection === null) {
         return -1
       }
-      const direction = isHigherBetterMetric(left.metricType) ? -1 : 1
       return (
-        (left.overallForSelection - right.overallForSelection) * direction ||
+        right.overallForSelection - left.overallForSelection ||
         left.frameworkName.localeCompare(right.frameworkName) ||
         left.modelName.localeCompare(right.modelName)
       )

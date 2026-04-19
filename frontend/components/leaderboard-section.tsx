@@ -48,10 +48,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import {
-  METRIC_OPTIONS,
   filterBenchmarkEntries,
   formatPercent,
-  getMetricDescription,
   isHigherBetterMetric,
   loadBenchmarkDataset,
   rankBenchmarkEntries,
@@ -137,57 +135,96 @@ function scoreTone(metricType: BenchmarkMetricType, value: number | null) {
   return "text-amber-500"
 }
 
-function BrandBadge({
-  logoPath,
-  alt,
-  variant = "framework",
+function normalizeScore(metricType: BenchmarkMetricType, value: number): number {
+  const clamped = Math.max(0, Math.min(100, value))
+  if (metricType === "bsr") {
+    if (clamped >= 90) return 1
+    if (clamped >= 75) return 0.5 + ((clamped - 75) / 15) * 0.5
+    if (clamped >= 50) return ((clamped - 50) / 25) * 0.5
+    return 0
+  }
+  if (clamped <= 5) return 1
+  if (clamped <= 25) return 0.5 + ((25 - clamped) / 20) * 0.5
+  if (clamped <= 60) return Math.max(0, 0.5 - ((clamped - 25) / 35) * 0.5)
+  return 0
+}
+
+function heatmapCellStyle(metricType: BenchmarkMetricType, value: number | null): React.CSSProperties {
+  if (value === null) return {}
+  const good = normalizeScore(metricType, value)
+  const hue = good * 135
+  const saturation = good < 0.35 ? 82 : 70
+  const alpha = good < 0.35 ? 0.22 : good > 0.65 ? 0.2 : 0.18
+  return {
+    backgroundColor: `hsla(${hue}, ${saturation}%, 50%, ${alpha})`,
+  }
+}
+
+function heatmapTextClass(metricType: BenchmarkMetricType, value: number | null) {
+  if (value === null) return "text-muted-foreground"
+  const good = normalizeScore(metricType, value)
+  if (good >= 0.65) return "text-emerald-600 dark:text-emerald-400"
+  if (good >= 0.45) return "text-foreground"
+  return "text-rose-600 dark:text-rose-400"
+}
+
+function MetricCell({
+  metricType,
+  value,
+  emphasis = false,
 }: {
-  logoPath: string | undefined
-  alt: string
-  variant?: "framework" | "model"
+  metricType: BenchmarkMetricType
+  value: number | null
+  emphasis?: boolean
 }) {
+  if (value === null) {
+    return <span className="font-mono text-sm text-muted-foreground">--</span>
+  }
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center justify-center overflow-hidden bg-white",
-        variant === "framework"
-          ? "h-8 w-8 rounded-xl border border-border/70 p-1.5 shadow-sm shadow-black/5"
-          : "h-7 w-7 rounded-lg border border-border/40 bg-muted/25 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]"
+        "inline-flex items-center justify-center rounded-md px-1.5 py-0.5 font-mono text-xs",
+        emphasis ? "font-semibold" : "font-medium",
+        heatmapTextClass(metricType, value)
       )}
+      style={heatmapCellStyle(metricType, value)}
     >
-      {logoPath ? (
-        <img
-          src={logoPath}
-          alt={alt}
-          className={cn("object-contain", variant === "framework" ? "h-full w-full" : "h-[78%] w-[78%] opacity-85")}
-        />
-      ) : (
-        <BrainCircuit className={cn("text-muted-foreground", variant === "framework" ? "h-4.5 w-4.5" : "h-4 w-4")} />
-      )}
+      {formatPercent(value)}
     </span>
+  )
+}
+
+function BrandLogo({
+  logoPath,
+  alt,
+  size = "md",
+}: {
+  logoPath: string | undefined
+  alt: string
+  size?: "sm" | "md"
+}) {
+  const sizeClass = size === "sm" ? "h-5 w-5" : "h-7 w-7"
+  return logoPath ? (
+    <img src={logoPath} alt={alt} className={cn("shrink-0 object-contain", sizeClass)} />
+  ) : (
+    <BrainCircuit className={cn("shrink-0 text-muted-foreground", sizeClass)} />
   )
 }
 
 function FrameworkLabel({ frameworkKey, frameworkName }: { frameworkKey: string; frameworkName: string }) {
   return (
-    <div className="flex items-center gap-3">
-      <BrandBadge logoPath={FRAMEWORK_LOGO_PATHS[frameworkKey]} alt={`${frameworkName} logo`} variant="framework" />
-      <div className="min-w-0">
-        <div className="font-medium truncate">{frameworkName}</div>
-        <div className="text-xs text-muted-foreground">Agent framework</div>
-      </div>
+    <div className="flex items-center gap-2.5">
+      <BrandLogo logoPath={FRAMEWORK_LOGO_PATHS[frameworkKey]} alt={`${frameworkName} logo`} />
+      <span className="font-medium truncate">{frameworkName}</span>
     </div>
   )
 }
 
 function ModelLabel({ modelKey, modelName }: { modelKey: string; modelName: string }) {
   return (
-    <div className="flex items-center gap-3">
-      <BrandBadge logoPath={MODEL_LOGO_PATHS[modelKey]} alt={`${modelName} logo`} variant="model" />
-      <div className="min-w-0">
-        <div className="font-medium truncate">{modelName}</div>
-        <div className="text-xs text-muted-foreground">Foundation model</div>
-      </div>
+    <div className="flex items-center gap-2.5">
+      <BrandLogo logoPath={MODEL_LOGO_PATHS[modelKey]} alt={`${modelName} logo`} />
+      <span className="font-medium truncate">{modelName}</span>
     </div>
   )
 }
@@ -230,10 +267,10 @@ function SeriesLegend({
                 className="mt-1 inline-flex h-2.5 w-2.5 rounded-full ring-4 ring-background"
                 style={{ backgroundColor: row.fill, boxShadow: `0 0 0 1px ${row.stroke}` }}
               />
-              <BrandBadge
+              <BrandLogo
                 logoPath={FRAMEWORK_LOGO_PATHS[row.frameworkKey]}
                 alt={`${row.frameworkName} logo`}
-                variant="model"
+                size="sm"
               />
               <div className="min-w-0">
                 <div className="truncate text-sm font-medium text-foreground">{row.modelName}</div>
@@ -295,8 +332,8 @@ function ChartTooltipRow({
     <div className="flex items-center justify-between gap-4">
       <div className="flex items-center gap-2 min-w-0">
         <span className="inline-flex h-2.5 w-2.5 rounded-full" style={{ backgroundColor: fill }} />
-        <BrandBadge logoPath={FRAMEWORK_LOGO_PATHS[frameworkKey]} alt={`${frameworkName} logo`} variant="model" />
-        <BrandBadge logoPath={MODEL_LOGO_PATHS[modelKey]} alt={`${modelName} logo`} variant="model" />
+        <BrandLogo logoPath={FRAMEWORK_LOGO_PATHS[frameworkKey]} alt={`${frameworkName} logo`} size="sm" />
+        <BrandLogo logoPath={MODEL_LOGO_PATHS[modelKey]} alt={`${modelName} logo`} size="sm" />
         <div className="min-w-0">
           <div className="truncate text-xs font-medium text-foreground">{modelName}</div>
           <div className="truncate text-[11px] text-muted-foreground">{frameworkName}</div>
@@ -318,8 +355,7 @@ function matchesSearchQuery(query: string, ...parts: string[]) {
   return parts.some((part) => part.toLowerCase().includes(normalizedQuery))
 }
 
-function rankCategoryEntries(entries: BenchmarkCategoryEntry[], metricType: BenchmarkMetricType) {
-  const higherIsBetter = isHigherBetterMetric(metricType)
+function rankCategoryEntries(entries: BenchmarkCategoryEntry[]) {
   return [...entries]
     .map((entry) => ({
       ...entry,
@@ -331,13 +367,11 @@ function rankCategoryEntries(entries: BenchmarkCategoryEntry[], metricType: Benc
       }
       if (left.overallForSelection === null) return 1
       if (right.overallForSelection === null) return -1
-      return higherIsBetter
-        ? right.overallForSelection - left.overallForSelection ||
-            left.frameworkName.localeCompare(right.frameworkName) ||
-            left.modelName.localeCompare(right.modelName)
-        : left.overallForSelection - right.overallForSelection ||
-            left.frameworkName.localeCompare(right.frameworkName) ||
-            left.modelName.localeCompare(right.modelName)
+      return (
+        right.overallForSelection - left.overallForSelection ||
+        left.frameworkName.localeCompare(right.frameworkName) ||
+        left.modelName.localeCompare(right.modelName)
+      )
     })
 }
 
@@ -399,20 +433,22 @@ function CategoryMatrixTable({
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full min-w-[980px]">
+    <div className="w-full">
+      <table className="w-full table-auto text-sm">
         <thead>
-          <tr className="border-b border-border bg-secondary/20">
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Rank</th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Agent</th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Model</th>
-            <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground">Overall</th>
+          <tr className="border-b border-border bg-secondary/20 align-bottom">
+            <th className="px-2 py-3 text-left text-xs font-medium text-muted-foreground">#</th>
+            <th className="px-2 py-3 text-left text-xs font-medium text-muted-foreground">Agent</th>
+            <th className="px-2 py-3 text-left text-xs font-medium text-muted-foreground">Model</th>
+            <th className="border-r border-border/80 px-2 py-3 text-right text-xs font-medium text-muted-foreground">
+              Overall
+            </th>
             {table.categories.map((category) => (
               <th
                 key={category.key}
-                className="min-w-[120px] px-4 py-3 text-right text-xs font-medium text-muted-foreground whitespace-nowrap"
+                className="px-1.5 py-3 text-center text-[11px] font-medium leading-tight text-muted-foreground"
               >
-                <div>{category.label}</div>
+                <div className="break-words">{category.label}</div>
                 {category.taskCount !== null ? (
                   <div className="mt-1 text-[10px] text-muted-foreground/70">{category.taskCount} tasks</div>
                 ) : null}
@@ -426,23 +462,19 @@ function CategoryMatrixTable({
               key={`${row.frameworkKey}:${row.modelKey}`}
               className="border-b border-border/60 last:border-0 transition-colors hover:bg-secondary/10"
             >
-              <td className="px-4 py-3 text-sm font-mono font-medium">{index + 1}</td>
-              <td className="px-4 py-3 min-w-[220px]">
+              <td className="px-2 py-3 text-sm font-mono font-medium">{index + 1}</td>
+              <td className="px-2 py-3">
                 <FrameworkLabel frameworkKey={row.frameworkKey} frameworkName={row.frameworkName} />
               </td>
-              <td className="px-4 py-3 min-w-[220px]">
+              <td className="px-2 py-3">
                 <ModelLabel modelKey={row.modelKey} modelName={row.modelName} />
               </td>
-              <td className="px-4 py-3 text-right">
-                <span className={cn("text-sm font-mono font-semibold", scoreTone(metricType, row.overallForSelection))}>
-                  {formatPercent(row.overallForSelection)}
-                </span>
+              <td className="border-r border-border/80 px-2 py-3 text-right">
+                <MetricCell metricType={metricType} value={row.overallForSelection} emphasis />
               </td>
               {table.categories.map((category) => (
-                <td key={category.key} className="px-4 py-3 text-right">
-                  <span className={cn("text-sm font-mono", scoreTone(metricType, row.categoryScores[category.key] ?? null))}>
-                    {formatPercent(row.categoryScores[category.key] ?? null)}
-                  </span>
+                <td key={category.key} className="px-1 py-3 text-center">
+                  <MetricCell metricType={metricType} value={row.categoryScores[category.key] ?? null} />
                 </td>
               ))}
             </tr>
@@ -817,7 +849,7 @@ function DomainMetricPanel({
               {getMetricPanelTitle(metricType)}
             </Badge>
             <Badge variant="outline" className="rounded-full">
-              {rows.length} configs
+              {rows.length} agents
             </Badge>
             {categoryTable ? (
               <Badge variant="outline" className="rounded-full">
@@ -890,7 +922,7 @@ function DomainSection({
   const domainVisual = DOMAIN_VISUALS[domain.key]
   const DomainIcon = domainVisual?.icon ?? BrainCircuit
   const glowClass = domainVisual?.glow ?? "from-primary/20 via-transparent to-transparent"
-  const [activeMetric, setActiveMetric] = useState<BenchmarkMetricType>("bsr")
+  const [activeMetric, setActiveMetric] = useState<BenchmarkMetricType>("indirect_asr")
   const [viewMode, setViewMode] = useState<DomainViewMode>("table")
   const activeState = metricStates[activeMetric]
 
@@ -985,11 +1017,12 @@ function DomainSection({
   )
 }
 
+const GLOBAL_METRIC_ORDER: BenchmarkMetricType[] = ["indirect_asr", "direct_asr", "bsr"]
+
 export function LeaderboardSection() {
   const [dataset, setDataset] = useState<BenchmarkDataset | null>(null)
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
-  const [metricType, setMetricType] = useState<BenchmarkMetricType>("bsr")
   const [frameworkKey, setFrameworkKey] = useState("all")
   const [modelKey, setModelKey] = useState("all")
   const [selectedDomainKeys, setSelectedDomainKeys] = useState<string[]>([])
@@ -1010,18 +1043,12 @@ export function LeaderboardSection() {
 
     const validModelKeys = new Set<string>()
     for (const entry of dataset.entries) {
-      if (entry.metricType !== metricType) {
-        continue
-      }
       if (frameworkKey !== "all" && entry.frameworkKey !== frameworkKey) {
         continue
       }
       validModelKeys.add(entry.modelKey)
     }
     for (const table of dataset.categoryTables) {
-      if (table.metricType !== metricType) {
-        continue
-      }
       for (const entry of table.entries) {
         if (frameworkKey !== "all" && entry.frameworkKey !== frameworkKey) {
           continue
@@ -1031,7 +1058,7 @@ export function LeaderboardSection() {
     }
 
     return dataset.models.filter((model) => validModelKeys.has(model.key))
-  }, [dataset, frameworkKey, metricType])
+  }, [dataset, frameworkKey])
 
   useEffect(() => {
     if (modelKey === "all") {
@@ -1044,22 +1071,39 @@ export function LeaderboardSection() {
     }
   }, [availableModels, modelKey])
 
-  const overviewEntries = useMemo(() => {
-    if (!dataset) {
-      return []
+  const overviewEntriesByMetric = useMemo(() => {
+    const empty: Record<BenchmarkMetricType, RankedEntry[]> = {
+      indirect_asr: [],
+      direct_asr: [],
+      bsr: [],
     }
+    if (!dataset) {
+      return empty
+    }
+    for (const metric of GLOBAL_METRIC_ORDER) {
+      empty[metric] = rankBenchmarkEntries(
+        filterBenchmarkEntries(dataset, {
+          metricType: metric,
+          frameworkKey,
+          modelKey,
+          domainKeys: selectedDomainKeys,
+          searchQuery,
+        }),
+        selectedDomainKeys
+      ) as RankedEntry[]
+    }
+    return empty
+  }, [dataset, frameworkKey, modelKey, searchQuery, selectedDomainKeys])
 
-    return rankBenchmarkEntries(
-      filterBenchmarkEntries(dataset, {
-        metricType,
-        frameworkKey,
-        modelKey,
-        domainKeys: selectedDomainKeys,
-        searchQuery,
-      }),
-      selectedDomainKeys
-    ) as RankedEntry[]
-  }, [dataset, frameworkKey, metricType, modelKey, searchQuery, selectedDomainKeys])
+  const totalOverviewEntries = useMemo(() => {
+    const keys = new Set<string>()
+    for (const metric of GLOBAL_METRIC_ORDER) {
+      for (const entry of overviewEntriesByMetric[metric]) {
+        keys.add(`${entry.frameworkKey}::${entry.modelKey}`)
+      }
+    }
+    return keys.size
+  }, [overviewEntriesByMetric])
 
   const categoryRowsByDomain = useMemo(() => {
     if (!dataset) {
@@ -1077,8 +1121,7 @@ export function LeaderboardSection() {
             return false
           }
           return matchesSearchQuery(searchQuery, entry.frameworkName, entry.modelName, `${entry.frameworkName} ${entry.modelName}`)
-        }),
-        table.metricType
+        })
       )
 
       const domainState = byDomain.get(table.domainKey) ?? {}
@@ -1102,7 +1145,6 @@ export function LeaderboardSection() {
     return dataset.domains.filter((domain) => domainSet.has(domain.key))
   }, [dataset, selectedDomainKeys])
 
-  const selectedMetric = METRIC_OPTIONS.find((metric) => metric.key === metricType)
   const hasFilters =
     searchQuery.length > 0 ||
     frameworkKey !== "all" ||
@@ -1163,61 +1205,20 @@ export function LeaderboardSection() {
         <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card/80 p-6 md:p-8 shadow-xl shadow-black/5 backdrop-blur-xl mb-8">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(16,185,129,0.12),transparent_35%)]" />
           <div className="relative flex flex-col gap-6">
-            <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary mb-4">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Paper-backed leaderboard
-                </div>
-                <h1 className="text-3xl md:text-4xl font-semibold tracking-tight mb-3">
-                  DT-Bench Leaderboard
-                </h1>
-                <p className="max-w-3xl text-muted-foreground">
-                  A richer leaderboard experience inspired by arena-style ranking pages, with icons, animated domain sections, and flexible table, scatter, and bar views.
-                </p>
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary mb-4">
+                <Sparkles className="h-3.5 w-3.5" />
+                Paper-backed leaderboard
               </div>
-
-              <div className="grid gap-3 sm:grid-cols-3">
-                {METRIC_OPTIONS.map((metric) => (
-                  <div
-                    key={metric.key}
-                    className={cn(
-                      "rounded-2xl border px-4 py-3 transition-all duration-300",
-                      metric.key === metricType
-                        ? "border-primary/40 bg-primary/10 shadow-lg shadow-primary/10"
-                        : "border-border/60 bg-background/50"
-                    )}
-                  >
-                    <div className="text-xs uppercase tracking-wide text-muted-foreground">{metric.label}</div>
-                    <div className={cn("mt-1 text-xl font-semibold", scoreTone(metric.key, dataset.averages[metric.key].overall))}>
-                      {formatPercent(dataset.averages[metric.key].overall)}
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {dataset.averages[metric.key].entryCount} configs
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <h1 className="text-3xl md:text-4xl font-semibold tracking-tight mb-3">
+                DT-Bench Leaderboard
+              </h1>
+              <p className="max-w-3xl text-muted-foreground">
+                A richer leaderboard experience inspired by arena-style ranking pages, with icons, animated domain sections, and flexible table, scatter, and bar views.
+              </p>
             </div>
 
             <div className="rounded-2xl border border-border/60 bg-background/50 p-5">
-              <div className="flex flex-wrap gap-2 mb-4">
-                {METRIC_OPTIONS.map((metric) => (
-                  <button
-                    key={metric.key}
-                    onClick={() => setMetricType(metric.key)}
-                    className={cn(
-                      "rounded-full border px-4 py-2 text-sm transition-all duration-300",
-                      metric.key === metricType
-                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
-                        : "border-border text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {metric.label}
-                  </button>
-                ))}
-              </div>
-
               <div className="grid gap-3 md:grid-cols-3 xl:grid-cols-5">
                 <div className="relative md:col-span-2 xl:col-span-2">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -1303,9 +1304,8 @@ export function LeaderboardSection() {
 
               <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <p className="text-sm text-muted-foreground">
-                  Showing <span className="font-medium text-foreground">{overviewEntries.length}</span> entries for{" "}
-                  <span className="font-medium text-foreground">{selectedMetric?.label}</span>.{" "}
-                  {getMetricDescription(metricType)}
+                  Showing <span className="font-medium text-foreground">{totalOverviewEntries}</span> agents.
+                  Heatmap: green = safer / stronger, red = more vulnerable / weaker.
                 </p>
                 {hasFilters && (
                   <button className="text-sm text-muted-foreground hover:text-foreground" onClick={clearFilters}>
@@ -1342,66 +1342,80 @@ export function LeaderboardSection() {
 
         <Card className="border-border/70 bg-card/80 backdrop-blur-sm shadow-lg shadow-black/5 mb-10">
           <CardHeader className="gap-2">
-            <CardTitle className="text-xl">Global leaderboard table</CardTitle>
+            <CardTitle className="text-xl">Overall Security and Utility Evaluation Leaderboard</CardTitle>
             <CardDescription>
-              The primary leaderboard table stays visible, while the sections below provide richer domain-by-domain exploration.
+              Three global rankings stacked together: Indirect ASR and Direct ASR measure security (lower is safer),
+              while BSR captures benign utility (higher is better).
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[1200px]">
-                <thead>
-                  <tr className="border-b border-border bg-secondary/20">
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Rank</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Agent</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Model</th>
-                    <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground">Overall</th>
-                    {visibleDomains.map((domain) => (
-                      <th
-                        key={domain.key}
-                        className="px-4 py-3 text-right text-xs font-medium text-muted-foreground whitespace-nowrap"
-                      >
-                        {domain.shortLabel}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {overviewEntries.map((entry, index) => (
-                    <tr
-                      key={entry.entryKey}
-                      className="border-b border-border/60 last:border-0 transition-colors hover:bg-secondary/10"
-                    >
-                      <td className="px-4 py-3 text-sm font-mono font-medium">{index + 1}</td>
-                      <td className="px-4 py-3 min-w-[220px]">
-                        <FrameworkLabel frameworkKey={entry.frameworkKey} frameworkName={entry.frameworkName} />
-                      </td>
-                      <td className="px-4 py-3 min-w-[220px]">
-                        <ModelLabel modelKey={entry.modelKey} modelName={entry.modelName} />
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <span className={cn("text-sm font-mono font-semibold", scoreTone(metricType, entry.overallForSelection))}>
-                          {formatPercent(entry.overallForSelection)}
-                        </span>
-                      </td>
-                      {visibleDomains.map((domain) => (
-                        <td key={domain.key} className="px-4 py-3 text-right">
-                          <span className={cn("text-sm font-mono", scoreTone(metricType, entry.domainScores[domain.key]))}>
-                            {formatPercent(entry.domainScores[domain.key])}
-                          </span>
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {overviewEntries.length === 0 ? (
-              <div className="border-t border-border p-8 text-center text-muted-foreground">
-                No published results match the current filters.
-              </div>
-            ) : null}
+          <CardContent className="space-y-10">
+            {GLOBAL_METRIC_ORDER.map((metric) => {
+              const rows = overviewEntriesByMetric[metric]
+              return (
+                <div key={metric} className="space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-base font-semibold tracking-tight">{getMetricPanelTitle(metric)}</h3>
+                      <Badge variant="outline" className="rounded-full text-xs">
+                        {rows.length} agents
+                      </Badge>
+                    </div>
+                    <div className="text-xs text-muted-foreground">{getMetricPanelDescription(metric)}</div>
+                  </div>
+                  <div className="rounded-xl border border-border/60">
+                    <table className="w-full table-auto text-sm">
+                      <thead>
+                        <tr className="border-b border-border bg-secondary/20 align-bottom">
+                          <th className="px-2 py-3 text-left text-xs font-medium text-muted-foreground">#</th>
+                          <th className="px-2 py-3 text-left text-xs font-medium text-muted-foreground">Agent</th>
+                          <th className="px-2 py-3 text-left text-xs font-medium text-muted-foreground">Model</th>
+                          <th className="border-r border-border/80 px-2 py-3 text-right text-xs font-medium text-muted-foreground">
+                            Overall
+                          </th>
+                          {visibleDomains.map((domain) => (
+                            <th
+                              key={domain.key}
+                              className="px-1.5 py-3 text-center text-[11px] font-medium leading-tight text-muted-foreground"
+                            >
+                              <span className="break-words">{domain.shortLabel}</span>
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {rows.map((entry, index) => (
+                          <tr
+                            key={entry.entryKey}
+                            className="border-b border-border/60 last:border-0 transition-colors hover:bg-secondary/10"
+                          >
+                            <td className="px-2 py-3 text-sm font-mono font-medium">{index + 1}</td>
+                            <td className="px-2 py-3">
+                              <FrameworkLabel frameworkKey={entry.frameworkKey} frameworkName={entry.frameworkName} />
+                            </td>
+                            <td className="px-2 py-3">
+                              <ModelLabel modelKey={entry.modelKey} modelName={entry.modelName} />
+                            </td>
+                            <td className="border-r border-border/80 px-2 py-3 text-right">
+                              <MetricCell metricType={metric} value={entry.overallForSelection} emphasis />
+                            </td>
+                            {visibleDomains.map((domain) => (
+                              <td key={domain.key} className="px-1 py-3 text-center">
+                                <MetricCell metricType={metric} value={entry.domainScores[domain.key]} />
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {rows.length === 0 ? (
+                      <div className="border-t border-border p-8 text-center text-muted-foreground">
+                        No published results match the current filters.
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              )
+            })}
           </CardContent>
         </Card>
 

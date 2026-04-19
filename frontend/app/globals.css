@@ -475,13 +475,46 @@
 .env-wall-tile {
   flex-shrink: 0;
   width: clamp(200px, 22vw, 320px);
-  transition: transform 300ms ease, border-color 300ms ease;
+  transition: transform 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
 }
 
 .env-wall-tile:hover {
   transform: translateY(-3px) scale(1.02);
   border-color: oklch(1 0 0 / 0.25);
   z-index: 1;
+}
+
+.red-glow-tile {
+  box-shadow:
+    0 0 0 1px rgba(239, 68, 68, 0.18),
+    0 10px 30px -10px rgba(239, 68, 68, 0.22),
+    0 20px 60px -30px rgba(127, 29, 29, 0.35);
+}
+
+.red-glow-tile:hover {
+  box-shadow:
+    0 0 0 1px rgba(239, 68, 68, 0.45),
+    0 14px 40px -10px rgba(239, 68, 68, 0.4),
+    0 30px 80px -30px rgba(127, 29, 29, 0.55);
+}
+
+/* Radial mask so the wall behind the hero title stays clean/readable.
+   Center (title area) is fully transparent; the wall emerges toward the edges. */
+.hero-wall-mask {
+  -webkit-mask-image: radial-gradient(
+    ellipse 62% 58% at center,
+    transparent 0%,
+    transparent 28%,
+    rgba(0, 0, 0, 0.35) 48%,
+    black 82%
+  );
+  mask-image: radial-gradient(
+    ellipse 62% 58% at center,
+    transparent 0%,
+    transparent 28%,
+    rgba(0, 0, 0, 0.35) 48%,
+    black 82%
+  );
 }
 
 @media (hover: hover) {
