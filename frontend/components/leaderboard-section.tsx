@@ -73,7 +73,7 @@ type DomainSeries = RankedCategoryEntry & {
   rank: number
 }
 
-const DOMAIN_METRIC_ORDER: BenchmarkMetricType[] = ["bsr", "direct_asr", "indirect_asr"]
+const DOMAIN_METRIC_ORDER: BenchmarkMetricType[] = ["indirect_asr", "direct_asr", "bsr"]
 const DOMAIN_VIEW_ORDER: DomainViewMode[] = ["table", "bar", "scatter"]
 
 const SERIES_STYLES = [
@@ -103,20 +103,20 @@ const MODEL_LOGO_PATHS: Record<string, string> = {
   "gemini-3-1-pro": "/logo/gemini.svg",
 }
 
-const DOMAIN_VISUALS: Record<string, { icon: typeof Workflow; glow: string }> = {
-  workflow: { icon: Workflow, glow: "from-cyan-500/20 via-transparent to-transparent" },
-  crm: { icon: Database, glow: "from-emerald-500/20 via-transparent to-transparent" },
-  "customer-service": { icon: Headphones, glow: "from-blue-500/20 via-transparent to-transparent" },
-  travel: { icon: Plane, glow: "from-orange-500/20 via-transparent to-transparent" },
-  coding: { icon: Code2, glow: "from-violet-500/20 via-transparent to-transparent" },
-  browser: { icon: Globe, glow: "from-sky-500/20 via-transparent to-transparent" },
-  research: { icon: BookOpen, glow: "from-fuchsia-500/20 via-transparent to-transparent" },
-  "os-filesystem": { icon: FolderOpen, glow: "from-amber-500/20 via-transparent to-transparent" },
-  "os-gui": { icon: Monitor, glow: "from-lime-500/20 via-transparent to-transparent" },
-  finance: { icon: Landmark, glow: "from-emerald-400/20 via-transparent to-transparent" },
-  legal: { icon: Scale, glow: "from-red-500/20 via-transparent to-transparent" },
-  telecom: { icon: Phone, glow: "from-indigo-500/20 via-transparent to-transparent" },
-  medical: { icon: HeartPulse, glow: "from-pink-500/20 via-transparent to-transparent" },
+const DOMAIN_VISUALS: Record<string, { icon: typeof Workflow; glow: string; screenshot?: string }> = {
+  workflow: { icon: Workflow, glow: "from-cyan-500/20 via-transparent to-transparent", screenshot: "/env-showcase/gmail-1.png" },
+  crm: { icon: Database, glow: "from-emerald-500/20 via-transparent to-transparent", screenshot: "/env-showcase/leads_page.png" },
+  "customer-service": { icon: Headphones, glow: "from-blue-500/20 via-transparent to-transparent", screenshot: "/env-showcase/ui_case_list.png" },
+  travel: { icon: Plane, glow: "from-orange-500/20 via-transparent to-transparent", screenshot: "/env-showcase/calendar-2.png" },
+  coding: { icon: Code2, glow: "from-violet-500/20 via-transparent to-transparent", screenshot: "/env-showcase/github-1.png" },
+  browser: { icon: Globe, glow: "from-sky-500/20 via-transparent to-transparent", screenshot: "/env-showcase/arxiv_DT.png" },
+  research: { icon: BookOpen, glow: "from-fuchsia-500/20 via-transparent to-transparent", screenshot: "/env-showcase/googledrive-1.png" },
+  "os-filesystem": { icon: FolderOpen, glow: "from-amber-500/20 via-transparent to-transparent", screenshot: "/env-showcase/macos_screenshot.png" },
+  "os-gui": { icon: Monitor, glow: "from-lime-500/20 via-transparent to-transparent", screenshot: "/env-showcase/vm_desktop.png" },
+  finance: { icon: Landmark, glow: "from-emerald-400/20 via-transparent to-transparent", screenshot: "/env-showcase/paypal-1.png" },
+  legal: { icon: Scale, glow: "from-red-500/20 via-transparent to-transparent", screenshot: "/env-showcase/atlassian-4.png" },
+  telecom: { icon: Phone, glow: "from-indigo-500/20 via-transparent to-transparent", screenshot: "/env-showcase/slack-1.png" },
+  medical: { icon: HeartPulse, glow: "from-pink-500/20 via-transparent to-transparent", screenshot: "/env-showcase/googleform-1.png" },
 }
 
 function scoreTone(metricType: BenchmarkMetricType, value: number | null) {
@@ -837,48 +837,30 @@ function DomainMetricPanel({
   categoryTable: BenchmarkCategoryTable | undefined
   rows: RankedCategoryEntry[]
 }) {
-  const topRow = rows[0]
   const totalTasks = categoryTable?.categories.reduce((sum, category) => sum + (category.taskCount ?? 0), 0) ?? 0
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div>
-          <div className="flex flex-wrap items-center gap-2 mb-2">
-            <Badge variant={metricType === "bsr" ? "secondary" : "outline"} className="rounded-full">
-              {getMetricPanelTitle(metricType)}
-            </Badge>
+      <div>
+        <div className="flex flex-wrap items-center gap-2 mb-2">
+          <Badge variant={metricType === "bsr" ? "secondary" : "outline"} className="rounded-full">
+            {getMetricPanelTitle(metricType)}
+          </Badge>
+          <Badge variant="outline" className="rounded-full">
+            {rows.length} agents
+          </Badge>
+          {categoryTable ? (
             <Badge variant="outline" className="rounded-full">
-              {rows.length} agents
+              {categoryTable.categories.length} categories
             </Badge>
-            {categoryTable ? (
-              <Badge variant="outline" className="rounded-full">
-                {categoryTable.categories.length} categories
-              </Badge>
-            ) : null}
-            {totalTasks > 0 ? (
-              <Badge variant="outline" className="rounded-full">
-                {totalTasks} tasks
-              </Badge>
-            ) : null}
-          </div>
-          <div className="text-sm text-muted-foreground">{getMetricPanelDescription(metricType)}</div>
+          ) : null}
+          {totalTasks > 0 ? (
+            <Badge variant="outline" className="rounded-full">
+              {totalTasks} tasks
+            </Badge>
+          ) : null}
         </div>
-
-        {topRow ? (
-          <div className="rounded-2xl border border-border/70 bg-background/70 px-4 py-3 shadow-sm">
-            <div className="text-xs uppercase tracking-wide text-muted-foreground mb-2">Top configuration</div>
-            <div className="space-y-3">
-              <FrameworkLabel frameworkKey={topRow.frameworkKey} frameworkName={topRow.frameworkName} />
-              <div className="flex items-center justify-between gap-4">
-                <ModelLabel modelKey={topRow.modelKey} modelName={topRow.modelName} />
-                <span className={cn("text-lg font-mono font-semibold", scoreTone(metricType, topRow.overallForSelection))}>
-                  {formatPercent(topRow.overallForSelection)}
-                </span>
-              </div>
-            </div>
-          </div>
-        ) : null}
+        <div className="text-sm text-muted-foreground">{getMetricPanelDescription(metricType)}</div>
       </div>
 
       <Card className="overflow-hidden border-border/70 bg-background/60 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-0.5">
@@ -922,6 +904,7 @@ function DomainSection({
   const domainVisual = DOMAIN_VISUALS[domain.key]
   const DomainIcon = domainVisual?.icon ?? BrainCircuit
   const glowClass = domainVisual?.glow ?? "from-primary/20 via-transparent to-transparent"
+  const screenshotPath = domainVisual?.screenshot
   const [activeMetric, setActiveMetric] = useState<BenchmarkMetricType>("indirect_asr")
   const [viewMode, setViewMode] = useState<DomainViewMode>("table")
   const activeState = metricStates[activeMetric]
@@ -929,10 +912,28 @@ function DomainSection({
   return (
     <section id={`domain-${domain.key}`} className="scroll-mt-24">
       <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card/70 backdrop-blur-xl shadow-lg shadow-black/5 transition-transform duration-300 hover:-translate-y-0.5">
-        <div className={cn("absolute inset-x-0 top-0 h-28 bg-gradient-to-r", glowClass)} />
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className={cn("absolute inset-x-0 top-0 h-40 bg-gradient-to-r", glowClass)} />
+          {screenshotPath ? (
+            <div className="absolute right-6 top-4 h-40 w-[46%] max-w-[560px] md:right-10">
+              <img
+                src={screenshotPath}
+                alt=""
+                aria-hidden
+                className="h-full w-full rounded-xl object-cover object-top opacity-80 dark:opacity-60"
+                style={{
+                  maskImage:
+                    "radial-gradient(ellipse at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0.6) 70%, transparent 100%)",
+                  WebkitMaskImage:
+                    "radial-gradient(ellipse at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0.6) 70%, transparent 100%)",
+                }}
+              />
+            </div>
+          ) : null}
+        </div>
         <div className="relative p-6 md:p-8">
           <div className="flex items-start gap-4">
-            <div className="rounded-2xl border border-border/70 bg-background/70 p-3 shadow-sm">
+            <div className="rounded-2xl border border-border/70 bg-background/85 p-3 shadow-sm">
               <DomainIcon className="h-6 w-6 text-primary" />
             </div>
             <div>

@@ -517,6 +517,25 @@
   );
 }
 
+/* In dark mode, let the wall show through more in the center so the
+   middle area doesn't read as a flat black patch. */
+.dark .hero-wall-mask {
+  -webkit-mask-image: radial-gradient(
+    ellipse 62% 58% at center,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0.55) 28%,
+    rgba(0, 0, 0, 0.78) 48%,
+    black 82%
+  );
+  mask-image: radial-gradient(
+    ellipse 62% 58% at center,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0.55) 28%,
+    rgba(0, 0, 0, 0.78) 48%,
+    black 82%
+  );
+}
+
 @media (hover: hover) {
   .env-marquee:hover .env-marquee-track,
   .env-flow-column:hover .env-flow-track,

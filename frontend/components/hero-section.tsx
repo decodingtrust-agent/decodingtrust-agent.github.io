@@ -117,6 +117,8 @@ export function HeroSection() {
         <div className="absolute left-0 top-1/2 h-2/3 w-2/5 -translate-y-1/2 bg-[radial-gradient(ellipse_at_left_center,rgba(239,68,68,0.14),transparent_65%)] blur-3xl" />
         <div className="absolute right-0 top-1/2 h-2/3 w-2/5 -translate-y-1/2 bg-[radial-gradient(ellipse_at_right_center,rgba(220,38,38,0.12),transparent_65%)] blur-3xl" />
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-[radial-gradient(ellipse_at_bottom,rgba(239,68,68,0.08),transparent_70%)]" />
+        {/* Dark-mode-only soft red wash over the central title area */}
+        <div className="hidden dark:block absolute left-1/2 top-1/2 h-[55%] w-[55%] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(220,38,38,0.10),transparent_70%)] blur-3xl" />
       </div>
 
       {/* Layer 4: top fade under the header so the wall melts into the nav area */}

@@ -24,7 +24,7 @@ interface ThemeProviderProps {
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>("dark")
+  const [theme, setTheme] = useState<Theme>("light")
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -34,8 +34,8 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       setTheme(stored)
       document.documentElement.classList.toggle("dark", stored === "dark")
     } else {
-      // Default to dark mode
-      document.documentElement.classList.add("dark")
+      // Default to light mode
+      document.documentElement.classList.remove("dark")
     }
   }, [])
 
@@ -47,7 +47,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   }
 
   const value = {
-    theme: mounted ? theme : "dark",
+    theme: mounted ? theme : "light",
     toggleTheme,
   }
 

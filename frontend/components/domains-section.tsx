@@ -55,31 +55,31 @@ export function DomainsSection() {
           </p>
         </div>
 
-        <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+        <div className="grid gap-x-6 gap-y-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
           {environments.map((env) => {
             const FallbackIcon = env.fallbackIcon
             return (
               <div
                 key={env.name}
-                className="group relative flex items-center gap-3 overflow-hidden rounded-xl border border-border/50 bg-card/60 p-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-card hover:shadow-[0_14px_40px_-26px_rgba(15,23,42,0.35)]"
+                className="group relative flex items-center gap-3.5 rounded-lg px-2 py-2.5 transition-colors duration-200 hover:bg-foreground/[0.03] dark:hover:bg-foreground/[0.04]"
               >
-                <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border/60 bg-white p-1.5 shadow-sm ring-1 ring-black/[0.03]">
+                <div className="relative flex h-11 w-11 shrink-0 items-center justify-center">
                   {env.logo ? (
                     <Image
                       src={env.logo}
                       alt={`${env.name} logo`}
-                      width={32}
-                      height={32}
-                      className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-110"
+                      width={44}
+                      height={44}
+                      className="h-11 w-11 object-contain transition-transform duration-300 group-hover:scale-105"
                     />
                   ) : FallbackIcon ? (
-                    <FallbackIcon className="h-5 w-5 text-muted-foreground" />
+                    <FallbackIcon className="h-7 w-7 text-muted-foreground" />
                   ) : null}
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <h3 className="truncate text-sm font-semibold text-foreground">{env.name}</h3>
-                  <span className="truncate block text-[10px] text-muted-foreground/80">{env.domain}</span>
+                  <h3 className="truncate text-sm font-semibold text-foreground leading-tight">{env.name}</h3>
+                  <span className="mt-0.5 block truncate text-[11px] text-muted-foreground/70">{env.domain}</span>
                 </div>
               </div>
             )

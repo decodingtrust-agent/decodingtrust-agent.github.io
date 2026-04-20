@@ -2,20 +2,47 @@
 
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
-import { Activity, ArrowUpRight, ChevronRight, ExternalLink } from "lucide-react"
+import { Activity, ArrowDown, ArrowUp, BrainCircuit, ExternalLink, Medal, Trophy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import {
-  METRIC_OPTIONS,
   formatPercent,
-  isHigherBetterMetric,
   loadBenchmarkDataset,
   type BenchmarkDataset,
   type BenchmarkMetricType,
 } from "@/lib/benchmark"
 
-const HOMEPAGE_CARD_METRICS: BenchmarkMetricType[] = ["direct_asr", "indirect_asr", "bsr"]
-const HOMEPAGE_TABLE_METRICS: BenchmarkMetricType[] = ["bsr", "direct_asr", "indirect_asr"]
+const HOMEPAGE_TABLE_METRICS: BenchmarkMetricType[] = ["indirect_asr", "direct_asr", "bsr"]
+
+const FRAMEWORK_LOGO_PATHS: Record<string, string> = {
+  "openai-agents": "/logo/framework-openai-agents.svg",
+  "claude-code": "/logo/framework-claude-code.svg",
+  "google-adk": "/logo/framework-google-adk.png",
+  openclaw: "/logo/openclaw.svg",
+}
+
+const MODEL_LOGO_PATHS: Record<string, string> = {
+  "gpt-5-4": "/logo/openai-monoblossom.svg",
+  "gpt-5-2": "/logo/openai-monoblossom.svg",
+  "gpt-5-1": "/logo/openai-monoblossom.svg",
+  "gpt-oss-120b": "/logo/openai-monoblossom.svg",
+  "opus-4-6": "/logo/claude.svg",
+  "sonnet-4-5": "/logo/claude.svg",
+  "gemini-3-pro": "/logo/gemini.svg",
+  "gemini-3-1-pro": "/logo/gemini.svg",
+}
+
+const METRIC_LABELS: Record<BenchmarkMetricType, string> = {
+  indirect_asr: "Indirect ASR",
+  direct_asr: "Direct ASR",
+  bsr: "BSR",
+}
+
+const METRIC_HINTS: Record<BenchmarkMetricType, string> = {
+  indirect_asr: "Lower = safer",
+  direct_asr: "Lower = safer",
+  bsr: "Higher = more capable",
+}
 
 type HomepageComboRow = {
   key: string
@@ -26,61 +53,120 @@ type HomepageComboRow = {
   metrics: Record<BenchmarkMetricType, number | null>
 }
 
-type HomepageDomainCardData = {
-  key: string
-  label: string
-  shortLabel: string
-  href: string
-  rows: HomepageComboRow[]
+function normalizeScore(metricType: BenchmarkMetricType, value: number): number {
+  const clamped = Math.max(0, Math.min(100, value))
+  if (metricType === "bsr") {
+    if (clamped >= 90) return 1
+    if (clamped >= 75) return 0.5 + ((clamped - 75) / 15) * 0.5
+    if (clamped >= 50) return ((clamped - 50) / 25) * 0.5
+    return 0
+  }
+  if (clamped <= 5) return 1
+  if (clamped <= 25) return 0.5 + ((25 - clamped) / 20) * 0.5
+  if (clamped <= 60) return Math.max(0, 0.5 - ((clamped - 25) / 35) * 0.5)
+  return 0
 }
 
-function scoreTone(metricType: BenchmarkMetricType, value: number | null) {
+function heatmapCellStyle(metricType: BenchmarkMetricType, value: number | null): React.CSSProperties {
+  if (value === null) return {}
+  const good = normalizeScore(metricType, value)
+  const hue = good * 135
+  const saturation = good < 0.35 ? 82 : 70
+  const alpha = good < 0.35 ? 0.22 : good > 0.65 ? 0.2 : 0.18
+  return {
+    backgroundColor: `hsla(${hue}, ${saturation}%, 50%, ${alpha})`,
+  }
+}
+
+function heatmapTextClass(metricType: BenchmarkMetricType, value: number | null) {
+  if (value === null) return "text-muted-foreground"
+  const good = normalizeScore(metricType, value)
+  if (good >= 0.65) return "text-emerald-600 dark:text-emerald-400"
+  if (good >= 0.45) return "text-foreground"
+  return "text-rose-600 dark:text-rose-400"
+}
+
+function MetricCell({
+  metricType,
+  value,
+  emphasis = false,
+}: {
+  metricType: BenchmarkMetricType
+  value: number | null
+  emphasis?: boolean
+}) {
   if (value === null) {
-    return "text-muted-foreground"
+    return <span className="font-mono text-base text-muted-foreground">--</span>
   }
-
-  const normalized = metricType === "bsr" ? value : 100 - value
-  if (normalized >= 75) {
-    return "text-emerald-500"
-  }
-  if (normalized >= 50) {
-    return "text-amber-500"
-  }
-  return "text-rose-500"
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center justify-center rounded-lg px-3 py-1.5 font-mono",
+        emphasis ? "text-lg font-bold" : "text-base font-semibold",
+        heatmapTextClass(metricType, value)
+      )}
+      style={heatmapCellStyle(metricType, value)}
+    >
+      {formatPercent(value)}
+    </span>
+  )
 }
 
-function getMetricRankLabel(metricType: BenchmarkMetricType) {
-  return metricType === "bsr" ? "higher is better" : "lower is better"
+function BrandLogo({ logoPath, alt }: { logoPath: string | undefined; alt: string }) {
+  return logoPath ? (
+    <img src={logoPath} alt={alt} className="h-7 w-7 shrink-0 object-contain" />
+  ) : (
+    <BrainCircuit className="h-7 w-7 shrink-0 text-muted-foreground" />
+  )
 }
 
-function sortComboRows(rows: HomepageComboRow[], metricType: BenchmarkMetricType) {
+function RankBadge({ rank }: { rank: number }) {
+  if (rank === 1) {
+    return (
+      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-amber-400 text-amber-950 shadow-sm ring-1 ring-amber-300">
+        <Trophy className="h-4 w-4" />
+      </span>
+    )
+  }
+  if (rank === 2) {
+    return (
+      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-slate-200 to-slate-400 text-slate-900 shadow-sm ring-1 ring-slate-300">
+        <Medal className="h-4 w-4" />
+      </span>
+    )
+  }
+  if (rank === 3) {
+    return (
+      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-orange-200 to-orange-400 text-orange-950 shadow-sm ring-1 ring-orange-300">
+        <Medal className="h-4 w-4" />
+      </span>
+    )
+  }
+  return (
+    <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-background text-sm font-mono font-medium text-muted-foreground">
+      {rank}
+    </span>
+  )
+}
+
+function sortByIndirectAsr(rows: HomepageComboRow[]) {
+  // Sort by Indirect ASR DESCENDING — most vulnerable first.
   return [...rows].sort((left, right) => {
-    const leftValue = left.metrics[metricType]
-    const rightValue = right.metrics[metricType]
-
+    const leftValue = left.metrics.indirect_asr
+    const rightValue = right.metrics.indirect_asr
     if (leftValue === null && rightValue === null) {
       return (
         left.frameworkName.localeCompare(right.frameworkName) ||
         left.modelName.localeCompare(right.modelName)
       )
     }
-    if (leftValue === null) {
-      return 1
-    }
-    if (rightValue === null) {
-      return -1
-    }
-
-    const primaryOrder = isHigherBetterMetric(metricType) ? rightValue - leftValue : leftValue - rightValue
-    if (primaryOrder !== 0) {
-      return primaryOrder
-    }
-
-    const bsrTieBreak = (right.metrics.bsr ?? -1) - (left.metrics.bsr ?? -1)
-    if (bsrTieBreak !== 0) {
-      return bsrTieBreak
-    }
-
+    if (leftValue === null) return 1
+    if (rightValue === null) return -1
+    if (leftValue !== rightValue) return rightValue - leftValue
+    const directTieBreak = (right.metrics.direct_asr ?? -1) - (left.metrics.direct_asr ?? -1)
+    if (directTieBreak !== 0) return directTieBreak
+    const bsrTieBreak = (left.metrics.bsr ?? 101) - (right.metrics.bsr ?? 101)
+    if (bsrTieBreak !== 0) return bsrTieBreak
     return (
       left.frameworkName.localeCompare(right.frameworkName) ||
       left.modelName.localeCompare(right.modelName)
@@ -88,104 +174,16 @@ function sortComboRows(rows: HomepageComboRow[], metricType: BenchmarkMetricType
   })
 }
 
-function DomainLeaderboardCard({ card }: { card: HomepageDomainCardData }) {
-  const [sortMetric, setSortMetric] = useState<BenchmarkMetricType>("direct_asr")
-  const visibleRows = useMemo(() => sortComboRows(card.rows, sortMetric).slice(0, 4), [card.rows, sortMetric])
-
-  return (
-    <div className="rounded-3xl border border-border/60 bg-card/70 p-6 shadow-sm shadow-black/5 backdrop-blur-sm">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <div className="inline-flex rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-            {card.shortLabel}
-          </div>
-          <h4 className="mt-3 text-2xl font-semibold tracking-tight">{card.label}</h4>
-          <p className="mt-1 text-sm text-muted-foreground">Top configurations in this domain without category-level breakdown.</p>
-        </div>
-        <Button variant="ghost" size="icon" asChild className="rounded-full border border-border/70 text-muted-foreground hover:text-primary">
-          <Link href={card.href} aria-label={`Open ${card.label} leaderboard section`}>
-            <ArrowUpRight className="h-4 w-4" />
-          </Link>
-        </Button>
-      </div>
-
-      <div className="mt-5">
-        <div className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Sort by</div>
-        <div className="flex flex-wrap gap-2">
-          {HOMEPAGE_CARD_METRICS.map((metricType) => (
-            <button
-              key={metricType}
-              onClick={() => setSortMetric(metricType)}
-              className={cn(
-                "rounded-full border px-3 py-1.5 text-xs transition-all duration-300",
-                sortMetric === metricType
-                  ? "border-primary bg-primary text-primary-foreground shadow-sm"
-                  : "border-border text-muted-foreground hover:text-foreground"
-              )}
-            >
-              {METRIC_OPTIONS.find((metric) => metric.key === metricType)?.label ?? metricType}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-5 overflow-x-auto">
-        <table className="w-full min-w-[560px]">
-          <thead>
-            <tr className="border-b border-border/60 bg-secondary/20">
-              <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">#</th>
-              <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">Framework</th>
-              <th className="px-3 py-2 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">Model</th>
-              {HOMEPAGE_CARD_METRICS.map((metricType) => (
-                <th
-                  key={metricType}
-                  className="px-3 py-2 text-right text-xs font-medium uppercase tracking-wide text-muted-foreground"
-                >
-                  {METRIC_OPTIONS.find((metric) => metric.key === metricType)?.label ?? metricType}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {visibleRows.map((row, index) => (
-              <tr key={row.key} className="border-b border-border/50 last:border-0 hover:bg-secondary/10">
-                <td className="px-3 py-3 font-mono text-sm">{index + 1}</td>
-                <td className="px-3 py-3">
-                  <div className="font-medium text-foreground">{row.frameworkName}</div>
-                </td>
-                <td className="px-3 py-3">
-                  <div className="font-medium text-foreground">{row.modelName}</div>
-                </td>
-                {HOMEPAGE_CARD_METRICS.map((metricType) => (
-                  <td key={metricType} className="px-3 py-3 text-right">
-                    <span className={cn("text-sm font-mono font-semibold", scoreTone(metricType, row.metrics[metricType]))}>
-                      {formatPercent(row.metrics[metricType])}
-                    </span>
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="mt-4 flex items-center justify-between gap-3 border-t border-border/50 pt-4">
-        <span className="text-xs text-muted-foreground">{getMetricRankLabel(sortMetric)}</span>
-        <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-primary">
-          <Link href={card.href}>
-            Open domain leaderboard
-            <ChevronRight className="ml-1 h-4 w-4" />
-          </Link>
-        </Button>
-      </div>
-    </div>
-  )
+function rankRowClass(rank: number) {
+  if (rank === 1) return "bg-amber-50/60 dark:bg-amber-500/5"
+  if (rank === 2) return "bg-slate-50/60 dark:bg-slate-500/5"
+  if (rank === 3) return "bg-orange-50/50 dark:bg-orange-500/5"
+  return ""
 }
 
 export function LeaderboardPreview() {
   const [dataset, setDataset] = useState<BenchmarkDataset | null>(null)
   const [loading, setLoading] = useState(true)
-  const [sortMetric, setSortMetric] = useState<BenchmarkMetricType>("bsr")
 
   useEffect(() => {
     loadBenchmarkDataset()
@@ -193,54 +191,8 @@ export function LeaderboardPreview() {
       .finally(() => setLoading(false))
   }, [])
 
-  const domainCards = useMemo(() => {
-    if (!dataset) {
-      return []
-    }
-
-    return dataset.domains.map((domain) => {
-      const byCombo = new Map<string, HomepageComboRow>()
-
-      for (const entry of dataset.entries) {
-        const domainValue = entry.domainScores[domain.key] ?? null
-        if (domainValue === null) {
-          continue
-        }
-
-        const rowKey = `${entry.frameworkKey}:${entry.modelKey}`
-        const existing =
-          byCombo.get(rowKey) ??
-          ({
-            key: rowKey,
-            frameworkKey: entry.frameworkKey,
-            frameworkName: entry.frameworkName,
-            modelKey: entry.modelKey,
-            modelName: entry.modelName,
-            metrics: {
-              bsr: null,
-              direct_asr: null,
-              indirect_asr: null,
-            },
-          } satisfies HomepageComboRow)
-
-        existing.metrics[entry.metricType] = domainValue
-        byCombo.set(rowKey, existing)
-      }
-
-      return {
-        key: domain.key,
-        label: domain.label,
-        shortLabel: domain.shortLabel,
-        href: `/leaderboard#domain-${domain.key}`,
-        rows: Array.from(byCombo.values()),
-      } satisfies HomepageDomainCardData
-    })
-  }, [dataset])
-
   const comboRows = useMemo(() => {
-    if (!dataset) {
-      return []
-    }
+    if (!dataset) return []
 
     const byCombo = new Map<string, HomepageComboRow>()
     for (const entry of dataset.entries) {
@@ -253,19 +205,15 @@ export function LeaderboardPreview() {
           frameworkName: entry.frameworkName,
           modelKey: entry.modelKey,
           modelName: entry.modelName,
-          metrics: {
-            bsr: null,
-            direct_asr: null,
-            indirect_asr: null,
-          },
+          metrics: { bsr: null, direct_asr: null, indirect_asr: null },
         } satisfies HomepageComboRow)
 
       existing.metrics[entry.metricType] = entry.overall
       byCombo.set(rowKey, existing)
     }
 
-    return sortComboRows(Array.from(byCombo.values()), sortMetric)
-  }, [dataset, sortMetric])
+    return sortByIndirectAsr(Array.from(byCombo.values()))
+  }, [dataset])
 
   return (
     <section className="border-t border-border/50">
@@ -276,9 +224,12 @@ export function LeaderboardPreview() {
               <Activity className="h-3 w-3" />
               Published Benchmark Results
             </div>
-            <h2 className="mb-2 text-3xl font-bold md:text-4xl">Benchmark Results</h2>
+            <h2 className="mb-2 text-3xl font-bold md:text-4xl">
+              Agents Ranked by Security <span className="text-rose-500 dark:text-rose-400">Vulnerability</span>
+            </h2>
             <p className="max-w-3xl text-muted-foreground">
-              Average results across all benchmark domains for each published framework and model configuration.
+              Ranked by average Indirect ASR (higher = more vulnerable). Heatmap colours flag riskier scores red and
+              safer ones green — so the leaderboard, at a glance, tells you which agents are most exposed.
             </p>
           </div>
           <Button
@@ -294,155 +245,100 @@ export function LeaderboardPreview() {
         </div>
 
         <div className="mt-8 overflow-hidden rounded-3xl border border-border/60 bg-card/70 shadow-sm shadow-black/5 backdrop-blur-sm">
-          <div className="border-b border-border/60 px-6 py-5">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <div className="text-lg font-semibold">Framework and model ranking</div>
-                <div className="mt-1 text-sm text-muted-foreground">
-                  Compare average benign success rate and attack success rate across every published configuration.
-                </div>
-              </div>
-              <div>
-                <div className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                  Sort by
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {HOMEPAGE_TABLE_METRICS.map((metricType) => (
-                    <button
-                      key={metricType}
-                      onClick={() => setSortMetric(metricType)}
-                      className={cn(
-                        "rounded-full border px-4 py-2 text-sm transition-all duration-300",
-                        sortMetric === metricType
-                          ? "border-primary bg-primary text-primary-foreground shadow-sm"
-                          : "border-border text-muted-foreground hover:text-foreground"
-                      )}
-                    >
-                      {METRIC_OPTIONS.find((metric) => metric.key === metricType)?.label ?? metricType}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[860px]">
-              <thead>
-                <tr className="border-b border-border/60 bg-secondary/20">
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    Rank
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    Framework
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    Model
-                  </th>
-                  {HOMEPAGE_TABLE_METRICS.map((metricType) => (
+          <table className="w-full table-auto text-sm">
+            <thead>
+              <tr className="border-b border-border/60 bg-secondary/20 align-bottom">
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  Rank
+                </th>
+                <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  Agent
+                </th>
+                <th className="border-r border-border/80 px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  Model
+                </th>
+                {HOMEPAGE_TABLE_METRICS.map((metricType) => {
+                  const lowerIsBetter = metricType !== "bsr"
+                  const Arrow = lowerIsBetter ? ArrowDown : ArrowUp
+                  const arrowColor = lowerIsBetter
+                    ? "text-emerald-500 dark:text-emerald-400"
+                    : "text-emerald-500 dark:text-emerald-400"
+                  return (
                     <th
                       key={metricType}
-                      className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wide text-muted-foreground"
+                      className="px-3 py-3 text-right text-xs font-medium uppercase tracking-wide text-muted-foreground"
                     >
-                      {METRIC_OPTIONS.find((metric) => metric.key === metricType)?.label ?? metricType}
+                      <div className="inline-flex items-center justify-end gap-1.5">
+                        <span>{METRIC_LABELS[metricType]}</span>
+                        <Arrow className={cn("h-3.5 w-3.5", arrowColor)} aria-hidden="true" />
+                      </div>
+                      <div className="mt-0.5 text-[10px] normal-case tracking-normal text-muted-foreground/70">
+                        {METRIC_HINTS[metricType]}
+                      </div>
                     </th>
-                  ))}
-                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    Notes
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {loading
-                  ? Array.from({ length: 6 }).map((_, index) => (
-                      <tr key={`loading-row-${index}`} className="border-b border-border/50 last:border-0">
-                        {Array.from({ length: 7 }).map((__, cellIndex) => (
-                          <td key={cellIndex} className="px-6 py-4">
-                            <div className="h-5 rounded bg-muted/40" />
-                          </td>
-                        ))}
-                      </tr>
-                    ))
-                  : comboRows.map((row, index) => (
-                      <tr key={row.key} className="border-b border-border/50 last:border-0 hover:bg-secondary/10">
-                        <td className="px-6 py-4 font-mono text-sm font-medium">{index + 1}</td>
-                        <td className="px-6 py-4">
-                          <div className="font-medium text-foreground">{row.frameworkName}</div>
-                          <div className="text-xs text-muted-foreground">Agent framework</div>
+                  )
+                })}
+              </tr>
+            </thead>
+            <tbody>
+              {loading
+                ? Array.from({ length: 6 }).map((_, index) => (
+                    <tr key={`loading-row-${index}`} className="border-b border-border/50 last:border-0">
+                      {Array.from({ length: 6 }).map((__, cellIndex) => (
+                        <td key={cellIndex} className="px-4 py-4">
+                          <div className="h-5 rounded bg-muted/40" />
                         </td>
-                        <td className="px-6 py-4">
-                          <div className="font-medium text-foreground">{row.modelName}</div>
-                          <div className="text-xs text-muted-foreground">Foundation model</div>
+                      ))}
+                    </tr>
+                  ))
+                : comboRows.map((row, index) => {
+                    const rank = index + 1
+                    return (
+                      <tr
+                        key={row.key}
+                        className={cn(
+                          "border-b border-border/50 transition-colors last:border-0 hover:bg-secondary/10",
+                          rankRowClass(rank)
+                        )}
+                      >
+                        <td className="px-4 py-4">
+                          <RankBadge rank={rank} />
+                        </td>
+                        <td className="px-3 py-4">
+                          <div className="flex items-center gap-2.5">
+                            <BrandLogo
+                              logoPath={FRAMEWORK_LOGO_PATHS[row.frameworkKey]}
+                              alt={`${row.frameworkName} logo`}
+                            />
+                            <span className="truncate font-medium">{row.frameworkName}</span>
+                          </div>
+                        </td>
+                        <td className="border-r border-border/80 px-3 py-4">
+                          <div className="flex items-center gap-2.5">
+                            <BrandLogo
+                              logoPath={MODEL_LOGO_PATHS[row.modelKey]}
+                              alt={`${row.modelName} logo`}
+                            />
+                            <span className="truncate font-medium">{row.modelName}</span>
+                          </div>
                         </td>
                         {HOMEPAGE_TABLE_METRICS.map((metricType) => (
-                          <td key={metricType} className="px-6 py-4 text-right">
-                            <span className={cn("text-sm font-mono font-semibold", scoreTone(metricType, row.metrics[metricType]))}>
-                              {formatPercent(row.metrics[metricType])}
-                            </span>
+                          <td key={metricType} className="px-3 py-4 text-right">
+                            <MetricCell
+                              metricType={metricType}
+                              value={row.metrics[metricType]}
+                              emphasis={metricType === "indirect_asr"}
+                            />
                           </td>
                         ))}
-                        <td className="px-6 py-4 text-sm text-muted-foreground">
-                          {index === 0 && sortMetric === "bsr"
-                            ? "Top benign success rate."
-                            : index === 0
-                              ? `Lowest ${METRIC_OPTIONS.find((metric) => metric.key === sortMetric)?.label ?? sortMetric}.`
-                              : getMetricRankLabel(sortMetric)}
-                        </td>
                       </tr>
-                    ))}
-              </tbody>
-            </table>
-          </div>
+                    )
+                  })}
+            </tbody>
+          </table>
         </div>
 
-        <div className="mt-8 flex items-center justify-between gap-4">
-          <div>
-            <h3 className="text-2xl font-semibold tracking-tight">Domain cards</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Small per-domain leaderboards for the published framework and model combinations.
-            </p>
-          </div>
-          <div className="hidden text-sm text-muted-foreground md:block">
-            Click a card to open the matching leaderboard section.
-          </div>
-        </div>
-
-        <div className="mt-6 grid gap-5 md:grid-cols-2">
-          {(loading ? Array.from({ length: 4 }) : domainCards).map((card, index) => {
-            if (loading || !card) {
-              return (
-                <div
-                  key={`loading-${index}`}
-                  className="rounded-3xl border border-border/60 bg-card/60 p-6 backdrop-blur-sm"
-                >
-                  <div className="h-6 w-32 rounded bg-muted/60" />
-                  <div className="mt-2 h-4 w-48 rounded bg-muted/40" />
-                  <div className="mt-6 space-y-3">
-                    {Array.from({ length: 3 }).map((_, rowIndex) => (
-                      <div key={rowIndex} className="h-16 rounded-2xl bg-muted/30" />
-                    ))}
-                  </div>
-                </div>
-              )
-            }
-
-            return <DomainLeaderboardCard key={card.key} card={card} />
-          })}
-        </div>
-
-        <div className="mt-6 flex items-center justify-between gap-4 border-t border-border/50 pt-4">
-          <span className="text-sm text-muted-foreground">
-            Homepage shows aggregate results only; use the leaderboard for framework, model, and category-level detail.
-          </span>
-          <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-primary">
-            <Link href="/leaderboard">
-              <ChevronRight className="mr-1 h-4 w-4" />
-              Open leaderboard
-            </Link>
-          </Button>
-        </div>
-
-        <Button variant="outline" asChild className="mt-4 w-full border-border bg-transparent md:hidden">
+        <Button variant="outline" asChild className="mt-6 w-full border-border bg-transparent md:hidden">
           <Link href="/leaderboard">
             View Full Leaderboard
             <ExternalLink className="ml-2 h-4 w-4" />
