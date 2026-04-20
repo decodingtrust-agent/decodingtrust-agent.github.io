@@ -21,10 +21,10 @@ const environments: EnvItem[] = [
   { name: "Google Sheets", domain: "Workflow", logo: "/logo/domains/sheets.png" },
   { name: "Google Drive", domain: "Workflow", logo: "/logo/domains/google-drive.png" },
   { name: "Google Forms", domain: "Workflow", logo: "/logo/domains/google-forms.png" },
-  { name: "Microsoft Word", domain: "Workflow", logo: "/logo/domains/msft-word.png" },
-  { name: "Microsoft Excel", domain: "Workflow", logo: "/logo/domains/msft-excel.png" },
-  { name: "Microsoft PowerPoint", domain: "Workflow", logo: "/logo/domains/msft-ppt.png" },
-  { name: "LibreOffice", domain: "Workflow", logo: "/logo/domains/libreoffice.png" },
+  { name: "Microsoft Word", domain: "Windows", logo: "/logo/domains/msft-word.png" },
+  { name: "Microsoft Excel", domain: "Windows", logo: "/logo/domains/msft-excel.png" },
+  { name: "Microsoft PowerPoint", domain: "Windows", logo: "/logo/domains/msft-ppt.png" },
+  { name: "LibreOffice", domain: "Windows", logo: "/logo/domains/libreoffice.png" },
   { name: "Notion", domain: "Workflow", logo: "/logo/domains/notion.png" },
   { name: "Dropbox", domain: "Workflow", logo: "/logo/domains/dropbox.png" },
 
@@ -47,21 +47,21 @@ const environments: EnvItem[] = [
   { name: "ServiceNow", domain: "Customer Service", logo: "/logo/domains/servicenow.webp" },
 
   // Travel
-  { name: "Travel Booking", domain: "Travel", logo: "/logo/domains/booking.svg" },
+  { name: "Booking", domain: "Travel", logo: "/logo/domains/booking.svg" },
   { name: "Expedia", domain: "Travel", logo: "/logo/domains/expedia.png" },
   { name: "Southwest", domain: "Travel", logo: "/logo/domains/southwest.png" },
   { name: "United", domain: "Travel", logo: "/logo/domains/united.png" },
   { name: "Enterprise", domain: "Travel", logo: "/logo/domains/enterprise.webp" },
 
   // Logistics / Delivery
-  { name: "FedEx", domain: "Logistics", logo: "/logo/domains/fedex.png" },
-  { name: "DoorDash", domain: "Food Delivery", logo: "/logo/domains/doordash.png" },
+  { name: "FedEx", domain: "Workflow", logo: "/logo/domains/fedex.png" },
+  { name: "DoorDash", domain: "Workflow", logo: "/logo/domains/doordash.png" },
 
   // Code / Browser
   { name: "GitHub", domain: "Code", logo: "/logo/domains/github.svg" },
   { name: "GitLab", domain: "Code", logo: "/logo/domains/gitlab.svg" },
   { name: "Browser", domain: "Browser", logo: "/logo/domains/browser.png" },
-  { name: "Safari", domain: "Browser", logo: "/logo/domains/safari.png" },
+  { name: "Safari", domain: "macOS", logo: "/logo/domains/safari.png" },
   { name: "eBay", domain: "Browser", logo: "/logo/domains/ebay.svg" },
 
   // Research / OS
@@ -77,9 +77,9 @@ const environments: EnvItem[] = [
   { name: "Legal", domain: "Legal", logo: "/logo/domains/legal.svg" },
   { name: "Telecom", domain: "Telecom", logo: "/logo/domains/tmobile.png" },
   { name: "Hospital Client", domain: "Medical Service", logo: "/logo/domains/hospital.webp" },
-  { name: "Snowflake", domain: "Data Platform", logo: "/logo/domains/snowflake.png" },
-  { name: "Databricks", domain: "Data Platform", logo: "/logo/domains/databricks.png" },
-  { name: "PostgreSQL", domain: "Data Platform", logo: "/logo/domains/postgresql.png" },
+  { name: "Snowflake", domain: "Workflow", logo: "/logo/domains/snowflake.png" },
+  { name: "Databricks", domain: "Workflow", logo: "/logo/domains/databricks.png" },
+  { name: "PostgreSQL", domain: "Workflow", logo: "/logo/domains/postgresql.png" },
 ]
 
 export function DomainsSection() {
