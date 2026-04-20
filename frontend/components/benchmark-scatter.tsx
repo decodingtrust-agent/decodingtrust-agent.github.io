@@ -356,10 +356,19 @@ export function BenchmarkScatter() {
             >
               <defs>
                 <linearGradient id="quad-bg" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="rgb(244, 63, 94)" stopOpacity="0.07" />
-                  <stop offset="60%" stopColor="rgb(244, 63, 94)" stopOpacity="0" />
-                  <stop offset="100%" stopColor="rgb(16, 185, 129)" stopOpacity="0.10" />
+                  <stop offset="0%" stopColor="rgb(244, 63, 94)" stopOpacity="0.12" />
+                  <stop offset="45%" stopColor="rgb(244, 63, 94)" stopOpacity="0.01" />
+                  <stop offset="55%" stopColor="rgb(16, 185, 129)" stopOpacity="0.02" />
+                  <stop offset="100%" stopColor="rgb(16, 185, 129)" stopOpacity="0.16" />
                 </linearGradient>
+                <radialGradient id="quad-bad-corner" cx="0%" cy="0%" r="55%">
+                  <stop offset="0%" stopColor="rgb(244, 63, 94)" stopOpacity="0.08" />
+                  <stop offset="100%" stopColor="rgb(244, 63, 94)" stopOpacity="0" />
+                </radialGradient>
+                <radialGradient id="quad-good-corner" cx="100%" cy="100%" r="55%">
+                  <stop offset="0%" stopColor="rgb(16, 185, 129)" stopOpacity="0.11" />
+                  <stop offset="100%" stopColor="rgb(16, 185, 129)" stopOpacity="0" />
+                </radialGradient>
                 <linearGradient id="frontier-stroke" x1="0" y1="0" x2="1" y2="0">
                   <stop offset="0%" stopColor="rgb(16, 185, 129)" stopOpacity="0.35" />
                   <stop offset="100%" stopColor="rgb(16, 185, 129)" stopOpacity="0.85" />
@@ -373,6 +382,21 @@ export function BenchmarkScatter() {
                 width={INNER_W}
                 height={INNER_H}
                 fill="url(#quad-bg)"
+              />
+              {/* Corner halos to make the "best" and "worst" zones jump out */}
+              <rect
+                x={CHART_PAD.left}
+                y={CHART_PAD.top}
+                width={INNER_W}
+                height={INNER_H}
+                fill="url(#quad-bad-corner)"
+              />
+              <rect
+                x={CHART_PAD.left}
+                y={CHART_PAD.top}
+                width={INNER_W}
+                height={INNER_H}
+                fill="url(#quad-good-corner)"
               />
 
               {/* Gridlines */}
