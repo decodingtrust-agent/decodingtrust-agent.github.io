@@ -1,77 +1,92 @@
-import { Shield, Users, Mail, Building2, GraduationCap } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import Image from "next/image"
+import { Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-const team = [
-  { name: "Researcher 1", affiliation: "University A", role: "Lead Researcher" },
-  { name: "Researcher 2", affiliation: "University B", role: "Security Expert" },
-  { name: "Researcher 3", affiliation: "Company C", role: "ML Engineer" },
-  { name: "Researcher 4", affiliation: "University A", role: "Benchmark Design" },
+// Affiliation index → { display name, logo path }.
+const AFFILIATIONS: Record<number, { name: string; logo: string }> = {
+  1: { name: "Virtue AI", logo: "/logo/affiliations/virtueai-new.png" },
+  2: { name: "University of Chicago", logo: "/logo/affiliations/uchicago.png" },
+  3: { name: "UIUC", logo: "/logo/affiliations/uiuc.png" },
+  4: { name: "UC Santa Barbara", logo: "/logo/affiliations/ucsb-new.png" },
+  5: { name: "Johns Hopkins University", logo: "/logo/affiliations/jhu-new.png" },
+  6: { name: "UC Berkeley", logo: "/logo/affiliations/ucberkeley.png" },
+  7: { name: "Stanford University", logo: "/logo/affiliations/stanford.png" },
+}
+
+type Member = { name: string; affiliations: number[]; role: string }
+
+const team: Member[] = [
+  { name: "Zhaorun Chen", affiliations: [1, 2], role: "Project Lead & Core Contributor" },
+  { name: "Xun Liu", affiliations: [3], role: "Core Contributor" },
+  { name: "Haibo Tong", affiliations: [3], role: "Core Contributor" },
+  { name: "Chengquan Guo", affiliations: [2], role: "Core Contributor" },
+  { name: "Yuzhou Nie", affiliations: [1, 4], role: "Core Contributor" },
+  { name: "Jiawei Zhang", affiliations: [2], role: "Core Contributor" },
+  { name: "Mintong Kang", affiliations: [3], role: "Core Contributor" },
+  { name: "Chejian Xu", affiliations: [3], role: "Core Contributor" },
+  { name: "Qichang Liu", affiliations: [3], role: "Core Contributor" },
+  { name: "Xiaogeng Liu", affiliations: [5], role: "Core Contributor" },
+  { name: "Tianneng Shi", affiliations: [6], role: "Core Contributor" },
+  { name: "Chaowei Xiao", affiliations: [5], role: "Advisor" },
+  { name: "Sanmi Koyejo", affiliations: [1, 7], role: "Advisor" },
+  { name: "Wenbo Guo", affiliations: [1, 4], role: "Advisor" },
+  { name: "Percy Liang", affiliations: [7], role: "Advisor" },
+  { name: "Dawn Song", affiliations: [1, 6], role: "Advisor" },
+  { name: "Bo Li", affiliations: [1, 2, 3], role: "Project Lead & Core Contributor" },
 ]
 
-const affiliations = ["University A", "University B", "Research Lab C", "Company D"]
+const affiliationList = Object.values(AFFILIATIONS)
 
 export function AboutSection() {
   return (
     <section className="min-h-screen">
       <div className="mx-auto max-w-4xl px-4 py-16 md:py-24">
         <div className="text-center mb-12">
-          <Shield className="h-12 w-12 text-accent mx-auto mb-4" />
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">About DT-Agent</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            DecodingTrust Agent — a real-world simulation platform for advanced red-teaming of AI agents.
-          </p>
+          <Image
+            src="/dt-agent-logo.png"
+            alt="DecodingTrust-Agent"
+            width={96}
+            height={96}
+            className="h-20 w-20 mx-auto mb-4"
+          />
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">DecodingTrust-Agent Team</h1>
         </div>
 
-        <div className="prose prose-invert max-w-none mb-12">
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <Building2 className="h-5 w-5 text-accent" />
-            Our Mission
-          </h2>
-          <p className="text-muted-foreground leading-relaxed mb-6">
-            DT-Agent is a real-world simulation platform for advanced red-teaming of AI agents. Our
-            mission is to provide researchers and practitioners with the tools needed to rigorously evaluate AI agent
-            security across diverse, real-world domains.
-          </p>
-          <p className="text-muted-foreground leading-relaxed mb-8">
-            The platform encompasses 30+ high-fidelity sandbox environments (e.g., Gmail, PayPal, Databricks) spanning
-            over 15 domains, with over 500 benign and malicious tasks per domain. All evaluated risks are derived
-            directly from domain-specific safety and security policies such as FINRA in Finance and the Salesforce AI
-            Use Policy.
-          </p>
-
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <GraduationCap className="h-5 w-5 text-accent" />
-            Research Team
-          </h2>
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-2 mb-12">
-          {team.map((member) => (
-            <Card key={member.name} className="bg-card border-border">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center">
-                    <Users className="h-6 w-6 text-muted-foreground" />
-                  </div>
-                  <div>
-                    <p className="font-medium">{member.name}</p>
-                    <p className="text-sm text-muted-foreground">{member.role}</p>
-                    <p className="text-xs text-accent">{member.affiliation}</p>
-                  </div>
+        <div className="mb-12 border-t border-border">
+          {Array.from({ length: Math.ceil(team.length / 4) }).map((_, rowIdx) => (
+            <div
+              key={rowIdx}
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 border-b border-border"
+            >
+              {team.slice(rowIdx * 4, rowIdx * 4 + 4).map((member) => (
+                <div
+                  key={member.name}
+                  className="px-5 py-4 border-r border-border last:border-r-0"
+                >
+                  <p className="font-semibold text-foreground leading-tight">{member.name}</p>
+                  <p className="text-sm text-muted-foreground mt-1">{member.role}</p>
+                  <p className="text-xs text-accent mt-1">
+                    {member.affiliations.map((i) => AFFILIATIONS[i].name).join(", ")}
+                  </p>
                 </div>
-              </CardContent>
-            </Card>
+              ))}
+            </div>
           ))}
         </div>
 
         <div className="mb-12">
           <h2 className="text-xl font-semibold mb-4">Affiliations</h2>
-          <div className="flex flex-wrap gap-3">
-            {affiliations.map((aff) => (
-              <div key={aff} className="px-4 py-2 rounded-lg border border-border bg-card text-sm">
-                {aff}
-              </div>
+          <div className="flex flex-wrap items-center gap-x-10 gap-y-6">
+            {affiliationList.map((aff) => (
+              <Image
+                key={aff.name}
+                src={aff.logo}
+                alt={aff.name}
+                title={aff.name}
+                width={96}
+                height={96}
+                className="h-20 w-auto object-contain"
+              />
             ))}
           </div>
         </div>

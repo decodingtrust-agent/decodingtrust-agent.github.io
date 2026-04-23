@@ -73,34 +73,40 @@
       "sortOrder": 8
     },
     {
-      "key": "os-gui",
-      "label": "OS-GUI",
-      "shortLabel": "OS-GUI",
+      "key": "windows",
+      "label": "Windows",
+      "shortLabel": "Windows",
       "sortOrder": 9
+    },
+    {
+      "key": "macos",
+      "label": "macOS",
+      "shortLabel": "macOS",
+      "sortOrder": 10
     },
     {
       "key": "finance",
       "label": "Finance",
       "shortLabel": "Finance",
-      "sortOrder": 10
+      "sortOrder": 11
     },
     {
       "key": "legal",
       "label": "Legal",
       "shortLabel": "Legal",
-      "sortOrder": 11
+      "sortOrder": 12
     },
     {
       "key": "telecom",
       "label": "Telecom",
       "shortLabel": "Telecom",
-      "sortOrder": 12
+      "sortOrder": 13
     },
     {
       "key": "medical",
       "label": "Medical",
       "shortLabel": "Medical",
-      "sortOrder": 13
+      "sortOrder": 14
     }
   ],
   "frameworks": [
@@ -170,1147 +176,1389 @@
   "scores": [
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "workflow",
       "domainLabel": "Workflow",
-      "value": 39.0
+      "value": 76.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "crm",
       "domainLabel": "CRM",
-      "value": 53.8
+      "value": 78.8
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "customer-service",
       "domainLabel": "Customer Service",
-      "value": 52.4
+      "value": 97.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "travel",
       "domainLabel": "Travel",
-      "value": 55.0
+      "value": 90.6
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "coding",
       "domainLabel": "Coding",
-      "value": 62.2
+      "value": 98.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "browser",
       "domainLabel": "Browser",
-      "value": 42.9
+      "value": 77.1
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "research",
       "domainLabel": "Research",
-      "value": 14.2
+      "value": 95.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "os-filesystem",
       "domainLabel": "OS-FS",
-      "value": 37.5
+      "value": 85.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 10.7
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 77.8
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-4",
+      "modelName": "GPT-5.4",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 76.7
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "finance",
       "domainLabel": "Finance",
-      "value": 36.5
+      "value": 95.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "legal",
       "domainLabel": "Legal",
-      "value": 58.0
+      "value": 89.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "telecom",
       "domainLabel": "Telecom",
-      "value": 15.1
+      "value": 74.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "medical",
       "domainLabel": "Medical",
-      "value": 37.5
+      "value": 86.1
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "workflow",
       "domainLabel": "Workflow",
-      "value": 42.5
+      "value": 73.1
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "crm",
       "domainLabel": "CRM",
-      "value": 66.4
+      "value": 72.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "customer-service",
       "domainLabel": "Customer Service",
-      "value": 46.4
+      "value": 97.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "travel",
       "domainLabel": "Travel",
-      "value": 66.7
+      "value": 95.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "coding",
       "domainLabel": "Coding",
-      "value": 79.3
+      "value": 93.6
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "browser",
       "domainLabel": "Browser",
-      "value": 24.8
+      "value": 55.6
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "research",
       "domainLabel": "Research",
-      "value": 7.0
+      "value": 94.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "os-filesystem",
       "domainLabel": "OS-FS",
-      "value": 44.3
+      "value": 80.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 12.9
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 74.6
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-2",
+      "modelName": "GPT-5.2",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 73.3
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "finance",
       "domainLabel": "Finance",
-      "value": 40.5
+      "value": 96.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "legal",
       "domainLabel": "Legal",
-      "value": 66.0
+      "value": 84.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "telecom",
       "domainLabel": "Telecom",
-      "value": 33.7
+      "value": 74.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "medical",
       "domainLabel": "Medical",
-      "value": 47.2
+      "value": 66.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-1",
+      "modelName": "GPT-5.1",
+      "domainKey": "workflow",
+      "domainLabel": "Workflow",
+      "value": 77.3
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-1",
+      "modelName": "GPT-5.1",
+      "domainKey": "crm",
+      "domainLabel": "CRM",
+      "value": 65.5
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-1",
+      "modelName": "GPT-5.1",
+      "domainKey": "customer-service",
+      "domainLabel": "Customer Service",
+      "value": 98.4
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-1",
+      "modelName": "GPT-5.1",
+      "domainKey": "travel",
+      "domainLabel": "Travel",
+      "value": 89.2
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-1",
+      "modelName": "GPT-5.1",
+      "domainKey": "coding",
+      "domainLabel": "Coding",
+      "value": 93.2
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-1",
+      "modelName": "GPT-5.1",
+      "domainKey": "browser",
+      "domainLabel": "Browser",
+      "value": 79.2
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-1",
+      "modelName": "GPT-5.1",
+      "domainKey": "research",
+      "domainLabel": "Research",
+      "value": 90.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-1",
+      "modelName": "GPT-5.1",
+      "domainKey": "os-filesystem",
+      "domainLabel": "OS-FS",
+      "value": 74.5
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-1",
+      "modelName": "GPT-5.1",
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 72.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-1",
+      "modelName": "GPT-5.1",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 70.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-1",
+      "modelName": "GPT-5.1",
+      "domainKey": "finance",
+      "domainLabel": "Finance",
+      "value": 94.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-1",
+      "modelName": "GPT-5.1",
+      "domainKey": "legal",
+      "domainLabel": "Legal",
+      "value": 91.5
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-1",
+      "modelName": "GPT-5.1",
+      "domainKey": "telecom",
+      "domainLabel": "Telecom",
+      "value": 70.8
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-1",
+      "modelName": "GPT-5.1",
+      "domainKey": "medical",
+      "domainLabel": "Medical",
+      "value": 52.8
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-oss-120b",
       "modelName": "GPT-OSS-120B",
       "domainKey": "workflow",
       "domainLabel": "Workflow",
-      "value": null
+      "value": 56.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-oss-120b",
       "modelName": "GPT-OSS-120B",
       "domainKey": "crm",
       "domainLabel": "CRM",
-      "value": 9.3
+      "value": 4.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-oss-120b",
       "modelName": "GPT-OSS-120B",
       "domainKey": "customer-service",
       "domainLabel": "Customer Service",
-      "value": 19.6
+      "value": 72.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-oss-120b",
       "modelName": "GPT-OSS-120B",
       "domainKey": "travel",
       "domainLabel": "Travel",
-      "value": 40.8
+      "value": 0.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-oss-120b",
       "modelName": "GPT-OSS-120B",
       "domainKey": "coding",
       "domainLabel": "Coding",
-      "value": 15.7
+      "value": 49.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-oss-120b",
       "modelName": "GPT-OSS-120B",
       "domainKey": "browser",
       "domainLabel": "Browser",
-      "value": 41.3
+      "value": 25.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-oss-120b",
       "modelName": "GPT-OSS-120B",
       "domainKey": "research",
       "domainLabel": "Research",
-      "value": 17.3
+      "value": 30.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-oss-120b",
       "modelName": "GPT-OSS-120B",
       "domainKey": "os-filesystem",
       "domainLabel": "OS-FS",
-      "value": 32.8
+      "value": 61.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-oss-120b",
       "modelName": "GPT-OSS-120B",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 14.7
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 67.9
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-oss-120b",
       "modelName": "GPT-OSS-120B",
-      "domainKey": "finance",
-      "domainLabel": "Finance",
-      "value": 32.5
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
-      "domainKey": "legal",
-      "domainLabel": "Legal",
-      "value": 31.0
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
-      "domainKey": "telecom",
-      "domainLabel": "Telecom",
-      "value": 54.8
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
-      "domainKey": "medical",
-      "domainLabel": "Medical",
-      "value": 62.1
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "workflow",
-      "domainLabel": "Workflow",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
       "value": 13.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "crm",
-      "domainLabel": "CRM",
-      "value": 3.9
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "customer-service",
-      "domainLabel": "Customer Service",
-      "value": 1.9
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "travel",
-      "domainLabel": "Travel",
-      "value": 0.0
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "coding",
-      "domainLabel": "Coding",
-      "value": 15.3
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "browser",
-      "domainLabel": "Browser",
-      "value": 0.0
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "research",
-      "domainLabel": "Research",
-      "value": 0.0
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "os-filesystem",
-      "domainLabel": "OS-FS",
-      "value": 1.2
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 7.9
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
       "domainKey": "finance",
       "domainLabel": "Finance",
-      "value": 0.5
+      "value": 21.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
       "domainKey": "legal",
       "domainLabel": "Legal",
       "value": 9.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
+      "domainKey": "telecom",
+      "domainLabel": "Telecom",
+      "value": 67.5
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
+      "domainKey": "medical",
+      "domainLabel": "Medical",
+      "value": 35.8
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "workflow",
+      "domainLabel": "Workflow",
+      "value": 83.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "crm",
+      "domainLabel": "CRM",
+      "value": 83.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "customer-service",
+      "domainLabel": "Customer Service",
+      "value": 100.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "travel",
+      "domainLabel": "Travel",
+      "value": 89.4
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "coding",
+      "domainLabel": "Coding",
+      "value": 98.4
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "browser",
+      "domainLabel": "Browser",
+      "value": 97.2
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "research",
+      "domainLabel": "Research",
+      "value": 100.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "os-filesystem",
+      "domainLabel": "OS-FS",
+      "value": 83.3
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 78.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 83.3
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "finance",
+      "domainLabel": "Finance",
+      "value": 96.5
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "legal",
+      "domainLabel": "Legal",
+      "value": 91.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "telecom",
       "domainLabel": "Telecom",
-      "value": 22.9
+      "value": 70.8
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "medical",
       "domainLabel": "Medical",
-      "value": 16.7
+      "value": 57.8
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "workflow",
       "domainLabel": "Workflow",
-      "value": 52.0
+      "value": 71.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "crm",
       "domainLabel": "CRM",
-      "value": 40.6
+      "value": 82.4
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "customer-service",
       "domainLabel": "Customer Service",
-      "value": 12.9
+      "value": 94.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "travel",
       "domainLabel": "Travel",
-      "value": 11.7
+      "value": 56.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "coding",
       "domainLabel": "Coding",
-      "value": 56.0
+      "value": 98.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "browser",
       "domainLabel": "Browser",
-      "value": 4.5
+      "value": 95.8
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "research",
       "domainLabel": "Research",
-      "value": 0.0
+      "value": 100.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "os-filesystem",
       "domainLabel": "OS-FS",
-      "value": 17.6
+      "value": 78.6
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 7.7
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 83.8
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "sonnet-4-5",
+      "modelName": "Sonnet-4.5",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 73.3
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "finance",
       "domainLabel": "Finance",
-      "value": 7.0
+      "value": 92.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "legal",
       "domainLabel": "Legal",
-      "value": 26.5
+      "value": 79.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "telecom",
       "domainLabel": "Telecom",
-      "value": 44.0
+      "value": 74.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "medical",
       "domainLabel": "Medical",
-      "value": 51.7
+      "value": 66.4
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "workflow",
       "domainLabel": "Workflow",
-      "value": 53.7
+      "value": 88.1
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "crm",
       "domainLabel": "CRM",
-      "value": 69.9
+      "value": 86.1
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "customer-service",
       "domainLabel": "Customer Service",
-      "value": 75.8
+      "value": 98.6
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "travel",
       "domainLabel": "Travel",
-      "value": 84.2
+      "value": 99.4
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "coding",
       "domainLabel": "Coding",
-      "value": 77.9
+      "value": 100.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "browser",
       "domainLabel": "Browser",
-      "value": 62.2
+      "value": 97.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "research",
       "domainLabel": "Research",
-      "value": 16.2
+      "value": 100.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "os-filesystem",
       "domainLabel": "OS-FS",
-      "value": 59.5
+      "value": 87.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 13.6
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 85.4
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
+      "frameworkKey": "google-adk",
+      "frameworkName": "Google ADK",
+      "modelKey": "gemini-3-pro",
+      "modelName": "Gemini-3-Pro",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 60.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "finance",
       "domainLabel": "Finance",
-      "value": 59.5
+      "value": 90.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "legal",
       "domainLabel": "Legal",
-      "value": 56.0
+      "value": 87.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "telecom",
       "domainLabel": "Telecom",
-      "value": 43.4
+      "value": 69.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "medical",
       "domainLabel": "Medical",
-      "value": 49.1
+      "value": 81.9
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "workflow",
       "domainLabel": "Workflow",
-      "value": 16.1
+      "value": 91.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "crm",
       "domainLabel": "CRM",
-      "value": 7.2
+      "value": 82.4
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "customer-service",
       "domainLabel": "Customer Service",
-      "value": 4.4
+      "value": 97.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "travel",
       "domainLabel": "Travel",
-      "value": 5.8
+      "value": 89.4
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "coding",
       "domainLabel": "Coding",
-      "value": 29.3
+      "value": 100.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "browser",
       "domainLabel": "Browser",
-      "value": 0.0
+      "value": 97.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "research",
       "domainLabel": "Research",
-      "value": 1.5
+      "value": 96.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "os-filesystem",
       "domainLabel": "OS-FS",
-      "value": 3.1
+      "value": 78.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": null
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 70.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
+      "frameworkKey": "openclaw",
+      "frameworkName": "OpenClaw",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 80.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "finance",
       "domainLabel": "Finance",
-      "value": 1.5
+      "value": 91.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "legal",
       "domainLabel": "Legal",
-      "value": 12.5
+      "value": 94.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "telecom",
       "domainLabel": "Telecom",
-      "value": 24.7
+      "value": 77.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "medical",
       "domainLabel": "Medical",
-      "value": 23.0
+      "value": 69.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "workflow",
       "domainLabel": "Workflow",
-      "value": 23.3
+      "value": 62.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "crm",
       "domainLabel": "CRM",
-      "value": 50.9
+      "value": 75.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "customer-service",
       "domainLabel": "Customer Service",
-      "value": 53.9
+      "value": 98.4
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "travel",
       "domainLabel": "Travel",
-      "value": 32.5
+      "value": 91.4
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "coding",
       "domainLabel": "Coding",
-      "value": 65.3
+      "value": 91.1
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "browser",
       "domainLabel": "Browser",
-      "value": 27.6
+      "value": 56.9
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "research",
       "domainLabel": "Research",
-      "value": 5.8
+      "value": 95.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "os-filesystem",
       "domainLabel": "OS-FS",
-      "value": 20.0
+      "value": 78.6
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 12.0
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 58.1
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
+      "frameworkKey": "openclaw",
+      "frameworkName": "OpenClaw",
+      "modelKey": "gpt-5-2",
+      "modelName": "GPT-5.2",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 76.7
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "finance",
       "domainLabel": "Finance",
-      "value": 26.5
+      "value": 89.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "legal",
       "domainLabel": "Legal",
-      "value": 66.0
+      "value": 91.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "telecom",
       "domainLabel": "Telecom",
-      "value": 36.7
+      "value": 68.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "indirect_asr",
+      "metricType": "bsr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "medical",
       "domainLabel": "Medical",
-      "value": 48.2
+      "value": 68.4
     },
     {
       "runSlug": "paper_v1",
@@ -1407,9 +1655,20 @@
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 46.9
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 50.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "direct_asr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-4",
+      "modelName": "GPT-5.4",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 30.0
     },
     {
       "runSlug": "paper_v1",
@@ -1550,9 +1809,20 @@
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 50.5
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 49.3
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "direct_asr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-2",
+      "modelName": "GPT-5.2",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 40.0
     },
     {
       "runSlug": "paper_v1",
@@ -1607,7 +1877,7 @@
       "modelName": "GPT-OSS-120B",
       "domainKey": "workflow",
       "domainLabel": "Workflow",
-      "value": null
+      "value": 61.7
     },
     {
       "runSlug": "paper_v1",
@@ -1693,9 +1963,20 @@
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-oss-120b",
       "modelName": "GPT-OSS-120B",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 34.0
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 34.3
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "direct_asr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 20.0
     },
     {
       "runSlug": "paper_v1",
@@ -1836,9 +2117,20 @@
       "frameworkName": "Claude Code",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 45.0
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 50.7
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "direct_asr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 26.0
     },
     {
       "runSlug": "paper_v1",
@@ -1979,9 +2271,20 @@
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 57.5
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 27.1
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "direct_asr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "sonnet-4-5",
+      "modelName": "Sonnet-4.5",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 18.0
     },
     {
       "runSlug": "paper_v1",
@@ -2122,9 +2425,20 @@
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 43.6
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 42.9
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "direct_asr",
+      "frameworkKey": "google-adk",
+      "frameworkName": "Google ADK",
+      "modelKey": "gemini-3-pro",
+      "modelName": "Gemini-3-Pro",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 30.0
     },
     {
       "runSlug": "paper_v1",
@@ -2265,9 +2579,20 @@
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 15.0
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 30.7
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "direct_asr",
+      "frameworkKey": "openclaw",
+      "frameworkName": "OpenClaw",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 14.0
     },
     {
       "runSlug": "paper_v1",
@@ -2408,9 +2733,20 @@
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 50.0
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 35.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "direct_asr",
+      "frameworkKey": "openclaw",
+      "frameworkName": "OpenClaw",
+      "modelKey": "gpt-5-2",
+      "modelName": "GPT-5.2",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 26.0
     },
     {
       "runSlug": "paper_v1",
@@ -2458,1290 +2794,1235 @@
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "workflow",
       "domainLabel": "Workflow",
-      "value": 79.8
+      "value": 39.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "crm",
       "domainLabel": "CRM",
-      "value": 78.8
+      "value": 53.8
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "customer-service",
       "domainLabel": "Customer Service",
-      "value": 97.5
+      "value": 52.4
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "travel",
       "domainLabel": "Travel",
-      "value": 90.6
+      "value": 55.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "coding",
       "domainLabel": "Coding",
-      "value": 98.5
+      "value": 62.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "browser",
       "domainLabel": "Browser",
-      "value": 77.1
+      "value": 42.9
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "research",
       "domainLabel": "Research",
-      "value": 95.0
+      "value": 14.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "os-filesystem",
       "domainLabel": "OS-FS",
-      "value": 85.7
+      "value": 37.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 77.8
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 10.6
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-4",
+      "modelName": "GPT-5.4",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 26.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "finance",
       "domainLabel": "Finance",
-      "value": 95.5
+      "value": 36.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "legal",
       "domainLabel": "Legal",
-      "value": 89.5
+      "value": 58.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "telecom",
       "domainLabel": "Telecom",
-      "value": 74.2
+      "value": 15.1
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainKey": "medical",
       "domainLabel": "Medical",
-      "value": 86.1
+      "value": 37.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "workflow",
       "domainLabel": "Workflow",
-      "value": 76.4
+      "value": 42.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "crm",
       "domainLabel": "CRM",
-      "value": 72.7
+      "value": 66.4
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "customer-service",
       "domainLabel": "Customer Service",
-      "value": 97.3
+      "value": 46.4
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "travel",
       "domainLabel": "Travel",
-      "value": 95.3
+      "value": 66.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "coding",
       "domainLabel": "Coding",
-      "value": 93.6
+      "value": 79.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "browser",
       "domainLabel": "Browser",
-      "value": 55.6
+      "value": 24.8
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "research",
       "domainLabel": "Research",
-      "value": 94.5
+      "value": 7.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "os-filesystem",
       "domainLabel": "OS-FS",
-      "value": 80.0
+      "value": 44.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 74.6
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 12.9
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-5-2",
+      "modelName": "GPT-5.2",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 38.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "finance",
       "domainLabel": "Finance",
-      "value": 96.5
+      "value": 40.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "legal",
       "domainLabel": "Legal",
-      "value": 84.5
+      "value": 66.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "telecom",
       "domainLabel": "Telecom",
-      "value": 74.2
+      "value": 33.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "medical",
       "domainLabel": "Medical",
-      "value": 66.3
+      "value": 47.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-5-1",
-      "modelName": "GPT-5.1",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
       "domainKey": "workflow",
       "domainLabel": "Workflow",
-      "value": 79.2
+      "value": 3.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-5-1",
-      "modelName": "GPT-5.1",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
       "domainKey": "crm",
       "domainLabel": "CRM",
-      "value": 65.5
+      "value": 9.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-5-1",
-      "modelName": "GPT-5.1",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
       "domainKey": "customer-service",
       "domainLabel": "Customer Service",
-      "value": 98.4
+      "value": 19.6
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-5-1",
-      "modelName": "GPT-5.1",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
       "domainKey": "travel",
       "domainLabel": "Travel",
-      "value": 89.2
+      "value": 40.8
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-5-1",
-      "modelName": "GPT-5.1",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
       "domainKey": "coding",
       "domainLabel": "Coding",
-      "value": 93.2
+      "value": 15.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-5-1",
-      "modelName": "GPT-5.1",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
       "domainKey": "browser",
       "domainLabel": "Browser",
-      "value": 79.2
+      "value": 41.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-5-1",
-      "modelName": "GPT-5.1",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
       "domainKey": "research",
       "domainLabel": "Research",
-      "value": 90.0
+      "value": 17.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-5-1",
-      "modelName": "GPT-5.1",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
       "domainKey": "os-filesystem",
       "domainLabel": "OS-FS",
-      "value": 74.5
+      "value": 32.8
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-5-1",
-      "modelName": "GPT-5.1",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": null
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 14.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-5-1",
-      "modelName": "GPT-5.1",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 18.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "indirect_asr",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
       "domainKey": "finance",
       "domainLabel": "Finance",
-      "value": 94.0
+      "value": 32.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-5-1",
-      "modelName": "GPT-5.1",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
       "domainKey": "legal",
       "domainLabel": "Legal",
-      "value": 91.5
+      "value": 31.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-5-1",
-      "modelName": "GPT-5.1",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
       "domainKey": "telecom",
       "domainLabel": "Telecom",
-      "value": 70.8
+      "value": 54.8
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openai-agents",
       "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-5-1",
-      "modelName": "GPT-5.1",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
       "domainKey": "medical",
       "domainLabel": "Medical",
-      "value": 52.8
+      "value": 62.1
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
+      "metricType": "indirect_asr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
       "domainKey": "workflow",
       "domainLabel": "Workflow",
-      "value": null
+      "value": 13.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
+      "metricType": "indirect_asr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
       "domainKey": "crm",
       "domainLabel": "CRM",
-      "value": 4.2
+      "value": 3.9
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
+      "metricType": "indirect_asr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
       "domainKey": "customer-service",
       "domainLabel": "Customer Service",
-      "value": 72.5
+      "value": 1.9
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
+      "metricType": "indirect_asr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
       "domainKey": "travel",
       "domainLabel": "Travel",
       "value": 0.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
+      "metricType": "indirect_asr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
       "domainKey": "coding",
       "domainLabel": "Coding",
-      "value": 49.5
+      "value": 15.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
+      "metricType": "indirect_asr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
       "domainKey": "browser",
       "domainLabel": "Browser",
-      "value": 25.0
+      "value": 0.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
+      "metricType": "indirect_asr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
       "domainKey": "research",
       "domainLabel": "Research",
-      "value": 30.0
+      "value": 0.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
+      "metricType": "indirect_asr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
       "domainKey": "os-filesystem",
       "domainLabel": "OS-FS",
-      "value": 61.7
+      "value": 1.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 67.9
+      "metricType": "indirect_asr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 7.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
+      "metricType": "indirect_asr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 28.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "indirect_asr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
       "domainKey": "finance",
       "domainLabel": "Finance",
-      "value": 21.5
+      "value": 0.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
+      "metricType": "indirect_asr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
       "domainKey": "legal",
       "domainLabel": "Legal",
       "value": 9.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
-      "domainKey": "telecom",
-      "domainLabel": "Telecom",
-      "value": 67.5
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
-      "domainKey": "medical",
-      "domainLabel": "Medical",
-      "value": 35.8
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "workflow",
-      "domainLabel": "Workflow",
-      "value": 82.7
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "crm",
-      "domainLabel": "CRM",
-      "value": 83.0
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "customer-service",
-      "domainLabel": "Customer Service",
-      "value": 100.0
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "travel",
-      "domainLabel": "Travel",
-      "value": 89.4
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "coding",
-      "domainLabel": "Coding",
-      "value": 100.0
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "browser",
-      "domainLabel": "Browser",
-      "value": 97.2
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "research",
-      "domainLabel": "Research",
-      "value": 100.0
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "os-filesystem",
-      "domainLabel": "OS-FS",
-      "value": 83.3
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 78.7
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "finance",
-      "domainLabel": "Finance",
-      "value": 96.5
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "bsr",
-      "frameworkKey": "claude-code",
-      "frameworkName": "Claude Code",
-      "modelKey": "opus-4-6",
-      "modelName": "Opus-4.6",
-      "domainKey": "legal",
-      "domainLabel": "Legal",
-      "value": 91.0
-    },
-    {
-      "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "telecom",
       "domainLabel": "Telecom",
-      "value": 70.8
+      "value": 22.9
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "medical",
       "domainLabel": "Medical",
-      "value": 57.8
+      "value": 16.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "workflow",
       "domainLabel": "Workflow",
-      "value": 69.8
+      "value": 52.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "crm",
       "domainLabel": "CRM",
-      "value": 82.4
+      "value": 40.6
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "customer-service",
       "domainLabel": "Customer Service",
-      "value": 94.7
+      "value": 12.9
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "travel",
       "domainLabel": "Travel",
-      "value": 56.7
+      "value": 11.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "coding",
       "domainLabel": "Coding",
-      "value": 98.4
+      "value": 56.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "browser",
       "domainLabel": "Browser",
-      "value": 95.8
+      "value": 4.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "research",
       "domainLabel": "Research",
-      "value": 100.0
+      "value": 0.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "os-filesystem",
       "domainLabel": "OS-FS",
-      "value": 78.6
+      "value": 17.6
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 83.8
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 7.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
+      "frameworkKey": "claude-code",
+      "frameworkName": "Claude Code",
+      "modelKey": "sonnet-4-5",
+      "modelName": "Sonnet-4.5",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 20.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "indirect_asr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "finance",
       "domainLabel": "Finance",
-      "value": 92.0
+      "value": 7.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "legal",
       "domainLabel": "Legal",
-      "value": 79.0
+      "value": 26.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "telecom",
       "domainLabel": "Telecom",
-      "value": 74.2
+      "value": 44.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "claude-code",
       "frameworkName": "Claude Code",
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainKey": "medical",
       "domainLabel": "Medical",
-      "value": 66.4
+      "value": 51.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "workflow",
       "domainLabel": "Workflow",
-      "value": 89.4
+      "value": 53.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "crm",
       "domainLabel": "CRM",
-      "value": 86.1
+      "value": 69.9
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "customer-service",
       "domainLabel": "Customer Service",
-      "value": 98.6
+      "value": 75.8
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "travel",
       "domainLabel": "Travel",
-      "value": 99.4
+      "value": 84.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "coding",
       "domainLabel": "Coding",
-      "value": 100.0
+      "value": 77.9
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "browser",
       "domainLabel": "Browser",
-      "value": 97.2
+      "value": 62.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "research",
       "domainLabel": "Research",
-      "value": 100.0
+      "value": 16.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "os-filesystem",
       "domainLabel": "OS-FS",
-      "value": 87.0
+      "value": 59.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 85.4
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 13.9
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
+      "frameworkKey": "google-adk",
+      "frameworkName": "Google ADK",
+      "modelKey": "gemini-3-pro",
+      "modelName": "Gemini-3-Pro",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 34.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "indirect_asr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "finance",
       "domainLabel": "Finance",
-      "value": 90.0
+      "value": 59.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "legal",
       "domainLabel": "Legal",
-      "value": 87.5
+      "value": 56.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "telecom",
       "domainLabel": "Telecom",
-      "value": 69.2
+      "value": 43.4
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "google-adk",
       "frameworkName": "Google ADK",
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainKey": "medical",
       "domainLabel": "Medical",
-      "value": 81.9
+      "value": 49.1
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "workflow",
       "domainLabel": "Workflow",
-      "value": 91.5
+      "value": 16.1
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "crm",
       "domainLabel": "CRM",
-      "value": 82.4
+      "value": 7.2
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "customer-service",
       "domainLabel": "Customer Service",
-      "value": 97.3
+      "value": 4.4
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "travel",
       "domainLabel": "Travel",
-      "value": 89.4
+      "value": 5.8
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "coding",
       "domainLabel": "Coding",
-      "value": 100.0
+      "value": 29.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "browser",
       "domainLabel": "Browser",
-      "value": 97.2
+      "value": 0.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "research",
       "domainLabel": "Research",
-      "value": 96.0
+      "value": 1.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "os-filesystem",
       "domainLabel": "OS-FS",
-      "value": 78.7
+      "value": 3.1
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 70.0
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 5.6
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
+      "frameworkKey": "openclaw",
+      "frameworkName": "OpenClaw",
+      "modelKey": "opus-4-6",
+      "modelName": "Opus-4.6",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 16.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "finance",
       "domainLabel": "Finance",
-      "value": 91.0
+      "value": 1.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "legal",
       "domainLabel": "Legal",
-      "value": 94.0
+      "value": 12.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "telecom",
       "domainLabel": "Telecom",
-      "value": 68.3
+      "value": 24.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainKey": "medical",
       "domainLabel": "Medical",
-      "value": 69.3
+      "value": 23.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "workflow",
       "domainLabel": "Workflow",
-      "value": 61.0
+      "value": 23.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "crm",
       "domainLabel": "CRM",
-      "value": 75.2
+      "value": 50.9
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "customer-service",
       "domainLabel": "Customer Service",
-      "value": 98.4
+      "value": 53.9
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "travel",
       "domainLabel": "Travel",
-      "value": 91.4
+      "value": 32.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "coding",
       "domainLabel": "Coding",
-      "value": 91.1
+      "value": 65.3
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "browser",
       "domainLabel": "Browser",
-      "value": 56.9
+      "value": 27.6
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "research",
       "domainLabel": "Research",
-      "value": 95.0
+      "value": 5.8
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "os-filesystem",
       "domainLabel": "OS-FS",
-      "value": 78.6
+      "value": 20.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
-      "domainKey": "os-gui",
-      "domainLabel": "OS-GUI",
-      "value": 74.6
+      "domainKey": "windows",
+      "domainLabel": "Windows",
+      "value": 9.6
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
+      "frameworkKey": "openclaw",
+      "frameworkName": "OpenClaw",
+      "modelKey": "gpt-5-2",
+      "modelName": "GPT-5.2",
+      "domainKey": "macos",
+      "domainLabel": "macOS",
+      "value": 26.0
+    },
+    {
+      "runSlug": "paper_v1",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "finance",
       "domainLabel": "Finance",
-      "value": 89.5
+      "value": 26.5
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "legal",
       "domainLabel": "Legal",
-      "value": 91.0
+      "value": 66.0
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "telecom",
       "domainLabel": "Telecom",
-      "value": 77.5
+      "value": 36.7
     },
     {
       "runSlug": "paper_v1",
-      "metricType": "bsr",
+      "metricType": "indirect_asr",
       "frameworkKey": "openclaw",
       "frameworkName": "OpenClaw",
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainKey": "medical",
       "domainLabel": "Medical",
-      "value": 68.4
+      "value": 48.2
     }
   ],
   "entries": [
@@ -3754,7 +4035,7 @@
       "modelKey": "gpt-5-4",
       "modelName": "GPT-5.4",
       "domainScores": {
-        "workflow": 79.8,
+        "workflow": 76.7,
         "crm": 78.8,
         "customer-service": 97.5,
         "travel": 90.6,
@@ -3762,14 +4043,15 @@
         "browser": 77.1,
         "research": 95.0,
         "os-filesystem": 85.7,
-        "os-gui": 77.8,
+        "windows": 77.8,
+        "macos": 76.7,
         "finance": 95.5,
         "legal": 89.5,
         "telecom": 74.2,
         "medical": 86.1
       },
-      "overall": 86.6,
-      "scoredDomains": 13
+      "overall": 85.7,
+      "scoredDomains": 14
     },
     {
       "entryKey": "bsr::openai-agents::gpt-5-2",
@@ -3780,7 +4062,7 @@
       "modelKey": "gpt-5-2",
       "modelName": "GPT-5.2",
       "domainScores": {
-        "workflow": 76.4,
+        "workflow": 73.1,
         "crm": 72.7,
         "customer-service": 97.3,
         "travel": 95.3,
@@ -3788,40 +4070,15 @@
         "browser": 55.6,
         "research": 94.5,
         "os-filesystem": 80.0,
-        "os-gui": 74.6,
+        "windows": 74.6,
+        "macos": 73.3,
         "finance": 96.5,
         "legal": 84.5,
         "telecom": 74.2,
         "medical": 66.3
       },
-      "overall": 81.7,
-      "scoredDomains": 13
-    },
-    {
-      "entryKey": "bsr::openai-agents::gpt-oss-120b",
-      "metricType": "bsr",
-      "metricLabel": "BSR",
-      "frameworkKey": "openai-agents",
-      "frameworkName": "OpenAI Agents",
-      "modelKey": "gpt-oss-120b",
-      "modelName": "GPT-OSS-120B",
-      "domainScores": {
-        "workflow": null,
-        "crm": 4.2,
-        "customer-service": 72.5,
-        "travel": 0.0,
-        "coding": 49.5,
-        "browser": 25.0,
-        "research": 30.0,
-        "os-filesystem": 61.7,
-        "os-gui": 67.9,
-        "finance": 21.5,
-        "legal": 9.5,
-        "telecom": 67.5,
-        "medical": 35.8
-      },
-      "overall": 37.1,
-      "scoredDomains": 12
+      "overall": 80.8,
+      "scoredDomains": 14
     },
     {
       "entryKey": "bsr::openai-agents::gpt-5-1",
@@ -3832,7 +4089,7 @@
       "modelKey": "gpt-5-1",
       "modelName": "GPT-5.1",
       "domainScores": {
-        "workflow": 79.2,
+        "workflow": 77.3,
         "crm": 65.5,
         "customer-service": 98.4,
         "travel": 89.2,
@@ -3840,14 +4097,42 @@
         "browser": 79.2,
         "research": 90.0,
         "os-filesystem": 74.5,
-        "os-gui": null,
+        "windows": 72.0,
+        "macos": 70.0,
         "finance": 94.0,
         "legal": 91.5,
         "telecom": 70.8,
         "medical": 52.8
       },
-      "overall": 81.5,
-      "scoredDomains": 12
+      "overall": 79.9,
+      "scoredDomains": 14
+    },
+    {
+      "entryKey": "bsr::openai-agents::gpt-oss-120b",
+      "metricType": "bsr",
+      "metricLabel": "BSR",
+      "frameworkKey": "openai-agents",
+      "frameworkName": "OpenAI Agents",
+      "modelKey": "gpt-oss-120b",
+      "modelName": "GPT-OSS-120B",
+      "domainScores": {
+        "workflow": 56.0,
+        "crm": 4.2,
+        "customer-service": 72.5,
+        "travel": 0.0,
+        "coding": 49.5,
+        "browser": 25.0,
+        "research": 30.0,
+        "os-filesystem": 61.7,
+        "windows": 67.9,
+        "macos": 13.3,
+        "finance": 21.5,
+        "legal": 9.5,
+        "telecom": 67.5,
+        "medical": 35.8
+      },
+      "overall": 36.7,
+      "scoredDomains": 14
     },
     {
       "entryKey": "bsr::claude-code::opus-4-6",
@@ -3858,22 +4143,23 @@
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainScores": {
-        "workflow": 82.7,
+        "workflow": 83.0,
         "crm": 83.0,
         "customer-service": 100.0,
         "travel": 89.4,
-        "coding": 100.0,
+        "coding": 98.4,
         "browser": 97.2,
         "research": 100.0,
         "os-filesystem": 83.3,
-        "os-gui": 78.7,
+        "windows": 78.0,
+        "macos": 83.3,
         "finance": 96.5,
         "legal": 91.0,
         "telecom": 70.8,
         "medical": 57.8
       },
-      "overall": 87.0,
-      "scoredDomains": 13
+      "overall": 86.5,
+      "scoredDomains": 14
     },
     {
       "entryKey": "bsr::claude-code::sonnet-4-5",
@@ -3884,22 +4170,23 @@
       "modelKey": "sonnet-4-5",
       "modelName": "Sonnet-4.5",
       "domainScores": {
-        "workflow": 69.8,
+        "workflow": 71.0,
         "crm": 82.4,
         "customer-service": 94.7,
         "travel": 56.7,
-        "coding": 98.4,
+        "coding": 98.2,
         "browser": 95.8,
         "research": 100.0,
         "os-filesystem": 78.6,
-        "os-gui": 83.8,
+        "windows": 83.8,
+        "macos": 73.3,
         "finance": 92.0,
         "legal": 79.0,
         "telecom": 74.2,
         "medical": 66.4
       },
-      "overall": 82.4,
-      "scoredDomains": 13
+      "overall": 81.9,
+      "scoredDomains": 14
     },
     {
       "entryKey": "bsr::google-adk::gemini-3-pro",
@@ -3910,7 +4197,7 @@
       "modelKey": "gemini-3-pro",
       "modelName": "Gemini-3-Pro",
       "domainScores": {
-        "workflow": 89.4,
+        "workflow": 88.1,
         "crm": 86.1,
         "customer-service": 98.6,
         "travel": 99.4,
@@ -3918,40 +4205,15 @@
         "browser": 97.2,
         "research": 100.0,
         "os-filesystem": 87.0,
-        "os-gui": 85.4,
+        "windows": 85.4,
+        "macos": 60.0,
         "finance": 90.0,
         "legal": 87.5,
         "telecom": 69.2,
         "medical": 81.9
       },
-      "overall": 90.1,
-      "scoredDomains": 13
-    },
-    {
-      "entryKey": "bsr::openclaw::gpt-5-2",
-      "metricType": "bsr",
-      "metricLabel": "BSR",
-      "frameworkKey": "openclaw",
-      "frameworkName": "OpenClaw",
-      "modelKey": "gpt-5-2",
-      "modelName": "GPT-5.2",
-      "domainScores": {
-        "workflow": 61.0,
-        "crm": 75.2,
-        "customer-service": 98.4,
-        "travel": 91.4,
-        "coding": 91.1,
-        "browser": 56.9,
-        "research": 95.0,
-        "os-filesystem": 78.6,
-        "os-gui": 74.6,
-        "finance": 89.5,
-        "legal": 91.0,
-        "telecom": 77.5,
-        "medical": 68.4
-      },
-      "overall": 80.7,
-      "scoredDomains": 13
+      "overall": 87.9,
+      "scoredDomains": 14
     },
     {
       "entryKey": "bsr::openclaw::opus-4-6",
@@ -3962,7 +4224,7 @@
       "modelKey": "opus-4-6",
       "modelName": "Opus-4.6",
       "domainScores": {
-        "workflow": 91.5,
+        "workflow": 91.0,
         "crm": 82.4,
         "customer-service": 97.3,
         "travel": 89.4,
@@ -3970,14 +4232,42 @@
         "browser": 97.2,
         "research": 96.0,
         "os-filesystem": 78.7,
-        "os-gui": 70.0,
+        "windows": 70.0,
+        "macos": 80.0,
         "finance": 91.0,
         "legal": 94.0,
-        "telecom": 68.3,
+        "telecom": 77.5,
         "medical": 69.3
       },
-      "overall": 86.5,
-      "scoredDomains": 13
+      "overall": 86.7,
+      "scoredDomains": 14
+    },
+    {
+      "entryKey": "bsr::openclaw::gpt-5-2",
+      "metricType": "bsr",
+      "metricLabel": "BSR",
+      "frameworkKey": "openclaw",
+      "frameworkName": "OpenClaw",
+      "modelKey": "gpt-5-2",
+      "modelName": "GPT-5.2",
+      "domainScores": {
+        "workflow": 62.7,
+        "crm": 75.2,
+        "customer-service": 98.4,
+        "travel": 91.4,
+        "coding": 91.1,
+        "browser": 56.9,
+        "research": 95.0,
+        "os-filesystem": 78.6,
+        "windows": 58.1,
+        "macos": 76.7,
+        "finance": 89.5,
+        "legal": 91.0,
+        "telecom": 68.3,
+        "medical": 68.4
+      },
+      "overall": 78.7,
+      "scoredDomains": 14
     },
     {
       "entryKey": "direct_asr::openai-agents::gpt-5-4",
@@ -3996,14 +4286,15 @@
         "browser": 29.2,
         "research": 27.5,
         "os-filesystem": 84.0,
-        "os-gui": 46.9,
+        "windows": 50.0,
+        "macos": 30.0,
         "finance": 30.5,
         "legal": 54.0,
         "telecom": 37.3,
         "medical": 60.4
       },
-      "overall": 50.1,
-      "scoredDomains": 13
+      "overall": 48.9,
+      "scoredDomains": 14
     },
     {
       "entryKey": "direct_asr::openai-agents::gpt-5-2",
@@ -4022,14 +4313,15 @@
         "browser": 20.3,
         "research": 37.7,
         "os-filesystem": 83.6,
-        "os-gui": 50.5,
+        "windows": 49.3,
+        "macos": 40.0,
         "finance": 51.5,
         "legal": 59.5,
         "telecom": 54.7,
         "medical": 71.1
       },
-      "overall": 57.7,
-      "scoredDomains": 13
+      "overall": 56.4,
+      "scoredDomains": 14
     },
     {
       "entryKey": "direct_asr::openai-agents::gpt-oss-120b",
@@ -4040,7 +4332,7 @@
       "modelKey": "gpt-oss-120b",
       "modelName": "GPT-OSS-120B",
       "domainScores": {
-        "workflow": null,
+        "workflow": 61.7,
         "crm": 38.9,
         "customer-service": 36.5,
         "travel": 54.3,
@@ -4048,14 +4340,15 @@
         "browser": 10.0,
         "research": 30.6,
         "os-filesystem": 70.0,
-        "os-gui": 34.0,
+        "windows": 34.3,
+        "macos": 20.0,
         "finance": 37.7,
         "legal": 60.5,
         "telecom": 57.1,
         "medical": 61.3
       },
-      "overall": 45.9,
-      "scoredDomains": 12
+      "overall": 45.2,
+      "scoredDomains": 14
     },
     {
       "entryKey": "direct_asr::claude-code::opus-4-6",
@@ -4074,14 +4367,15 @@
         "browser": 8.8,
         "research": 20.8,
         "os-filesystem": 26.2,
-        "os-gui": 45.0,
+        "windows": 50.7,
+        "macos": 26.0,
         "finance": 4.0,
         "legal": 30.0,
         "telecom": 28.0,
         "medical": 54.7
       },
-      "overall": 22.0,
-      "scoredDomains": 13
+      "overall": 22.7,
+      "scoredDomains": 14
     },
     {
       "entryKey": "direct_asr::claude-code::sonnet-4-5",
@@ -4100,14 +4394,15 @@
         "browser": 20.0,
         "research": 15.9,
         "os-filesystem": 22.6,
-        "os-gui": 57.5,
+        "windows": 27.1,
+        "macos": 18.0,
         "finance": 5.5,
         "legal": 20.0,
         "telecom": 28.6,
         "medical": 75.1
       },
-      "overall": 29.6,
-      "scoredDomains": 13
+      "overall": 26.6,
+      "scoredDomains": 14
     },
     {
       "entryKey": "direct_asr::google-adk::gemini-3-pro",
@@ -4126,40 +4421,15 @@
         "browser": 35.3,
         "research": 30.2,
         "os-filesystem": 73.5,
-        "os-gui": 43.6,
+        "windows": 42.9,
+        "macos": 30.0,
         "finance": 22.0,
         "legal": 64.0,
         "telecom": 30.4,
         "medical": 62.7
       },
-      "overall": 48.9,
-      "scoredDomains": 13
-    },
-    {
-      "entryKey": "direct_asr::openclaw::gpt-5-2",
-      "metricType": "direct_asr",
-      "metricLabel": "Direct ASR",
-      "frameworkKey": "openclaw",
-      "frameworkName": "OpenClaw",
-      "modelKey": "gpt-5-2",
-      "modelName": "GPT-5.2",
-      "domainScores": {
-        "workflow": 28.3,
-        "crm": 67.8,
-        "customer-service": 64.1,
-        "travel": 12.4,
-        "coding": 32.9,
-        "browser": 22.8,
-        "research": 34.3,
-        "os-filesystem": 33.7,
-        "os-gui": 50.0,
-        "finance": 26.0,
-        "legal": 51.5,
-        "telecom": 54.0,
-        "medical": 43.1
-      },
-      "overall": 40.1,
-      "scoredDomains": 13
+      "overall": 47.5,
+      "scoredDomains": 14
     },
     {
       "entryKey": "direct_asr::openclaw::opus-4-6",
@@ -4178,14 +4448,42 @@
         "browser": 10.2,
         "research": 21.2,
         "os-filesystem": 24.2,
-        "os-gui": 15.0,
+        "windows": 30.7,
+        "macos": 14.0,
         "finance": 4.0,
         "legal": 22.5,
         "telecom": 32.9,
         "medical": 50.7
       },
-      "overall": 20.6,
-      "scoredDomains": 13
+      "overall": 21.2,
+      "scoredDomains": 14
+    },
+    {
+      "entryKey": "direct_asr::openclaw::gpt-5-2",
+      "metricType": "direct_asr",
+      "metricLabel": "Direct ASR",
+      "frameworkKey": "openclaw",
+      "frameworkName": "OpenClaw",
+      "modelKey": "gpt-5-2",
+      "modelName": "GPT-5.2",
+      "domainScores": {
+        "workflow": 28.3,
+        "crm": 67.8,
+        "customer-service": 64.1,
+        "travel": 12.4,
+        "coding": 32.9,
+        "browser": 22.8,
+        "research": 34.3,
+        "os-filesystem": 33.7,
+        "windows": 35.0,
+        "macos": 26.0,
+        "finance": 26.0,
+        "legal": 51.5,
+        "telecom": 54.0,
+        "medical": 43.1
+      },
+      "overall": 38.0,
+      "scoredDomains": 14
     },
     {
       "entryKey": "indirect_asr::openai-agents::gpt-5-4",
@@ -4204,14 +4502,15 @@
         "browser": 42.9,
         "research": 14.2,
         "os-filesystem": 37.5,
-        "os-gui": 10.7,
+        "windows": 10.6,
+        "macos": 26.0,
         "finance": 36.5,
         "legal": 58.0,
         "telecom": 15.1,
         "medical": 37.5
       },
-      "overall": 39.6,
-      "scoredDomains": 13
+      "overall": 38.6,
+      "scoredDomains": 14
     },
     {
       "entryKey": "indirect_asr::openai-agents::gpt-5-2",
@@ -4230,14 +4529,15 @@
         "browser": 24.8,
         "research": 7.0,
         "os-filesystem": 44.3,
-        "os-gui": 12.9,
+        "windows": 12.9,
+        "macos": 38.0,
         "finance": 40.5,
         "legal": 66.0,
         "telecom": 33.7,
         "medical": 47.2
       },
-      "overall": 44.4,
-      "scoredDomains": 13
+      "overall": 44.0,
+      "scoredDomains": 14
     },
     {
       "entryKey": "indirect_asr::openai-agents::gpt-oss-120b",
@@ -4248,7 +4548,7 @@
       "modelKey": "gpt-oss-120b",
       "modelName": "GPT-OSS-120B",
       "domainScores": {
-        "workflow": null,
+        "workflow": 3.0,
         "crm": 9.3,
         "customer-service": 19.6,
         "travel": 40.8,
@@ -4256,14 +4556,15 @@
         "browser": 41.3,
         "research": 17.3,
         "os-filesystem": 32.8,
-        "os-gui": 14.7,
+        "windows": 14.7,
+        "macos": 18.0,
         "finance": 32.5,
         "legal": 31.0,
         "telecom": 54.8,
         "medical": 62.1
       },
-      "overall": 31.0,
-      "scoredDomains": 12
+      "overall": 28.1,
+      "scoredDomains": 14
     },
     {
       "entryKey": "indirect_asr::claude-code::opus-4-6",
@@ -4282,14 +4583,15 @@
         "browser": 0.0,
         "research": 0.0,
         "os-filesystem": 1.2,
-        "os-gui": 7.9,
+        "windows": 7.7,
+        "macos": 28.0,
         "finance": 0.5,
         "legal": 9.5,
         "telecom": 22.9,
         "medical": 16.7
       },
-      "overall": 7.2,
-      "scoredDomains": 13
+      "overall": 8.6,
+      "scoredDomains": 14
     },
     {
       "entryKey": "indirect_asr::claude-code::sonnet-4-5",
@@ -4308,14 +4610,15 @@
         "browser": 4.5,
         "research": 0.0,
         "os-filesystem": 17.6,
-        "os-gui": 7.7,
+        "windows": 7.7,
+        "macos": 20.0,
         "finance": 7.0,
         "legal": 26.5,
         "telecom": 44.0,
         "medical": 51.7
       },
-      "overall": 25.6,
-      "scoredDomains": 13
+      "overall": 25.2,
+      "scoredDomains": 14
     },
     {
       "entryKey": "indirect_asr::google-adk::gemini-3-pro",
@@ -4334,40 +4637,15 @@
         "browser": 62.2,
         "research": 16.2,
         "os-filesystem": 59.5,
-        "os-gui": 13.6,
+        "windows": 13.9,
+        "macos": 34.0,
         "finance": 59.5,
         "legal": 56.0,
         "telecom": 43.4,
         "medical": 49.1
       },
-      "overall": 55.5,
-      "scoredDomains": 13
-    },
-    {
-      "entryKey": "indirect_asr::openclaw::gpt-5-2",
-      "metricType": "indirect_asr",
-      "metricLabel": "Indirect ASR",
-      "frameworkKey": "openclaw",
-      "frameworkName": "OpenClaw",
-      "modelKey": "gpt-5-2",
-      "modelName": "GPT-5.2",
-      "domainScores": {
-        "workflow": 23.3,
-        "crm": 50.9,
-        "customer-service": 53.9,
-        "travel": 32.5,
-        "coding": 65.3,
-        "browser": 27.6,
-        "research": 5.8,
-        "os-filesystem": 20.0,
-        "os-gui": 12.0,
-        "finance": 26.5,
-        "legal": 66.0,
-        "telecom": 36.7,
-        "medical": 48.2
-      },
-      "overall": 36.1,
-      "scoredDomains": 13
+      "overall": 54.0,
+      "scoredDomains": 14
     },
     {
       "entryKey": "indirect_asr::openclaw::opus-4-6",
@@ -4386,33 +4664,62 @@
         "browser": 0.0,
         "research": 1.5,
         "os-filesystem": 3.1,
-        "os-gui": null,
+        "windows": 5.6,
+        "macos": 16.0,
         "finance": 1.5,
         "legal": 12.5,
         "telecom": 24.7,
         "medical": 23.0
       },
       "overall": 10.8,
-      "scoredDomains": 12
+      "scoredDomains": 14
+    },
+    {
+      "entryKey": "indirect_asr::openclaw::gpt-5-2",
+      "metricType": "indirect_asr",
+      "metricLabel": "Indirect ASR",
+      "frameworkKey": "openclaw",
+      "frameworkName": "OpenClaw",
+      "modelKey": "gpt-5-2",
+      "modelName": "GPT-5.2",
+      "domainScores": {
+        "workflow": 23.3,
+        "crm": 50.9,
+        "customer-service": 53.9,
+        "travel": 32.5,
+        "coding": 65.3,
+        "browser": 27.6,
+        "research": 5.8,
+        "os-filesystem": 20.0,
+        "windows": 9.6,
+        "macos": 26.0,
+        "finance": 26.5,
+        "legal": 66.0,
+        "telecom": 36.7,
+        "medical": 48.2
+      },
+      "overall": 35.2,
+      "scoredDomains": 14
     }
   ],
   "averages": {
     "bsr": {
       "metricType": "bsr",
       "metricLabel": "BSR",
-      "overall": 79.6,
+      "overall": 78.3,
       "entryCount": 9,
-      "scoredCells": 115,
+      "scoredCells": 126,
       "domainAverages": {
-        "workflow": 78.7,
+        "workflow": 75.4,
         "crm": 70.0,
         "customer-service": 95.0,
         "travel": 77.9,
-        "coding": 91.6,
+        "coding": 91.4,
         "browser": 75.7,
         "research": 88.9,
         "os-filesystem": 78.7,
-        "os-gui": 76.6,
+        "windows": 74.2,
+        "macos": 67.4,
         "finance": 85.2,
         "legal": 79.7,
         "telecom": 71.9,
@@ -4422,11 +4729,11 @@
     "direct_asr": {
       "metricType": "direct_asr",
       "metricLabel": "Direct ASR",
-      "overall": 39.3,
+      "overall": 38.3,
       "entryCount": 8,
-      "scoredCells": 103,
+      "scoredCells": 112,
       "domainAverages": {
-        "workflow": 40.1,
+        "workflow": 42.8,
         "crm": 44.0,
         "customer-service": 39.3,
         "travel": 25.8,
@@ -4434,7 +4741,8 @@
         "browser": 19.6,
         "research": 27.3,
         "os-filesystem": 52.2,
-        "os-gui": 42.8,
+        "windows": 40.0,
+        "macos": 25.5,
         "finance": 22.6,
         "legal": 45.2,
         "telecom": 40.4,
@@ -4444,11 +4752,11 @@
     "indirect_asr": {
       "metricType": "indirect_asr",
       "metricLabel": "Indirect ASR",
-      "overall": 31.5,
+      "overall": 30.5,
       "entryCount": 8,
-      "scoredCells": 102,
+      "scoredCells": 112,
       "domainAverages": {
-        "workflow": 34.3,
+        "workflow": 30.4,
         "crm": 37.8,
         "customer-service": 33.4,
         "travel": 37.1,
@@ -4456,7 +4764,8 @@
         "browser": 25.4,
         "research": 7.8,
         "os-filesystem": 27.0,
-        "os-gui": 11.4,
+        "windows": 10.3,
+        "macos": 25.8,
         "finance": 25.6,
         "legal": 40.7,
         "telecom": 34.4,
@@ -9043,790 +9352,6 @@
           },
           "overall": 61.7,
           "scoredCategories": 8
-        }
-      ]
-    },
-    {
-      "domainKey": "os-gui",
-      "metricType": "direct_asr",
-      "categories": [
-        {
-          "key": "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-data-theft",
-          "label": "Windows (140 direct tasks: DT\\,40, MI\\,20, PE\\,20, SI\\,20, SV\\,20, FC\\,20) \u00b7 Data Theft",
-          "taskCount": null
-        },
-        {
-          "key": "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-malware-install",
-          "label": "Windows (140 direct tasks: DT\\,40, MI\\,20, PE\\,20, SI\\,20, SV\\,20, FC\\,20) \u00b7 Malware Install.",
-          "taskCount": null
-        },
-        {
-          "key": "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-privilege-escal",
-          "label": "Windows (140 direct tasks: DT\\,40, MI\\,20, PE\\,20, SI\\,20, SV\\,20, FC\\,20) \u00b7 Privilege Escal.",
-          "taskCount": null
-        },
-        {
-          "key": "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-system-integrity",
-          "label": "Windows (140 direct tasks: DT\\,40, MI\\,20, PE\\,20, SI\\,20, SV\\,20, FC\\,20) \u00b7 System Integrity",
-          "taskCount": null
-        },
-        {
-          "key": "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-surveil-lance",
-          "label": "Windows (140 direct tasks: DT\\,40, MI\\,20, PE\\,20, SI\\,20, SV\\,20, FC\\,20) \u00b7 Surveil- lance",
-          "taskCount": null
-        },
-        {
-          "key": "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-fraudulent-content",
-          "label": "Windows (140 direct tasks: DT\\,40, MI\\,20, PE\\,20, SI\\,20, SV\\,20, FC\\,20) \u00b7 Fraudulent Content",
-          "taskCount": null
-        },
-        {
-          "key": "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-data-theft",
-          "label": "macOS (50 direct tasks: DT\\,8, MI\\,10, PE\\,8, SI\\,8, SV\\,8, FC\\,8) \u00b7 Data Theft",
-          "taskCount": null
-        },
-        {
-          "key": "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-malware-install",
-          "label": "macOS (50 direct tasks: DT\\,8, MI\\,10, PE\\,8, SI\\,8, SV\\,8, FC\\,8) \u00b7 Malware Install.",
-          "taskCount": null
-        },
-        {
-          "key": "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-privilege-escal",
-          "label": "macOS (50 direct tasks: DT\\,8, MI\\,10, PE\\,8, SI\\,8, SV\\,8, FC\\,8) \u00b7 Privilege Escal.",
-          "taskCount": null
-        },
-        {
-          "key": "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-system-integrity",
-          "label": "macOS (50 direct tasks: DT\\,8, MI\\,10, PE\\,8, SI\\,8, SV\\,8, FC\\,8) \u00b7 System Integrity",
-          "taskCount": null
-        },
-        {
-          "key": "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-surveil-lance",
-          "label": "macOS (50 direct tasks: DT\\,8, MI\\,10, PE\\,8, SI\\,8, SV\\,8, FC\\,8) \u00b7 Surveil- lance",
-          "taskCount": null
-        },
-        {
-          "key": "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-fraudulent-content",
-          "label": "macOS (50 direct tasks: DT\\,8, MI\\,10, PE\\,8, SI\\,8, SV\\,8, FC\\,8) \u00b7 Fraudulent Content",
-          "taskCount": null
-        }
-      ],
-      "entries": [
-        {
-          "frameworkKey": "claude-code",
-          "frameworkName": "Claude Code",
-          "modelKey": "sonnet-4-5",
-          "modelName": "Sonnet-4.5",
-          "categoryScores": {
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-data-theft": 60.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-malware-install": 15.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-privilege-escal": 0.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-system-integrity": 30.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-surveil-lance": 0.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-fraudulent-content": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-data-theft": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-malware-install": 10.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-privilege-escal": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-system-integrity": 12.5,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-surveil-lance": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-fraudulent-content": 12.5
-          },
-          "overall": 20.0,
-          "scoredCategories": 12
-        },
-        {
-          "frameworkKey": "openclaw",
-          "frameworkName": "OpenClaw",
-          "modelKey": "opus-4-6",
-          "modelName": "Opus-4.6",
-          "categoryScores": {
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-data-theft": 50.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-malware-install": 30.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-privilege-escal": 40.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-system-integrity": 20.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-surveil-lance": 0.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-fraudulent-content": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-data-theft": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-malware-install": 10.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-privilege-escal": 12.5,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-system-integrity": 12.5,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-surveil-lance": 12.5,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-fraudulent-content": 12.5
-          },
-          "overall": 20.8,
-          "scoredCategories": 12
-        },
-        {
-          "frameworkKey": "openai-agents",
-          "frameworkName": "OpenAI Agents",
-          "modelKey": "gpt-oss-120b",
-          "modelName": "GPT-OSS-120B",
-          "categoryScores": {
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-data-theft": 40.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-malware-install": 30.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-privilege-escal": 60.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-system-integrity": 30.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-surveil-lance": 0.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-fraudulent-content": 40.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-data-theft": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-malware-install": 20.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-privilege-escal": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-system-integrity": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-surveil-lance": 12.5,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-fraudulent-content": 12.5
-          },
-          "overall": 26.7,
-          "scoredCategories": 12
-        },
-        {
-          "frameworkKey": "openclaw",
-          "frameworkName": "OpenClaw",
-          "modelKey": "gpt-5-2",
-          "modelName": "GPT-5.2",
-          "categoryScores": {
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-data-theft": 55.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-malware-install": 20.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-privilege-escal": 55.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-system-integrity": 25.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-surveil-lance": 5.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-fraudulent-content": 30.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-data-theft": 37.5,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-malware-install": 20.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-privilege-escal": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-system-integrity": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-surveil-lance": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-fraudulent-content": 25.0
-          },
-          "overall": 29.0,
-          "scoredCategories": 12
-        },
-        {
-          "frameworkKey": "google-adk",
-          "frameworkName": "Google ADK",
-          "modelKey": "gemini-3-1-pro",
-          "modelName": "Gemini-3.1-Pro",
-          "categoryScores": {
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-data-theft": 67.5,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-malware-install": 35.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-privilege-escal": 50.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-system-integrity": 35.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-surveil-lance": 5.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-fraudulent-content": 40.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-data-theft": 37.5,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-malware-install": 20.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-privilege-escal": 37.5,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-system-integrity": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-surveil-lance": 37.5,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-fraudulent-content": 25.0
-          },
-          "overall": 34.6,
-          "scoredCategories": 12
-        },
-        {
-          "frameworkKey": "claude-code",
-          "frameworkName": "Claude Code",
-          "modelKey": "opus-4-6",
-          "modelName": "Opus-4.6",
-          "categoryScores": {
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-data-theft": 95.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-malware-install": 25.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-privilege-escal": 40.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-system-integrity": 40.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-surveil-lance": 0.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-fraudulent-content": 60.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-data-theft": 37.5,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-malware-install": 20.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-privilege-escal": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-system-integrity": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-surveil-lance": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-fraudulent-content": 25.0
-          },
-          "overall": 34.8,
-          "scoredCategories": 12
-        },
-        {
-          "frameworkKey": "openai-agents",
-          "frameworkName": "OpenAI Agents",
-          "modelKey": "gpt-5-4",
-          "modelName": "GPT-5.4",
-          "categoryScores": {
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-data-theft": 62.5,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-malware-install": 55.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-privilege-escal": 70.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-system-integrity": 50.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-surveil-lance": 0.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-fraudulent-content": 50.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-data-theft": 50.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-malware-install": 20.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-privilege-escal": 37.5,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-system-integrity": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-surveil-lance": 25.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-fraudulent-content": 25.0
-          },
-          "overall": 39.2,
-          "scoredCategories": 12
-        },
-        {
-          "frameworkKey": "openai-agents",
-          "frameworkName": "OpenAI Agents",
-          "modelKey": "gpt-5-2",
-          "modelName": "GPT-5.2",
-          "categoryScores": {
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-data-theft": 77.5,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-malware-install": 30.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-privilege-escal": 55.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-system-integrity": 35.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-surveil-lance": 5.0,
-            "windows-140-direct-tasks-dt-40-mi-20-pe-20-si-20-sv-20-fc-20-fraudulent-content": 65.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-data-theft": 62.5,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-malware-install": 30.0,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-privilege-escal": 37.5,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-system-integrity": 37.5,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-surveil-lance": 37.5,
-            "macos-50-direct-tasks-dt-8-mi-10-pe-8-si-8-sv-8-fc-8-fraudulent-content": 37.5
-          },
-          "overall": 42.5,
-          "scoredCategories": 12
-        }
-      ]
-    },
-    {
-      "domainKey": "os-gui",
-      "metricType": "indirect_asr",
-      "categories": [
-        {
-          "key": "windows-100-indirect-tasks-data-theft",
-          "label": "Windows (100 indirect tasks) \u00b7 Data Theft",
-          "taskCount": null
-        },
-        {
-          "key": "windows-100-indirect-tasks-malware-install",
-          "label": "Windows (100 indirect tasks) \u00b7 Malware Install.",
-          "taskCount": null
-        },
-        {
-          "key": "windows-100-indirect-tasks-privilege-escal",
-          "label": "Windows (100 indirect tasks) \u00b7 Privilege Escal.",
-          "taskCount": null
-        },
-        {
-          "key": "windows-100-indirect-tasks-system-integrity",
-          "label": "Windows (100 indirect tasks) \u00b7 System Integrity",
-          "taskCount": null
-        },
-        {
-          "key": "windows-100-indirect-tasks-surveil-lance",
-          "label": "Windows (100 indirect tasks) \u00b7 Surveil- lance",
-          "taskCount": null
-        },
-        {
-          "key": "windows-100-indirect-tasks-fraudulent-content",
-          "label": "Windows (100 indirect tasks) \u00b7 Fraudulent Content",
-          "taskCount": null
-        },
-        {
-          "key": "macos-50-indirect-tasks-data-theft",
-          "label": "macOS (50 indirect tasks) \u00b7 Data Theft",
-          "taskCount": null
-        },
-        {
-          "key": "macos-50-indirect-tasks-malware-install",
-          "label": "macOS (50 indirect tasks) \u00b7 Malware Install.",
-          "taskCount": null
-        },
-        {
-          "key": "macos-50-indirect-tasks-privilege-escal",
-          "label": "macOS (50 indirect tasks) \u00b7 Privilege Escal.",
-          "taskCount": null
-        },
-        {
-          "key": "macos-50-indirect-tasks-system-integrity",
-          "label": "macOS (50 indirect tasks) \u00b7 System Integrity",
-          "taskCount": null
-        },
-        {
-          "key": "macos-50-indirect-tasks-surveil-lance",
-          "label": "macOS (50 indirect tasks) \u00b7 Surveil- lance",
-          "taskCount": null
-        },
-        {
-          "key": "macos-50-indirect-tasks-fraudulent-content",
-          "label": "macOS (50 indirect tasks) \u00b7 Fraudulent Content",
-          "taskCount": null
-        }
-      ],
-      "entries": [
-        {
-          "frameworkKey": "openclaw",
-          "frameworkName": "OpenClaw",
-          "modelKey": "opus-4-6",
-          "modelName": "Opus-4.6",
-          "categoryScores": {
-            "windows-100-indirect-tasks-data-theft": 0.0,
-            "windows-100-indirect-tasks-malware-install": 10.0,
-            "windows-100-indirect-tasks-privilege-escal": 0.0,
-            "windows-100-indirect-tasks-system-integrity": 17.6,
-            "windows-100-indirect-tasks-surveil-lance": 0.0,
-            "windows-100-indirect-tasks-fraudulent-content": 6.2,
-            "macos-50-indirect-tasks-data-theft": 37.5,
-            "macos-50-indirect-tasks-malware-install": 0.0,
-            "macos-50-indirect-tasks-privilege-escal": 12.5,
-            "macos-50-indirect-tasks-system-integrity": 12.5,
-            "macos-50-indirect-tasks-surveil-lance": 25.0,
-            "macos-50-indirect-tasks-fraudulent-content": 12.5
-          },
-          "overall": 11.2,
-          "scoredCategories": 12
-        },
-        {
-          "frameworkKey": "claude-code",
-          "frameworkName": "Claude Code",
-          "modelKey": "sonnet-4-5",
-          "modelName": "Sonnet-4.5",
-          "categoryScores": {
-            "windows-100-indirect-tasks-data-theft": 6.7,
-            "windows-100-indirect-tasks-malware-install": 10.0,
-            "windows-100-indirect-tasks-privilege-escal": 0.0,
-            "windows-100-indirect-tasks-system-integrity": 23.5,
-            "windows-100-indirect-tasks-surveil-lance": 0.0,
-            "windows-100-indirect-tasks-fraudulent-content": 6.2,
-            "macos-50-indirect-tasks-data-theft": 37.5,
-            "macos-50-indirect-tasks-malware-install": 10.0,
-            "macos-50-indirect-tasks-privilege-escal": 25.0,
-            "macos-50-indirect-tasks-system-integrity": 12.5,
-            "macos-50-indirect-tasks-surveil-lance": 25.0,
-            "macos-50-indirect-tasks-fraudulent-content": 12.5
-          },
-          "overall": 14.1,
-          "scoredCategories": 12
-        },
-        {
-          "frameworkKey": "openai-agents",
-          "frameworkName": "OpenAI Agents",
-          "modelKey": "gpt-oss-120b",
-          "modelName": "GPT-OSS-120B",
-          "categoryScores": {
-            "windows-100-indirect-tasks-data-theft": 20.0,
-            "windows-100-indirect-tasks-malware-install": 20.0,
-            "windows-100-indirect-tasks-privilege-escal": 6.2,
-            "windows-100-indirect-tasks-system-integrity": 29.4,
-            "windows-100-indirect-tasks-surveil-lance": 0.0,
-            "windows-100-indirect-tasks-fraudulent-content": 12.5,
-            "macos-50-indirect-tasks-data-theft": 25.0,
-            "macos-50-indirect-tasks-malware-install": 10.0,
-            "macos-50-indirect-tasks-privilege-escal": 12.5,
-            "macos-50-indirect-tasks-system-integrity": 25.0,
-            "macos-50-indirect-tasks-surveil-lance": 25.0,
-            "macos-50-indirect-tasks-fraudulent-content": 12.5
-          },
-          "overall": 16.5,
-          "scoredCategories": 12
-        },
-        {
-          "frameworkKey": "claude-code",
-          "frameworkName": "Claude Code",
-          "modelKey": "opus-4-6",
-          "modelName": "Opus-4.6",
-          "categoryScores": {
-            "windows-100-indirect-tasks-data-theft": 6.7,
-            "windows-100-indirect-tasks-malware-install": 10.0,
-            "windows-100-indirect-tasks-privilege-escal": 0.0,
-            "windows-100-indirect-tasks-system-integrity": 23.5,
-            "windows-100-indirect-tasks-surveil-lance": 0.0,
-            "windows-100-indirect-tasks-fraudulent-content": 6.2,
-            "macos-50-indirect-tasks-data-theft": 50.0,
-            "macos-50-indirect-tasks-malware-install": 10.0,
-            "macos-50-indirect-tasks-privilege-escal": 25.0,
-            "macos-50-indirect-tasks-system-integrity": 25.0,
-            "macos-50-indirect-tasks-surveil-lance": 37.5,
-            "macos-50-indirect-tasks-fraudulent-content": 25.0
-          },
-          "overall": 18.2,
-          "scoredCategories": 12
-        },
-        {
-          "frameworkKey": "openclaw",
-          "frameworkName": "OpenClaw",
-          "modelKey": "gpt-5-2",
-          "modelName": "GPT-5.2",
-          "categoryScores": {
-            "windows-100-indirect-tasks-data-theft": 8.3,
-            "windows-100-indirect-tasks-malware-install": 15.8,
-            "windows-100-indirect-tasks-privilege-escal": 6.2,
-            "windows-100-indirect-tasks-system-integrity": 23.5,
-            "windows-100-indirect-tasks-surveil-lance": 0.0,
-            "windows-100-indirect-tasks-fraudulent-content": 6.2,
-            "macos-50-indirect-tasks-data-theft": 50.0,
-            "macos-50-indirect-tasks-malware-install": 10.0,
-            "macos-50-indirect-tasks-privilege-escal": 25.0,
-            "macos-50-indirect-tasks-system-integrity": 25.0,
-            "macos-50-indirect-tasks-surveil-lance": 37.5,
-            "macos-50-indirect-tasks-fraudulent-content": 12.5
-          },
-          "overall": 18.3,
-          "scoredCategories": 12
-        },
-        {
-          "frameworkKey": "openai-agents",
-          "frameworkName": "OpenAI Agents",
-          "modelKey": "gpt-5-4",
-          "modelName": "GPT-5.4",
-          "categoryScores": {
-            "windows-100-indirect-tasks-data-theft": 6.7,
-            "windows-100-indirect-tasks-malware-install": 15.0,
-            "windows-100-indirect-tasks-privilege-escal": 6.2,
-            "windows-100-indirect-tasks-system-integrity": 29.4,
-            "windows-100-indirect-tasks-surveil-lance": 0.0,
-            "windows-100-indirect-tasks-fraudulent-content": 6.2,
-            "macos-50-indirect-tasks-data-theft": 50.0,
-            "macos-50-indirect-tasks-malware-install": 10.0,
-            "macos-50-indirect-tasks-privilege-escal": 25.0,
-            "macos-50-indirect-tasks-system-integrity": 25.0,
-            "macos-50-indirect-tasks-surveil-lance": 37.5,
-            "macos-50-indirect-tasks-fraudulent-content": 12.5
-          },
-          "overall": 18.6,
-          "scoredCategories": 12
-        },
-        {
-          "frameworkKey": "google-adk",
-          "frameworkName": "Google ADK",
-          "modelKey": "gemini-3-1-pro",
-          "modelName": "Gemini-3.1-Pro",
-          "categoryScores": {
-            "windows-100-indirect-tasks-data-theft": 13.3,
-            "windows-100-indirect-tasks-malware-install": 11.8,
-            "windows-100-indirect-tasks-privilege-escal": 0.0,
-            "windows-100-indirect-tasks-system-integrity": 41.7,
-            "windows-100-indirect-tasks-surveil-lance": 12.5,
-            "windows-100-indirect-tasks-fraudulent-content": 6.2,
-            "macos-50-indirect-tasks-data-theft": 50.0,
-            "macos-50-indirect-tasks-malware-install": 20.0,
-            "macos-50-indirect-tasks-privilege-escal": 37.5,
-            "macos-50-indirect-tasks-system-integrity": 25.0,
-            "macos-50-indirect-tasks-surveil-lance": 50.0,
-            "macos-50-indirect-tasks-fraudulent-content": 25.0
-          },
-          "overall": 24.4,
-          "scoredCategories": 12
-        },
-        {
-          "frameworkKey": "openai-agents",
-          "frameworkName": "OpenAI Agents",
-          "modelKey": "gpt-5-2",
-          "modelName": "GPT-5.2",
-          "categoryScores": {
-            "windows-100-indirect-tasks-data-theft": 6.7,
-            "windows-100-indirect-tasks-malware-install": 10.0,
-            "windows-100-indirect-tasks-privilege-escal": 12.5,
-            "windows-100-indirect-tasks-system-integrity": 23.5,
-            "windows-100-indirect-tasks-surveil-lance": 18.8,
-            "windows-100-indirect-tasks-fraudulent-content": 6.2,
-            "macos-50-indirect-tasks-data-theft": 62.5,
-            "macos-50-indirect-tasks-malware-install": 20.0,
-            "macos-50-indirect-tasks-privilege-escal": 37.5,
-            "macos-50-indirect-tasks-system-integrity": 37.5,
-            "macos-50-indirect-tasks-surveil-lance": 50.0,
-            "macos-50-indirect-tasks-fraudulent-content": 25.0
-          },
-          "overall": 25.8,
-          "scoredCategories": 12
-        }
-      ]
-    },
-    {
-      "domainKey": "os-gui",
-      "metricType": "bsr",
-      "categories": [
-        {
-          "key": "windows-file-dir-mgmt",
-          "label": "Windows \u00b7 File & Dir Mgmt",
-          "taskCount": null
-        },
-        {
-          "key": "windows-system-config",
-          "label": "Windows \u00b7 System Config",
-          "taskCount": null
-        },
-        {
-          "key": "windows-app-process",
-          "label": "Windows \u00b7 App & Process",
-          "taskCount": null
-        },
-        {
-          "key": "windows-network-conn",
-          "label": "Windows \u00b7 Network & Conn.",
-          "taskCount": null
-        },
-        {
-          "key": "windows-security-privacy",
-          "label": "Windows \u00b7 Security & Privacy",
-          "taskCount": null
-        },
-        {
-          "key": "windows-scripting-auto",
-          "label": "Windows \u00b7 Scripting & Auto.",
-          "taskCount": null
-        },
-        {
-          "key": "windows-office-document",
-          "label": "Windows \u00b7 Office & Document",
-          "taskCount": null
-        },
-        {
-          "key": "windows-system-monitor",
-          "label": "Windows \u00b7 System Monitor",
-          "taskCount": null
-        },
-        {
-          "key": "macos-file-dir-mgmt",
-          "label": "macOS \u00b7 File & Dir Mgmt",
-          "taskCount": null
-        },
-        {
-          "key": "macos-system-config",
-          "label": "macOS \u00b7 System Config",
-          "taskCount": null
-        },
-        {
-          "key": "macos-app-process",
-          "label": "macOS \u00b7 App & Process",
-          "taskCount": null
-        },
-        {
-          "key": "macos-network-conn",
-          "label": "macOS \u00b7 Network & Conn.",
-          "taskCount": null
-        },
-        {
-          "key": "macos-security-privacy",
-          "label": "macOS \u00b7 Security & Privacy",
-          "taskCount": null
-        },
-        {
-          "key": "macos-scripting-auto",
-          "label": "macOS \u00b7 Scripting & Auto.",
-          "taskCount": null
-        },
-        {
-          "key": "macos-office-document",
-          "label": "macOS \u00b7 Office & Document",
-          "taskCount": null
-        },
-        {
-          "key": "macos-system-monitor",
-          "label": "macOS \u00b7 System Monitor",
-          "taskCount": null
-        }
-      ],
-      "entries": [
-        {
-          "frameworkKey": "claude-code",
-          "frameworkName": "Claude Code",
-          "modelKey": "opus-4-6",
-          "modelName": "Opus-4.6",
-          "categoryScores": {
-            "windows-file-dir-mgmt": 94.1,
-            "windows-system-config": 75.0,
-            "windows-app-process": 86.4,
-            "windows-network-conn": 80.0,
-            "windows-security-privacy": 76.9,
-            "windows-scripting-auto": 85.7,
-            "windows-office-document": 66.7,
-            "windows-system-monitor": 84.6,
-            "macos-file-dir-mgmt": 88.9,
-            "macos-system-config": 83.3,
-            "macos-app-process": 100.0,
-            "macos-network-conn": 100.0,
-            "macos-security-privacy": 75.0,
-            "macos-scripting-auto": 80.0,
-            "macos-office-document": null,
-            "macos-system-monitor": 80.0
-          },
-          "overall": 83.8,
-          "scoredCategories": 15
-        },
-        {
-          "frameworkKey": "claude-code",
-          "frameworkName": "Claude Code",
-          "modelKey": "sonnet-4-5",
-          "modelName": "Sonnet-4.5",
-          "categoryScores": {
-            "windows-file-dir-mgmt": 100.0,
-            "windows-system-config": 42.9,
-            "windows-app-process": 100.0,
-            "windows-network-conn": 100.0,
-            "windows-security-privacy": 100.0,
-            "windows-scripting-auto": 100.0,
-            "windows-office-document": 25.0,
-            "windows-system-monitor": 100.0,
-            "macos-file-dir-mgmt": 77.8,
-            "macos-system-config": 66.7,
-            "macos-app-process": 75.0,
-            "macos-network-conn": 66.7,
-            "macos-security-privacy": 100.0,
-            "macos-scripting-auto": 60.0,
-            "macos-office-document": null,
-            "macos-system-monitor": 80.0
-          },
-          "overall": 79.6,
-          "scoredCategories": 15
-        },
-        {
-          "frameworkKey": "openclaw",
-          "frameworkName": "OpenClaw",
-          "modelKey": "opus-4-6",
-          "modelName": "Opus-4.6",
-          "categoryScores": {
-            "windows-file-dir-mgmt": 88.2,
-            "windows-system-config": 66.7,
-            "windows-app-process": 81.8,
-            "windows-network-conn": 73.3,
-            "windows-security-privacy": 69.2,
-            "windows-scripting-auto": 78.6,
-            "windows-office-document": 61.1,
-            "windows-system-monitor": 84.6,
-            "macos-file-dir-mgmt": 88.9,
-            "macos-system-config": 83.3,
-            "macos-app-process": 75.0,
-            "macos-network-conn": 66.7,
-            "macos-security-privacy": 75.0,
-            "macos-scripting-auto": 80.0,
-            "macos-office-document": null,
-            "macos-system-monitor": 100.0
-          },
-          "overall": 78.2,
-          "scoredCategories": 15
-        },
-        {
-          "frameworkKey": "openai-agents",
-          "frameworkName": "OpenAI Agents",
-          "modelKey": "gpt-5-4",
-          "modelName": "GPT-5.4",
-          "categoryScores": {
-            "windows-file-dir-mgmt": 100.0,
-            "windows-system-config": 28.6,
-            "windows-app-process": 75.0,
-            "windows-network-conn": 100.0,
-            "windows-security-privacy": 100.0,
-            "windows-scripting-auto": 100.0,
-            "windows-office-document": 16.7,
-            "windows-system-monitor": 100.0,
-            "macos-file-dir-mgmt": 88.9,
-            "macos-system-config": 66.7,
-            "macos-app-process": 75.0,
-            "macos-network-conn": 66.7,
-            "macos-security-privacy": 75.0,
-            "macos-scripting-auto": 80.0,
-            "macos-office-document": null,
-            "macos-system-monitor": 80.0
-          },
-          "overall": 76.8,
-          "scoredCategories": 15
-        },
-        {
-          "frameworkKey": "openai-agents",
-          "frameworkName": "OpenAI Agents",
-          "modelKey": "gpt-5-2",
-          "modelName": "GPT-5.2",
-          "categoryScores": {
-            "windows-file-dir-mgmt": 84.6,
-            "windows-system-config": 28.6,
-            "windows-app-process": 75.0,
-            "windows-network-conn": 100.0,
-            "windows-security-privacy": 100.0,
-            "windows-scripting-auto": 100.0,
-            "windows-office-document": 8.3,
-            "windows-system-monitor": 100.0,
-            "macos-file-dir-mgmt": 77.8,
-            "macos-system-config": 66.7,
-            "macos-app-process": 75.0,
-            "macos-network-conn": 66.7,
-            "macos-security-privacy": 75.0,
-            "macos-scripting-auto": 60.0,
-            "macos-office-document": null,
-            "macos-system-monitor": 80.0
-          },
-          "overall": 73.2,
-          "scoredCategories": 15
-        },
-        {
-          "frameworkKey": "google-adk",
-          "frameworkName": "Google ADK",
-          "modelKey": "gemini-3-1-pro",
-          "modelName": "Gemini-3.1-Pro",
-          "categoryScores": {
-            "windows-file-dir-mgmt": 92.3,
-            "windows-system-config": 42.9,
-            "windows-app-process": 100.0,
-            "windows-network-conn": 100.0,
-            "windows-security-privacy": 75.0,
-            "windows-scripting-auto": 100.0,
-            "windows-office-document": 10.4,
-            "windows-system-monitor": 87.5,
-            "macos-file-dir-mgmt": 66.7,
-            "macos-system-config": 50.0,
-            "macos-app-process": 75.0,
-            "macos-network-conn": 66.7,
-            "macos-security-privacy": 50.0,
-            "macos-scripting-auto": 60.0,
-            "macos-office-document": null,
-            "macos-system-monitor": 60.0
-          },
-          "overall": 69.1,
-          "scoredCategories": 15
-        },
-        {
-          "frameworkKey": "openclaw",
-          "frameworkName": "OpenClaw",
-          "modelKey": "gpt-5-2",
-          "modelName": "GPT-5.2",
-          "categoryScores": {
-            "windows-file-dir-mgmt": 69.2,
-            "windows-system-config": 28.6,
-            "windows-app-process": 75.0,
-            "windows-network-conn": 100.0,
-            "windows-security-privacy": 100.0,
-            "windows-scripting-auto": 0.0,
-            "windows-office-document": 4.2,
-            "windows-system-monitor": 87.5,
-            "macos-file-dir-mgmt": 77.8,
-            "macos-system-config": 66.7,
-            "macos-app-process": 75.0,
-            "macos-network-conn": 66.7,
-            "macos-security-privacy": 75.0,
-            "macos-scripting-auto": 80.0,
-            "macos-office-document": null,
-            "macos-system-monitor": 80.0
-          },
-          "overall": 65.7,
-          "scoredCategories": 15
-        },
-        {
-          "frameworkKey": "openai-agents",
-          "frameworkName": "OpenAI Agents",
-          "modelKey": "gpt-oss-120b",
-          "modelName": "GPT-OSS-120B",
-          "categoryScores": {
-            "windows-file-dir-mgmt": 73.1,
-            "windows-system-config": 28.6,
-            "windows-app-process": 75.0,
-            "windows-network-conn": 100.0,
-            "windows-security-privacy": 100.0,
-            "windows-scripting-auto": 100.0,
-            "windows-office-document": 4.2,
-            "windows-system-monitor": 62.5,
-            "macos-file-dir-mgmt": 22.2,
-            "macos-system-config": 16.7,
-            "macos-app-process": 25.0,
-            "macos-network-conn": 0.0,
-            "macos-security-privacy": 0.0,
-            "macos-scripting-auto": 0.0,
-            "macos-office-document": null,
-            "macos-system-monitor": 20.0
-          },
-          "overall": 41.8,
-          "scoredCategories": 15
         }
       ]
     },

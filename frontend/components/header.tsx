@@ -11,10 +11,9 @@ import { useTheme } from "@/components/theme-provider"
 
 const navItems = [
   { label: "Quickstart", href: "/quickstart" },
-  { label: "Registry", href: "/registry" },
+  { label: "Benchmark", href: "/registry" },
   { label: "Leaderboard", href: "/leaderboard" },
   { label: "Docs", href: "/docs" },
-  { label: "Competition", href: "/competition" },
   { label: "Community", href: "/community" },
   { label: "About", href: "/about" },
 ]

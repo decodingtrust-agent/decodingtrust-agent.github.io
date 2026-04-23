@@ -168,8 +168,8 @@ export function HeroSection() {
 
           <p className="mx-auto text-base md:text-lg text-muted-foreground/80 leading-relaxed mt-6 md:whitespace-nowrap">
             The first dynamic red-teaming framework against AI Agents across{" "}
-            <span className="text-foreground font-medium">{benchmarkCounts.domains} domains</span> and{" "}
-            <span className="text-foreground font-medium">30 sandboxed environments</span>.
+            <span className="text-foreground font-medium">over 15 domains</span> and{" "}
+            <span className="text-foreground font-medium">50 sandboxed environments</span>.
           </p>
           <p className="mx-auto text-base md:text-lg text-muted-foreground/80 leading-relaxed mt-3 md:whitespace-nowrap">
             Covering Diverse{" "}
