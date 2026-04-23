@@ -76,16 +76,16 @@ export function AboutSection() {
 
         <div className="mb-12">
           <h2 className="text-xl font-semibold mb-4">Affiliations</h2>
-          <div className="flex flex-wrap items-center gap-x-10 gap-y-6">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-6">
             {affiliationList.map((aff) => (
               <Image
                 key={aff.name}
                 src={aff.logo}
                 alt={aff.name}
                 title={aff.name}
-                width={96}
-                height={96}
-                className="h-20 w-auto object-contain"
+                width={80}
+                height={80}
+                className="h-14 w-auto object-contain"
               />
             ))}
           </div>
