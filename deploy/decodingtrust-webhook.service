@@ -31,7 +31,10 @@ RestartSec=5
 KillSignal=SIGTERM
 TimeoutStopSec=10
 
-NoNewPrivileges=true
+# NoNewPrivileges must be false so we can call `sudo systemctl restart …`
+# (sudo is setuid root). The escalation is locked down via /etc/sudoers.d/
+# zhaorun-dt-deploy to a single command.
+NoNewPrivileges=false
 PrivateTmp=true
 ProtectKernelTunables=true
 ProtectKernelModules=true
