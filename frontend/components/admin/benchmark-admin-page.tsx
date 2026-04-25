@@ -411,20 +411,22 @@ export function BenchmarkAdminPage() {
     setStatusMessage("Created a new editable model entry.")
   }
 
+  // Self-hosted deployment doesn't ship Supabase by default. When it isn't
+  // configured we still want the trajectory manifest tool available — the page
+  // is already gated by HTTP Basic auth at the nginx layer.
   if (!hasSupabasePublicConfig() || !supabase) {
     return (
       <section className="min-h-[calc(100vh-8rem)]">
-        <div className="mx-auto max-w-5xl px-4 py-12 lg:px-6">
-          <div className="rounded-2xl border border-border bg-card p-8">
-            <h1 className="text-2xl font-bold mb-3">Admin unavailable</h1>
+        <div className="mx-auto max-w-5xl px-4 py-12 lg:px-6 space-y-6">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">Site admin</h1>
             <p className="text-muted-foreground">
-              Configure `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to enable admin sign-in (benchmark
-              scores and trajectory manifest tools). Trajectory files can always be updated locally: add files under{" "}
-              <code className="rounded bg-muted px-1 py-0.5 text-xs">public/data/trajectories/</code>, then run{" "}
-              <code className="rounded bg-muted px-1 py-0.5 text-xs">npm run trajectories:manifest</code> in{" "}
-              <code className="rounded bg-muted px-1 py-0.5 text-xs">frontend</code>.
+              Trajectory manifest tools. Benchmark score editing is disabled on this deployment (no Supabase configured —
+              edit <code className="rounded bg-muted px-1 py-0.5 text-xs">public/data/benchmark-data.json</code> in the repo
+              instead).
             </p>
           </div>
+          <TrajectoryAdminPanel />
         </div>
       </section>
     )
