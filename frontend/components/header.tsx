@@ -74,12 +74,12 @@ export function Header() {
             {theme === "light" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </Button>
           <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
-            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+            <a href="https://discord.gg/V4fG6NcVc" target="_blank" rel="noopener noreferrer" aria-label="Discord">
               <MessageCircle className="h-4 w-4" />
             </a>
           </Button>
           <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <a href="https://github.com/AI-secure/DecodingTrust-Agent" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
               <Github className="h-4 w-4" />
             </a>
           </Button>

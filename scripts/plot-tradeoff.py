@@ -91,7 +91,7 @@ LABEL_OFFSETS: dict[tuple[str, str, str], tuple[float, float]] = {
     ("OpenAI Agents", "GPT-5.4",      "indirect_asr"): (+0.02, -0.11),
     ("OpenAI Agents", "GPT-5.2",      "indirect_asr"): (-0.08, +0.00),
     ("OpenAI Agents", "GPT-OSS-120B", "indirect_asr"): ( 0.00, -0.11),
-    ("Claude Code",   "Opus-4.6",     "indirect_asr"): (-0.08, -0.05),
+    ("Claude Code",   "Opus-4.6",     "indirect_asr"): (-0.08, -0.01),
     ("Claude Code",   "Sonnet-4.5",   "indirect_asr"): (-0.08, +0.00),
     ("Google ADK",    "Gemini-3-Pro", "indirect_asr"): (-0.08, +0.02),
     ("OpenClaw",      "Opus-4.6",     "indirect_asr"): (+0.052, +0.08),
@@ -452,8 +452,8 @@ def _render_panel(ax, points: list[AgentPoint], asr_attr: str, title: str):
 
     x_span = x_max - x_min
     ax.text(
-        x_min + 0.02 * x_span, y_max - 0.03 * y_span,
-        "VULNERABLE & WEAK",
+        x_min + 0.02 * x_span, y_max - 0.02 * y_span,
+        "VULNERABLE & INCAPABLE",
         ha="left", va="top",
         fontsize=9.5,
         color="#e11d48",
@@ -461,8 +461,8 @@ def _render_panel(ax, points: list[AgentPoint], asr_attr: str, title: str):
         zorder=2,
     )
     ax.text(
-        x_max - 0.02 * x_span, y_min + 0.03 * y_span,
-        "SAFE & CAPABLE",
+        x_max - 0.02 * x_span, y_min + 0.01 * y_span,
+        "ROBUST & CAPABLE",
         ha="right", va="bottom",
         fontsize=9.5,
         color="#059669",
@@ -493,7 +493,7 @@ def build_figure():
     _render_panel(ax_indirect, POINTS, "indirect_asr", "Indirect Attack Success Rate")
     _render_panel(ax_direct, POINTS, "direct_asr", "Direct Attack Success Rate")
 
-    ax_indirect.set_title("(a) Indirect Prompt Injection (in Environment, Tool, Skill)",
+    ax_indirect.set_title("(a) Indirect Prompt Injection (Environment, Tool, Skill, Comb.)",
                           fontsize=11, color="#111827", pad=8)
     ax_direct.set_title("(b) Direct Prompt Injection", fontsize=11,
                         color="#111827", pad=8)

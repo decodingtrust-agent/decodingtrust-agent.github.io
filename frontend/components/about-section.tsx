@@ -1,6 +1,5 @@
 import Image from "next/image"
 import { Mail } from "lucide-react"
-import { Button } from "@/components/ui/button"
 
 // Affiliation index → { display name, logo path }.
 const AFFILIATIONS: Record<number, { name: string; logo: string }> = {
@@ -99,34 +98,37 @@ export function AboutSection() {
           <p className="text-muted-foreground mb-4">
             For research collaborations, questions, or media inquiries, please reach out:
           </p>
-          <div className="space-y-2 text-sm mb-6">
+          <div className="space-y-2 text-sm">
             <p>
-              <span className="text-muted-foreground">Email: </span>
-              <a href="mailto:contact@decodingtrust-agent.org" className="text-accent hover:underline">
-                contact@decodingtrust-agent.org
+              <span className="text-muted-foreground">DecodingTrust-Agent Team: </span>
+              <a href="mailto:decodingtrustagent@gmail.com" className="text-accent hover:underline">
+                decodingtrustagent@gmail.com
+              </a>
+            </p>
+            <p>
+              <span className="text-muted-foreground">Zhaorun Chen: </span>
+              <a href="mailto:zhaorun@uchicago.edu" className="text-accent hover:underline">
+                zhaorun@uchicago.edu
+              </a>
+            </p>
+            <p>
+              <span className="text-muted-foreground">Bo Li: </span>
+              <a href="mailto:boli@illinois.edu" className="text-accent hover:underline">
+                boli@illinois.edu
               </a>
             </p>
             <p>
               <span className="text-muted-foreground">GitHub: </span>
-              <a href="https://github.com" className="text-accent hover:underline">
-                github.com/decodingtrust-agent
+              <a
+                href="https://github.com/AI-secure/DecodingTrust-Agent"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline"
+              >
+                github.com/AI-secure/DecodingTrust-Agent
               </a>
             </p>
           </div>
-          <Button variant="outline">Send Message</Button>
-        </div>
-
-        <div className="mt-12 p-6 rounded-lg border border-border bg-secondary/20">
-          <h3 className="text-lg font-semibold mb-4">Citation</h3>
-          <pre className="bg-secondary/50 rounded-lg p-4 overflow-x-auto text-sm font-mono">
-            {`@article{dt-agent2025,
-  title={DT-Agent: A Real-World Simulation Platform for
-         Advanced Red-Teaming of AI Agents},
-  author={Author1 and Author2 and Author3 and Author4},
-  journal={arXiv preprint arXiv:2501.xxxxx},
-  year={2025}
-}`}
-          </pre>
         </div>
       </div>
     </section>

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, FileText, Play, Database } from "lucide-react"
+import { ArrowRight, FileText, Play, Database, Trophy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { loadBenchmarkDataset, type BenchmarkDataset } from "@/lib/benchmark"
 import { wallShots } from "@/lib/env-showcase"
@@ -154,6 +154,17 @@ export function HeroSection() {
             <Link href="/quickstart">
               <Play className="mr-2 h-5 w-5" />
               Get Started
+            </Link>
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="w-full sm:w-auto h-12 px-8 text-base bg-transparent border-[oklch(0.7_0.14_220/0.3)] hover:bg-[oklch(0.7_0.14_220/0.1)] hover:border-[oklch(0.7_0.14_220/0.5)]"
+            asChild
+          >
+            <Link href="/leaderboard">
+              <Trophy className="mr-2 h-5 w-5" />
+              Leaderboard
             </Link>
           </Button>
           <Button
