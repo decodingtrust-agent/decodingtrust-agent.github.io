@@ -12,6 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { TrajectoryAdminPanel } from "@/components/admin/trajectory-admin-panel"
 import {
   METRIC_OPTIONS,
   formatPercent,
@@ -416,7 +418,11 @@ export function BenchmarkAdminPage() {
           <div className="rounded-2xl border border-border bg-card p-8">
             <h1 className="text-2xl font-bold mb-3">Admin unavailable</h1>
             <p className="text-muted-foreground">
-              Configure `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to enable the benchmark admin.
+              Configure `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to enable admin sign-in (benchmark
+              scores and trajectory manifest tools). Trajectory files can always be updated locally: add files under{" "}
+              <code className="rounded bg-muted px-1 py-0.5 text-xs">public/data/trajectories/</code>, then run{" "}
+              <code className="rounded bg-muted px-1 py-0.5 text-xs">npm run trajectories:manifest</code> in{" "}
+              <code className="rounded bg-muted px-1 py-0.5 text-xs">frontend</code>.
             </p>
           </div>
         </div>
@@ -437,9 +443,9 @@ export function BenchmarkAdminPage() {
       <section className="min-h-[calc(100vh-8rem)]">
         <div className="mx-auto max-w-md px-4 py-12 lg:px-6">
           <div className="rounded-2xl border border-border bg-card p-8">
-            <h1 className="text-2xl font-bold mb-2">Benchmark admin</h1>
+            <h1 className="text-2xl font-bold mb-2">Site admin</h1>
             <p className="text-sm text-muted-foreground mb-6">
-              Sign in with the shared admin account to edit published benchmark results.
+              Sign in with the shared admin account to edit benchmark scores and trajectory manifests.
             </p>
             <form className="space-y-4" onSubmit={handleLogin}>
               <div className="space-y-2">
@@ -482,9 +488,9 @@ export function BenchmarkAdminPage() {
       <div className="mx-auto max-w-6xl px-4 py-12 lg:px-6 space-y-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Benchmark admin</h1>
+            <h1 className="text-3xl font-bold mb-2">Site admin</h1>
             <p className="text-muted-foreground">
-              Update the published benchmark run backing the homepage averages and leaderboard.
+              Benchmark scores (Supabase) and trajectory manifest updates for the registry.
             </p>
           </div>
           <Button variant="outline" onClick={handleLogout}>
@@ -492,6 +498,21 @@ export function BenchmarkAdminPage() {
           </Button>
         </div>
 
+        <Tabs defaultValue="benchmark" className="space-y-6">
+          <TabsList className="h-11">
+            <TabsTrigger value="benchmark" className="px-4">
+              Benchmark scores
+            </TabsTrigger>
+            <TabsTrigger value="trajectories" className="px-4">
+              Trajectories
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="trajectories" className="mt-6">
+            <TrajectoryAdminPanel />
+          </TabsContent>
+
+          <TabsContent value="benchmark" className="mt-6 space-y-6">
         {loadingData || !data ? (
           <div className="rounded-2xl border border-border bg-card p-8 text-muted-foreground">
             Loading benchmark records...
@@ -693,6 +714,8 @@ export function BenchmarkAdminPage() {
             </form>
           </>
         )}
+          </TabsContent>
+        </Tabs>
       </div>
     </section>
   )

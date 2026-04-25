@@ -36,6 +36,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
+import { TrajectoryTab } from "@/components/registry/trajectory-tab"
 
 /* ────────────────────────────────────────────────────────────── */
 /*  Types                                                        */
@@ -57,6 +58,7 @@ interface AttackTurn {
 }
 
 interface Task {
+  slug?: string
   task_id: string
   domain: string
   author: string | null
@@ -308,7 +310,7 @@ export default function TaskDetailPageClient({ slug }: { slug: string }) {
           </TabsContent>
 
           <TabsContent value="trajectory">
-            <TrajectoryTab task={task} />
+            <TrajectoryTab task={task} slug={slug} />
           </TabsContent>
         </Tabs>
 
@@ -902,89 +904,6 @@ function LeaderboardTab({ task }: { task: Task }) {
         <p className="text-xs text-muted-foreground/70 max-w-sm mx-auto">
           Per-task leaderboard data will be available once evaluation results are published.
           Visit the <Link href="/leaderboard" className="underline underline-offset-2 hover:text-foreground transition-colors">main leaderboard</Link> for aggregate scores.
-        </p>
-      </div>
-    </div>
-  )
-}
-
-/* ════════════════════════════════════════════════════════════════
-   Trajectory Tab
-   ════════════════════════════════════════════════════════════════ */
-
-function TrajectoryTab({ task }: { task: Task }) {
-  const isMalicious = task.type === "malicious"
-  const [activeView, setActiveView] = useState<"no_attack" | "under_attack">(
-    isMalicious ? "under_attack" : "no_attack"
-  )
-
-  return (
-    <div className="space-y-6">
-      {isMalicious && (
-        <div className="flex gap-2">
-          <button
-            onClick={() => setActiveView("no_attack")}
-            className={cn(
-              "flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-all",
-              activeView === "no_attack"
-                ? "border-foreground/20 bg-card shadow-sm"
-                : "border-border bg-transparent text-muted-foreground hover:text-foreground hover:border-foreground/10"
-            )}
-          >
-            <Shield className="h-4 w-4" />
-            No Attack
-          </button>
-          <button
-            onClick={() => setActiveView("under_attack")}
-            className={cn(
-              "flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-all",
-              activeView === "under_attack"
-                ? "border-red-200 dark:border-red-900/50 bg-red-50/50 dark:bg-red-950/10 shadow-sm text-red-700 dark:text-red-300"
-                : "border-border bg-transparent text-muted-foreground hover:text-foreground hover:border-foreground/10"
-            )}
-          >
-            <ShieldAlert className="h-4 w-4" />
-            Under Attack
-          </button>
-        </div>
-      )}
-
-      <div className="rounded-xl border border-border overflow-hidden">
-        <div className="px-4 py-3 border-b border-border bg-muted/40 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Play className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm font-medium">
-              Execution Trace {isMalicious ? (activeView === "under_attack" ? "(Under Attack)" : "(No Attack)") : ""}
-            </span>
-          </div>
-          <span className="text-xs text-muted-foreground">&mdash; steps</span>
-        </div>
-
-        <div className="divide-y divide-border/50">
-          {[1, 2, 3].map((step) => (
-            <div key={step} className="px-4 py-4 flex gap-4">
-              <div className="flex flex-col items-center flex-shrink-0">
-                <div className="h-8 w-8 rounded-full bg-muted/60 flex items-center justify-center">
-                  <span className="text-xs font-mono text-muted-foreground/40">{step}</span>
-                </div>
-                {step < 3 && <div className="w-px flex-1 bg-border/40 mt-1" />}
-              </div>
-              <div className="flex-1 space-y-2 pt-1">
-                <div className="h-4 w-48 bg-muted/50 rounded animate-pulse" />
-                <div className="h-3 w-72 bg-muted/30 rounded animate-pulse" />
-                <div className="h-3 w-56 bg-muted/30 rounded animate-pulse" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="text-center py-8">
-        <Lock className="h-10 w-10 text-muted-foreground/20 mx-auto mb-3" />
-        <p className="text-sm font-medium text-muted-foreground mb-1">Trajectories coming soon</p>
-        <p className="text-xs text-muted-foreground/70 max-w-sm mx-auto">
-          Agent execution traces will be available once evaluation results are published.
-          {isMalicious && " Both clean and adversarial trajectories will be shown for comparison."}
         </p>
       </div>
     </div>

@@ -27,6 +27,15 @@ venv/
 /out/
 /frontend/out/
 
+# Trajectory data (3.2 GB / 127k JSONs) - too big for git, served by nginx
+# directly. Drop trajectory zips into ./trajectory/ and run:
+#   cd frontend && npm run trajectories:unpack
+/frontend/public/data/trajectories/
+/trajectory/
+
+# Per-deploy logs from the webhook handler
+/var-log-dt-deploy/
+
 # production
 /build
 

@@ -118,6 +118,21 @@ export interface BenchmarkFilters {
 
 const STATIC_DATA_URL = "/data/benchmark-data.json"
 
+/**
+ * (frameworkKey, modelKey) pairs that should not appear in any leaderboard, table,
+ * or aggregate metric. Filtered at the data layer so every downstream consumer
+ * (entries, averages, category tables, model dropdowns) is consistent.
+ */
+const EXCLUDED_COMBINATIONS: ReadonlyArray<{ frameworkKey: string; modelKey: string }> = [
+  { frameworkKey: "openai-agents", modelKey: "gpt-5-1" },
+]
+
+function isExcludedCombination(frameworkKey: string, modelKey: string): boolean {
+  return EXCLUDED_COMBINATIONS.some(
+    (combo) => combo.frameworkKey === frameworkKey && combo.modelKey === modelKey
+  )
+}
+
 const METRIC_LABELS: Record<BenchmarkMetricType, string> = {
   bsr: "BSR",
   direct_asr: "Direct ASR",
@@ -147,8 +162,12 @@ function buildDataset(source: BenchmarkDataset) {
   const modelOrder = new Map(source.models.map((model) => [model.key, model.sortOrder]))
   const metricOrder = new Map(METRIC_OPTIONS.map((metric, index) => [metric.key, index]))
 
+  const filteredScores = source.scores.filter(
+    (score) => !isExcludedCombination(score.frameworkKey, score.modelKey)
+  )
+
   const groupedEntries = new Map<string, BenchmarkEntry>()
-  for (const score of source.scores) {
+  for (const score of filteredScores) {
     const entryKey = `${score.metricType}::${score.frameworkKey}::${score.modelKey}`
     if (!groupedEntries.has(entryKey)) {
       groupedEntries.set(entryKey, {
@@ -188,7 +207,7 @@ function buildDataset(source: BenchmarkDataset) {
 
   const averages = Object.fromEntries(
     METRIC_OPTIONS.map(({ key }) => {
-      const metricScores = source.scores.filter((score) => score.metricType === key)
+      const metricScores = filteredScores.filter((score) => score.metricType === key)
       const domainAverages = Object.fromEntries(
         source.domains.map((domain) => [
           domain.key,
@@ -220,12 +239,19 @@ function buildDataset(source: BenchmarkDataset) {
     entryCount: entries.filter((entry) => entry.metricType === metric.key).length,
   }))
 
-  const categoryTables = [...(source.categoryTables ?? [])].sort((left, right) => {
-    return (
-      (domainOrder.get(left.domainKey) ?? 0) - (domainOrder.get(right.domainKey) ?? 0) ||
-      (metricOrder.get(left.metricType) ?? 0) - (metricOrder.get(right.metricType) ?? 0)
-    )
-  })
+  const categoryTables = (source.categoryTables ?? [])
+    .map((table) => ({
+      ...table,
+      entries: table.entries.filter(
+        (entry) => !isExcludedCombination(entry.frameworkKey, entry.modelKey)
+      ),
+    }))
+    .sort((left, right) => {
+      return (
+        (domainOrder.get(left.domainKey) ?? 0) - (domainOrder.get(right.domainKey) ?? 0) ||
+        (metricOrder.get(left.metricType) ?? 0) - (metricOrder.get(right.metricType) ?? 0)
+      )
+    })
 
   return {
     ...source,
@@ -233,6 +259,7 @@ function buildDataset(source: BenchmarkDataset) {
     domains: [...source.domains].sort((left, right) => left.sortOrder - right.sortOrder),
     frameworks: [...source.frameworks].sort((left, right) => left.sortOrder - right.sortOrder),
     models: [...source.models].sort((left, right) => left.sortOrder - right.sortOrder),
+    scores: filteredScores,
     entries,
     averages,
     categoryTables,
@@ -335,6 +362,9 @@ async function fetchSupabaseDataset(staticDataset: BenchmarkDataset | null) {
       const framework = frameworksById.get(score.framework_id)
       const model = modelsById.get(score.model_id)
       if (!domain || !framework || !model) {
+        return []
+      }
+      if (isExcludedCombination(framework.key, model.key)) {
         return []
       }
 

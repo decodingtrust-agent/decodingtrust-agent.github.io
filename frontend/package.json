@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "trajectories:manifest": "tsx scripts/build-trajectory-manifest.ts",
+    "trajectories:unpack": "node scripts/unzip-trajectories.mjs && npm run trajectories:manifest",
     "build": "BASELINE_BROWSER_MAPPING_IGNORE_OLD_DATA=true next build",
+    "build:export": "DT_STATIC_EXPORT=1 BASELINE_BROWSER_MAPPING_IGNORE_OLD_DATA=true next build",
     "dev": "next dev",
     "lint": "eslint .",
-    "start": "next start"
+    "start": "next start -H ${HOSTNAME:-127.0.0.1} -p ${PORT:-3000}"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -72,6 +75,7 @@
     "postcss": "^8.5",
     "tailwindcss": "^4.1.9",
     "tw-animate-css": "1.3.3",
+    "tsx": "^4.20.5",
     "typescript": "^5"
   }
 }

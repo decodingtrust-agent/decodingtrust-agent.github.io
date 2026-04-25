@@ -6,41 +6,7 @@ import Image from "next/image"
 import { ArrowRight, FileText, Play, Database } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { loadBenchmarkDataset, type BenchmarkDataset } from "@/lib/benchmark"
-
-type WallShot = {
-  name: string
-  domain: string
-  src: string
-}
-
-const wallShots: WallShot[] = [
-  { name: "PayPal", domain: "Workflow", src: "/env-showcase/paypal-1.png" },
-  { name: "Trade Desk", domain: "Finance", src: "/env-showcase/ui_trade.png" },
-  { name: "E-commerce Home", domain: "Browser", src: "/env-showcase/ecommerce-home.png" },
-  { name: "CRM Leads", domain: "CRM", src: "/env-showcase/leads_page.png" },
-  { name: "Windows Desktop", domain: "Desktop OS", src: "/env-showcase/windows-screenshot.png" },
-  { name: "Case Details", domain: "Customer Service", src: "/env-showcase/ui_case_details.png" },
-  { name: "Slack", domain: "Workflow", src: "/env-showcase/slack-1.png" },
-  { name: "Calendar", domain: "Workflow", src: "/env-showcase/calendar-2.png" },
-  { name: "Google Sheets", domain: "Workflow", src: "/env-showcase/googlesheets-2.png" },
-  { name: "Zoom", domain: "Workflow", src: "/env-showcase/zoom-2.png" },
-  { name: "Google Drive", domain: "Workflow", src: "/env-showcase/googledrive-1.png" },
-  { name: "Atlassian Jira", domain: "Workflow", src: "/env-showcase/atlassian-4.png" },
-  { name: "Google Form", domain: "Workflow", src: "/env-showcase/googleform-1.png" },
-  { name: "Gmail", domain: "Workflow", src: "/env-showcase/gmail-1.png" },
-  { name: "Portfolio", domain: "Finance", src: "/env-showcase/ui_portfolio.png" },
-  { name: "Markets", domain: "Finance", src: "/env-showcase/ui_markets.png" },
-  { name: "News Feed", domain: "Finance", src: "/env-showcase/ui_news.png" },
-  { name: "Create Lead", domain: "CRM", src: "/env-showcase/create_page.png" },
-  { name: "ServiceNow", domain: "Customer Service", src: "/env-showcase/servicenow-store-credit-ff-attack.png" },
-  { name: "Case Queue", domain: "Customer Service", src: "/env-showcase/ui_case_list.png" },
-  { name: "Cases Dashboard", domain: "Customer Service", src: "/env-showcase/ui_cases.png" },
-  { name: "Review Page", domain: "Browser", src: "/env-showcase/ecommerce-review.png" },
-  { name: "Account Center", domain: "Browser", src: "/env-showcase/ecommerce-account.png" },
-  { name: "macOS Desktop", domain: "Desktop OS", src: "/env-showcase/macos_screenshot.png" },
-  { name: "VM Desktop", domain: "Desktop OS", src: "/env-showcase/vm_desktop.png" },
-  { name: "Arxiv", domain: "Research", src: "/env-showcase/arxiv_DT.png" },
-]
+import { wallShots } from "@/lib/env-showcase"
 
 const WALL_ROW_COUNT = 4
 const wallRows = Array.from({ length: WALL_ROW_COUNT }, (_, rowIndex) =>

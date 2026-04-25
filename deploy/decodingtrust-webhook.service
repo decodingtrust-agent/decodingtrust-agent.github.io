@@ -1,0 +1,45 @@
+# /etc/systemd/system/decodingtrust-webhook.service
+#
+# Tiny Python HTTP server that listens for GitHub `push` webhooks on
+# 127.0.0.1:9001 and re-runs deploy/redeploy.sh after verifying HMAC.
+#
+# Install:
+#   sudo cp deploy/decodingtrust-webhook.service /etc/systemd/system/
+#   # /etc/decodingtrust-webhook.env was created during initial setup
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now decodingtrust-webhook.service
+#
+# Logs:
+#   journalctl -u decodingtrust-webhook.service -f
+#   ls /var/log/dt-deploy/   # per-deploy logs
+
+[Unit]
+Description=DecodingTrust-Agent GitHub deploy webhook
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=zhaorun
+Group=zhaorun
+WorkingDirectory=/home/zhaorun/decodingtrust-agent.github.io
+EnvironmentFile=/etc/decodingtrust-webhook.env
+ExecStart=/usr/bin/python3 /home/zhaorun/decodingtrust-agent.github.io/deploy/webhook.py
+
+Restart=on-failure
+RestartSec=5
+KillSignal=SIGTERM
+TimeoutStopSec=10
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=dt-webhook
+
+[Install]
+WantedBy=multi-user.target

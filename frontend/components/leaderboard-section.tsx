@@ -1211,26 +1211,26 @@ export function LeaderboardSection() {
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary mb-4">
                 <Sparkles className="h-3.5 w-3.5" />
                 Paper-backed leaderboard
-              </div>
+          </div>
               <h1 className="text-3xl md:text-4xl font-semibold tracking-tight mb-3">
                 DT-Bench Leaderboard
               </h1>
               <p className="max-w-3xl text-muted-foreground">
                 A richer leaderboard experience inspired by arena-style ranking pages, with icons, animated domain sections, and flexible table, scatter, and bar views.
               </p>
-            </div>
+        </div>
 
             <div className="rounded-2xl border border-border/60 bg-background/50 p-5">
               <div className="grid gap-3 md:grid-cols-3 xl:grid-cols-5">
                 <div className="relative md:col-span-2 xl:col-span-2">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
                     placeholder="Search framework or model"
                     className="pl-9 h-10 bg-background border-border"
-                    value={searchQuery}
+                value={searchQuery}
                     onChange={(event) => setSearchQuery(event.target.value)}
-                  />
-                </div>
+              />
+            </div>
 
                 <Select value={frameworkKey} onValueChange={setFrameworkKey}>
                   <SelectTrigger className="h-10">
@@ -1260,35 +1260,35 @@ export function LeaderboardSection() {
                   </SelectContent>
                 </Select>
 
-                <div className="relative">
-                  <Button
-                    variant="outline"
-                    size="sm"
+            <div className="relative">
+              <Button
+                variant="outline"
+                size="sm"
                     className="h-10 w-full justify-between gap-2 bg-transparent"
                     onClick={() => setShowDomainFilter((open) => !open)}
-                  >
+              >
                     <span className="inline-flex items-center gap-2">
-                      <Filter className="h-3.5 w-3.5" />
-                      Domains
+                <Filter className="h-3.5 w-3.5" />
+                Domains
                     </span>
                     <span className="inline-flex items-center gap-2">
                       {selectedDomainKeys.length > 0 && (
                         <span className="rounded-full bg-primary px-1.5 py-0.5 text-xs text-primary-foreground">
                           {selectedDomainKeys.length}
-                        </span>
-                      )}
-                      <ChevronDown className="h-3.5 w-3.5" />
+                  </span>
+                )}
+                <ChevronDown className="h-3.5 w-3.5" />
                     </span>
-                  </Button>
+              </Button>
 
-                  {showDomainFilter && (
+              {showDomainFilter && (
                     <div className="absolute top-full left-0 right-0 mt-1 rounded-xl border border-border bg-popover p-3 shadow-lg z-50">
                       <div className="flex flex-wrap gap-1.5 max-h-52 overflow-y-auto">
                         {dataset.domains.map((domain) => (
-                          <button
+                      <button
                             key={domain.key}
                             onClick={() => toggleDomain(domain.key)}
-                            className={cn(
+                        className={cn(
                               "rounded-full border px-2.5 py-1 text-xs transition-colors",
                               selectedDomainKeys.includes(domain.key)
                                 ? "border-primary bg-primary text-primary-foreground"
@@ -1296,13 +1296,13 @@ export function LeaderboardSection() {
                             )}
                           >
                             {domain.shortLabel}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
+                </div>
+            </div>
 
               <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <p className="text-sm text-muted-foreground">
@@ -1325,15 +1325,15 @@ export function LeaderboardSection() {
                     }
 
                     return (
-                      <span
+              <span
                         key={domain.key}
                         className="inline-flex items-center gap-1 rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs text-primary"
-                      >
+              >
                         {domain.label}
                         <button onClick={() => toggleDomain(domain.key)}>
-                          <X className="h-3 w-3" />
-                        </button>
-                      </span>
+                  <X className="h-3 w-3" />
+                </button>
+              </span>
                     )
                   })}
                 </div>
@@ -1366,55 +1366,55 @@ export function LeaderboardSection() {
                   </div>
                   <div className="rounded-xl border border-border/60">
                     <table className="w-full table-auto text-sm">
-                      <thead>
+              <thead>
                         <tr className="border-b border-border bg-secondary/20 align-bottom">
                           <th className="px-2 py-3 text-left text-xs font-medium text-muted-foreground">#</th>
                           <th className="px-2 py-3 text-left text-xs font-medium text-muted-foreground">Agent</th>
                           <th className="px-2 py-3 text-left text-xs font-medium text-muted-foreground">Model</th>
                           <th className="border-r border-border/80 px-2 py-3 text-right text-xs font-medium text-muted-foreground">
                             Overall
-                          </th>
-                          {visibleDomains.map((domain) => (
-                            <th
+                  </th>
+                  {visibleDomains.map((domain) => (
+                    <th
                               key={domain.key}
                               className="px-1.5 py-3 text-center text-[11px] font-medium leading-tight text-muted-foreground"
-                            >
+                    >
                               <span className="break-words">{domain.shortLabel}</span>
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
                         {rows.map((entry, index) => (
-                          <tr
+                  <tr
                             key={entry.entryKey}
                             className="border-b border-border/60 last:border-0 transition-colors hover:bg-secondary/10"
-                          >
+                  >
                             <td className="px-2 py-3 text-sm font-mono font-medium">{index + 1}</td>
                             <td className="px-2 py-3">
                               <FrameworkLabel frameworkKey={entry.frameworkKey} frameworkName={entry.frameworkName} />
-                            </td>
+                    </td>
                             <td className="px-2 py-3">
                               <ModelLabel modelKey={entry.modelKey} modelName={entry.modelName} />
                             </td>
                             <td className="border-r border-border/80 px-2 py-3 text-right">
                               <MetricCell metricType={metric} value={entry.overallForSelection} emphasis />
-                            </td>
-                            {visibleDomains.map((domain) => (
+                    </td>
+                    {visibleDomains.map((domain) => (
                               <td key={domain.key} className="px-1 py-3 text-center">
                                 <MetricCell metricType={metric} value={entry.domainScores[domain.key]} />
-                              </td>
-                            ))}
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
                     {rows.length === 0 ? (
                       <div className="border-t border-border p-8 text-center text-muted-foreground">
                         No published results match the current filters.
-                      </div>
+          </div>
                     ) : null}
-                  </div>
+        </div>
                 </div>
               )
             })}

@@ -1,0 +1,55 @@
+# /etc/systemd/system/decodingtrust-frontend.service
+#
+# Runs `next start` for the DecodingTrust-Agent frontend on :3000.
+# Nginx (see deploy/nginx-prod.conf) proxies the public site to this port.
+#
+# Install:
+#   sudo cp deploy/decodingtrust-frontend.service /etc/systemd/system/
+#   sudo cp deploy/decodingtrust-frontend.env.example /etc/decodingtrust-frontend.env
+#   sudo $EDITOR /etc/decodingtrust-frontend.env   # fill in real Supabase keys
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now decodingtrust-frontend.service
+#   sudo systemctl status decodingtrust-frontend.service
+#
+# Logs:
+#   journalctl -u decodingtrust-frontend.service -f
+
+[Unit]
+Description=DecodingTrust-Agent frontend (Next.js, self-hosted)
+Documentation=https://github.com/decodingtrust-agent/decodingtrust-agent.github.io
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=zhaorun
+Group=zhaorun
+WorkingDirectory=/home/zhaorun/decodingtrust-agent.github.io/frontend
+
+# Production runtime config. Real secrets live in /etc/decodingtrust-frontend.env
+# (chmod 600). The example file in deploy/ shows the required keys.
+EnvironmentFile=-/etc/decodingtrust-frontend.env
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=HOSTNAME=127.0.0.1
+
+ExecStart=/usr/bin/npm run start --silent
+
+Restart=on-failure
+RestartSec=5
+KillSignal=SIGTERM
+TimeoutStopSec=20
+
+# Light hardening (keeping it loose so npm/node can read $HOME normally).
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=dt-frontend
+
+[Install]
+WantedBy=multi-user.target
