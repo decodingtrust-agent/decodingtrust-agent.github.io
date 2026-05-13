@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, FileText, Play, Database, Trophy } from "lucide-react"
+import { ArrowRight, FileText, Play, Database, Trophy, ScrollText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { loadBenchmarkDataset, type BenchmarkDataset } from "@/lib/benchmark"
 import { wallShots } from "@/lib/env-showcase"
@@ -39,7 +39,7 @@ export function HeroSection() {
   }, [dataset])
 
   return (
-    <section className="relative overflow-hidden min-h-[90vh] flex items-center">
+    <section className="relative overflow-hidden min-h-[75vh] flex items-center">
       {/* Layer 1: soft aurora ambience */}
       <div className="absolute inset-0 aurora-bg" />
       <div className="absolute inset-0">
@@ -92,7 +92,7 @@ export function HeroSection() {
       {/* Layer 5: bottom fade into the next section */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-background" />
 
-      <div className="mx-auto max-w-5xl px-4 py-20 md:py-28 lg:py-36 relative z-10 -translate-y-16 md:-translate-y-24">
+      <div className="mx-auto max-w-5xl px-4 py-12 md:py-16 lg:py-20 relative z-10 -translate-y-8 md:-translate-y-12">
         {/* Announcement banner */}
         <div className="flex justify-center mb-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 backdrop-blur-sm px-5 py-2 shadow-lg shadow-primary/5">
@@ -112,7 +112,7 @@ export function HeroSection() {
           <div className="flex justify-center mb-8">
             <Image
               src="/dt-agent-logo.png"
-              alt="DT-Agent Logo"
+              alt="DTap Logo"
               width={160}
               height={160}
               className="drop-shadow-2xl"
@@ -128,16 +128,16 @@ export function HeroSection() {
           </h1>
 
           <p className="text-xl md:text-2xl lg:text-3xl font-medium text-muted-foreground mb-4 leading-relaxed">
-            A Real-World Simulation Platform for<br className="hidden md:block" />
-            Advanced Red-Teaming of AI Agents
+            A Controllable and Interactive<br className="hidden md:block" />
+            Red-Teaming Platform for AI Agents
           </p>
 
-          <p className="mx-auto text-base md:text-lg text-muted-foreground/80 leading-relaxed mt-6 md:whitespace-nowrap">
+          <p className="mx-auto text-base md:text-lg text-foreground/70 leading-relaxed mt-6 md:whitespace-nowrap drop-shadow-sm">
             The first dynamic red-teaming framework against AI Agents across{" "}
-            <span className="text-foreground font-medium">over 15 domains</span> and{" "}
-            <span className="text-foreground font-medium">50 sandboxed environments</span>.
+            <span className="text-foreground font-semibold">14 domains</span> and{" "}
+            <span className="text-foreground font-semibold">50+ sandboxed environments</span>.
           </p>
-          <p className="mx-auto text-base md:text-lg text-muted-foreground/80 leading-relaxed mt-3 md:whitespace-nowrap">
+          <p className="mx-auto text-base md:text-lg text-foreground/70 leading-relaxed mt-3 md:whitespace-nowrap drop-shadow-sm">
             Covering Diverse{" "}
             <span className="text-[oklch(0.7_0.14_220)] font-semibold">Indirect Injections</span>{" "}
             in Environments, Tools, Skills, and{" "}
@@ -184,16 +184,32 @@ export function HeroSection() {
             className="w-full sm:w-auto h-12 px-8 text-base bg-transparent border-[oklch(0.7_0.14_220/0.3)] hover:bg-[oklch(0.7_0.14_220/0.1)] hover:border-[oklch(0.7_0.14_220/0.5)]"
             asChild
           >
-            <Link href="/registry">
+            <Link href="/benchmark">
               <Database className="mr-2 h-5 w-5" />
-              Data Registry
+              Benchmark
             </Link>
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="w-full sm:w-auto h-12 px-8 text-base bg-transparent border-[oklch(0.7_0.14_220/0.3)] hover:bg-[oklch(0.7_0.14_220/0.1)] hover:border-[oklch(0.7_0.14_220/0.5)]"
+            asChild
+          >
+            <a href="https://arxiv.org/abs/2605.04808" target="_blank" rel="noopener noreferrer">
+              <ScrollText className="mr-2 h-5 w-5" />
+              Paper
+            </a>
           </Button>
         </div>
 
-        <p className="text-center text-sm text-muted-foreground">
-          A research collaboration • Paper available on{" "}
-          <a href="#" className="text-[oklch(0.7_0.14_220)] hover:underline font-medium">
+        <p className="text-center text-sm text-foreground/50">
+          Paper available on{" "}
+          <a
+            href="https://arxiv.org/abs/2605.04808"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[oklch(0.7_0.14_220)] hover:underline font-medium"
+          >
             arXiv
           </a>
         </p>

@@ -9,7 +9,7 @@ export function useReportData() {
   return useContext(ReportDataContext);
 }
 
-export function ReportDataProvider({ children, dataFile = '/data/report-data.json' }: { children: ReactNode; dataFile?: string }) {
+export function ReportDataProvider({ children, dataFile = '/traj-api/report?version=current' }: { children: ReactNode; dataFile?: string }) {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

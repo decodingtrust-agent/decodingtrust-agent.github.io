@@ -1,0 +1,59 @@
+# /etc/systemd/system/decodingtrust-trajapi.service
+#
+# FastAPI service that serves all trajectory + dataset data to the frontend
+# via /traj-api/* (proxied by nginx). Listens on 127.0.0.1:12001.
+#
+# Data lives at /home/zhaorun/decodingtrust-agent.github.io/backend/data/
+# (override with DT_DATA_ROOT). The SQLite index at
+# $DT_DATA_ROOT/trajectory-index.sqlite is built by indexer.py during
+# redeploy.sh after the trajectory tree changes.
+#
+# Install:
+#   cd /home/zhaorun/decodingtrust-agent.github.io/backend/traj-api
+#   python3 -m venv .venv
+#   .venv/bin/pip install -r requirements.txt
+#   sudo cp ../../deploy/decodingtrust-trajapi.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now decodingtrust-trajapi.service
+#
+# Logs:
+#   journalctl -u decodingtrust-trajapi.service -f
+
+[Unit]
+Description=DecodingTrust trajectory + dataset API (FastAPI)
+Documentation=https://github.com/decodingtrust-agent/decodingtrust-agent.github.io
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=zhaorun
+Group=zhaorun
+WorkingDirectory=/home/zhaorun/decodingtrust-agent.github.io/backend/traj-api
+
+Environment=DT_DATA_ROOT=/home/zhaorun/decodingtrust-agent.github.io/backend/data
+Environment=PYTHONUNBUFFERED=1
+
+ExecStart=/home/zhaorun/decodingtrust-agent.github.io/backend/traj-api/.venv/bin/uvicorn \
+    app:app --host 127.0.0.1 --port 12001 --workers 2 --no-access-log
+
+Restart=on-failure
+RestartSec=5
+KillSignal=SIGTERM
+TimeoutStopSec=20
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+ProtectSystem=strict
+ReadOnlyPaths=/home/zhaorun/decodingtrust-agent.github.io/backend
+ReadWritePaths=/home/zhaorun/decodingtrust-agent.github.io/backend/data
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=dt-trajapi
+
+[Install]
+WantedBy=multi-user.target

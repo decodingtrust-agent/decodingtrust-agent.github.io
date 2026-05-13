@@ -8,7 +8,7 @@ export function QuickStartContent() {
   return (
     <div>
       <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-        Get started with DT-Agent in under 5 minutes. This guide will help you set up
+        Get started with DTap in under 5 minutes. This guide will help you set up
         the evaluation framework and run your first benchmark.
       </p>
 

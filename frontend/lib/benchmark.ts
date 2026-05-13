@@ -116,7 +116,7 @@ export interface BenchmarkFilters {
   searchQuery: string
 }
 
-const STATIC_DATA_URL = "/data/benchmark-data.json"
+const STATIC_DATA_URL = "/traj-api/benchmark"
 
 /**
  * (frameworkKey, modelKey) pairs that should not appear in any leaderboard, table,

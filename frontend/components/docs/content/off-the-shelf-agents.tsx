@@ -14,7 +14,7 @@ export function OffTheShelfAgentsContent() {
 
       <Callout type="info" title="When to Use This">
         Choose this approach when starting a new project and you want to build an agent specifically
-        for evaluation with DT-Agent. You get full control over agent configuration and automatic
+        for evaluation with DTap. You get full control over agent configuration and automatic
         integration with our evaluation pipeline.
       </Callout>
 

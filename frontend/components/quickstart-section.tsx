@@ -1,9 +1,8 @@
 "use client"
 
-import { Copy, Check, AlertTriangle, Terminal, Package, Database, ArrowRight, X } from "lucide-react"
+import { Copy, Check, Terminal, Package, Database, ArrowRight, X } from "lucide-react"
 import { useState, useMemo } from "react"
 import { Button } from "@/components/ui/button"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { cn } from "@/lib/utils"
 
 // Environment definitions with metadata
@@ -142,14 +141,6 @@ export function QuickstartSection() {
             Select environments or domains to generate custom installation and run commands.
           </p>
         </div>
-
-        <Alert className="mb-6 border-warning/30 bg-warning/5">
-          <AlertTriangle className="h-4 w-4 text-warning" />
-          <AlertTitle className="text-warning">Beta Notice</AlertTitle>
-          <AlertDescription className="text-muted-foreground">
-            The API is under active development. Please pin your version for production use.
-          </AlertDescription>
-        </Alert>
 
         {/* Selection mode tabs */}
         <div className="mb-6">

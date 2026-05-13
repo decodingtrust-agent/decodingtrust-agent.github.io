@@ -16,7 +16,7 @@ function LayoutInner({ children }: { children: React.ReactNode }) {
   return (
     <div className="da-layout">
       <div className="da-topbar">
-        <h1 className="da-topbar-title">DT-Bench Data Quality Report</h1>
+        <h1 className="da-topbar-title">DTap-Bench Data Quality Report</h1>
         {genDate && <span className="da-topbar-date">Generated: {genDate}</span>}
       </div>
 
@@ -44,7 +44,7 @@ function LayoutInner({ children }: { children: React.ReactNode }) {
 
 export default function DataAuditingLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ReportDataProvider dataFile="/data/report-data-0313.json">
+    <ReportDataProvider dataFile="/traj-api/report?version=0313">
       <LayoutInner>{children}</LayoutInner>
     </ReportDataProvider>
   );

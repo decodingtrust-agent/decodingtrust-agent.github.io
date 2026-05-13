@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import { Github, FileText, Database, Package, ExternalLink, ArrowRight } from "lucide-react"
 
-const DISCORD_INVITE = "https://discord.gg/V4fG6NcVc"
+const DISCORD_INVITE = "https://discord.gg/z8ZhVwPqUk"
 // Replace with the DecodingTrust-Agent Discord server ID (Server Settings → Widget → Server ID).
 // The server's Widget must be enabled for this endpoint to respond.
 const DISCORD_SERVER_ID = "1486520898906230798"
@@ -44,7 +44,7 @@ const resources = [
   {
     icon: Github,
     title: "Source Code",
-    description: "Explore and contribute to the DT-Agent codebase.",
+    description: "Explore and contribute to the DTap codebase.",
     link: "https://github.com",
     linkText: "github.com/decodingtrust-agent",
   },
@@ -66,8 +66,8 @@ const resources = [
     icon: FileText,
     title: "Research Paper",
     description: "Read our technical paper on arXiv.",
-    link: "https://arxiv.org",
-    linkText: "arxiv.org/abs/2501.xxxxx",
+    link: "https://arxiv.org/pdf/2605.04808",
+    linkText: "arxiv.org/abs/2605.04808",
   },
 ]
 
@@ -81,7 +81,7 @@ export function CommunitySection() {
         <div className="text-center mb-12">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">Community & Resources</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Join our community, access resources, and contribute to advancing AI agent security.
+            Join DTap community and contribute to advancing AI agent security.
           </p>
         </div>
 
@@ -98,7 +98,7 @@ export function CommunitySection() {
             <div className="pointer-events-none absolute -bottom-28 -left-10 h-72 w-72 rounded-full bg-[#8b5cf6]/40 blur-3xl" />
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent_60%)]" />
 
-            {/* Giant faded DT-Agent logo watermark */}
+            {/* Giant faded DTap logo watermark */}
             <Image
               src="/dt-agent-logo.png"
               alt=""

@@ -7,9 +7,9 @@ export default function Home() {
   return (
     <>
       <HeroSection />
-      <DomainsSection />
       <LeaderboardPreview />
       <BenchmarkScatter />
+      <DomainsSection />
     </>
   )
 }

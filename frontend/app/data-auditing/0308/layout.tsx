@@ -16,7 +16,7 @@ function LayoutInner({ children }: { children: React.ReactNode }) {
   return (
     <div className="da-layout">
       <div className="da-topbar">
-        <h1 className="da-topbar-title">DT-Bench Data Quality Report</h1>
+        <h1 className="da-topbar-title">DTap-Bench Data Quality Report</h1>
         {genDate && <span className="da-topbar-date">Generated: {genDate}</span>}
       </div>
 

@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 /**
- * Unzip every *.zip from the trajectory drop folder into public/data/trajectories/.
+ * Unzip every *.zip from the trajectory drop folder into backend/data/trajectories/.
  *
  * Default zip dir: <repo>/trajectory  (sibling of frontend/)
- * Override: TRAJECTORY_ZIP_DIR=/path/to/zips
+ * Override:
+ *   TRAJECTORY_ZIP_DIR=/path/to/zips    — input zips
+ *   DT_DATA_ROOT=/path/to/backend/data  — output root
  *
  * Usage (from frontend/):
  *   node scripts/unzip-trajectories.mjs
- *   npm run trajectories:unpack   # also runs trajectories:manifest
+ *   npm run trajectories:unpack   # also rebuilds the SQLite trajectory index
  */
 
 import fs from "node:fs"
@@ -17,10 +19,14 @@ import { spawnSync } from "node:child_process"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const FRONTEND_ROOT = path.join(__dirname, "..")
-const DEST = path.join(FRONTEND_ROOT, "public", "data", "trajectories")
+const REPO_ROOT = path.join(FRONTEND_ROOT, "..")
+const DATA_ROOT = process.env.DT_DATA_ROOT
+  ? path.resolve(process.env.DT_DATA_ROOT)
+  : path.join(REPO_ROOT, "backend", "data")
+const DEST = path.join(DATA_ROOT, "trajectories")
 const ZIP_DIR = process.env.TRAJECTORY_ZIP_DIR
   ? path.resolve(process.env.TRAJECTORY_ZIP_DIR)
-  : path.join(FRONTEND_ROOT, "..", "trajectory")
+  : path.join(REPO_ROOT, "trajectory")
 
 function main() {
   if (!fs.existsSync(ZIP_DIR)) {
