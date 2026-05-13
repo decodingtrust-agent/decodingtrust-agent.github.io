@@ -73,14 +73,16 @@ class AgentPoint:
 
 
 POINTS: list[AgentPoint] = [
-    AgentPoint("OpenAI Agents", "GPT-5.4",      85.7, 38.6, 48.9),
-    AgentPoint("OpenAI Agents", "GPT-5.2",      80.8, 44.0, 56.4),
-    AgentPoint("OpenAI Agents", "GPT-OSS-120B", 36.7, 28.1, 45.2),
-    AgentPoint("Claude Code",   "Opus-4.6",     86.5,  8.6, 22.7),
-    AgentPoint("Claude Code",   "Sonnet-4.5",   81.9, 25.2, 26.6),
-    AgentPoint("Google ADK",    "Gemini-3-Pro", 87.9, 54.0, 47.5),
-    AgentPoint("OpenClaw",      "Opus-4.6",     86.7, 10.8, 21.2),
-    AgentPoint("OpenClaw",      "GPT-5.2",      78.7, 35.2, 38.0),
+    AgentPoint("OpenAI Agents", "GPT-5.4",      85.3, 40.0, 51.0),
+    AgentPoint("OpenAI Agents", "GPT-5.2",      80.5, 46.7, 58.8),
+    AgentPoint("OpenAI Agents", "GPT-OSS-120B", 36.2, 28.5, 46.5),
+    AgentPoint("Claude Code",   "Opus-4.6",     85.6,  8.1, 22.3),
+    AgentPoint("Claude Code",   "Sonnet-4.5",   80.8, 25.2, 26.9),
+    AgentPoint("Google ADK",    "Gemini-3-Pro", 87.0, 55.7, 47.9),
+    AgentPoint("OpenClaw",      "Opus-4.6",     85.3, 10.6, 21.4),
+    AgentPoint("OpenClaw",      "GPT-5.2",      78.5, 35.6, 38.6),
+    AgentPoint("OpenClaw",      "GPT-5.5",          86.3, 17.7, 28.9),
+    AgentPoint("OpenClaw",      "DeepSeek-V4-Pro",  83.3, 41.7, 59.6),
 ]
 
 # Per-point label offsets in *relative* axis coords (fraction of panel span).
@@ -88,24 +90,28 @@ POINTS: list[AgentPoint] = [
 # Positive dx → right, positive dy → up.
 LABEL_OFFSETS: dict[tuple[str, str, str], tuple[float, float]] = {
     # Indirect panel
-    ("OpenAI Agents", "GPT-5.4",      "indirect_asr"): (+0.02, -0.11),
-    ("OpenAI Agents", "GPT-5.2",      "indirect_asr"): (-0.08, +0.00),
-    ("OpenAI Agents", "GPT-OSS-120B", "indirect_asr"): ( 0.00, -0.11),
-    ("Claude Code",   "Opus-4.6",     "indirect_asr"): (-0.08, -0.01),
-    ("Claude Code",   "Sonnet-4.5",   "indirect_asr"): (-0.08, +0.00),
-    ("Google ADK",    "Gemini-3-Pro", "indirect_asr"): (-0.08, +0.02),
-    ("OpenClaw",      "Opus-4.6",     "indirect_asr"): (+0.052, +0.08),
-    ("OpenClaw",      "GPT-5.2",      "indirect_asr"): (-0.08, -0.02),
+    ("OpenAI Agents", "GPT-5.4",          "indirect_asr"): (+0.08, -0.05),
+    ("OpenAI Agents", "GPT-5.2",          "indirect_asr"): (-0.10, +0.00),
+    ("OpenAI Agents", "GPT-OSS-120B",     "indirect_asr"): ( 0.00, -0.11),
+    ("Claude Code",   "Opus-4.6",         "indirect_asr"): (-0.10, -0.01),
+    ("Claude Code",   "Sonnet-4.5",       "indirect_asr"): (-0.10, +0.00),
+    ("Google ADK",    "Gemini-3-Pro",     "indirect_asr"): ( 0.00, +0.08),
+    ("OpenClaw",      "Opus-4.6",         "indirect_asr"): (+0.08, -0.02),
+    ("OpenClaw",      "GPT-5.2",          "indirect_asr"): (-0.10, -0.02),
+    ("OpenClaw",      "GPT-5.5",          "indirect_asr"): (+0.08, +0.02),
+    ("OpenClaw",      "DeepSeek-V4-Pro",  "indirect_asr"): (+0.08, +0.03),
 
     # Direct panel
-    ("OpenAI Agents", "GPT-5.4",      "direct_asr"):   (-0.08, +0.00),
-    ("OpenAI Agents", "GPT-5.2",      "direct_asr"):   (-0.08, +0.03),
-    ("OpenAI Agents", "GPT-OSS-120B", "direct_asr"):   ( 0.00, -0.11),
-    ("Claude Code",   "Opus-4.6",     "direct_asr"):   (-0.08, -0.05),
-    ("Claude Code",   "Sonnet-4.5",   "direct_asr"):   (-0.08, +0.00),
-    ("Google ADK",    "Gemini-3-Pro", "direct_asr"):   (+0.05, +0.08),
-    ("OpenClaw",      "Opus-4.6",     "direct_asr"):   (+0.052, +0.08),
-    ("OpenClaw",      "GPT-5.2",      "direct_asr"):   (-0.08, -0.02),
+    ("OpenAI Agents", "GPT-5.4",          "direct_asr"):   (+0.06, +0.05),
+    ("OpenAI Agents", "GPT-5.2",          "direct_asr"):   (-0.10, +0.00),
+    ("OpenAI Agents", "GPT-OSS-120B",     "direct_asr"):   ( 0.00, -0.11),
+    ("Claude Code",   "Opus-4.6",         "direct_asr"):   (-0.06, -0.07),
+    ("Claude Code",   "Sonnet-4.5",       "direct_asr"):   (-0.10, +0.00),
+    ("Google ADK",    "Gemini-3-Pro",     "direct_asr"):   (+0.08, -0.03),
+    ("OpenClaw",      "Opus-4.6",         "direct_asr"):   (+0.08, -0.02),
+    ("OpenClaw",      "GPT-5.2",          "direct_asr"):   (-0.10, -0.02),
+    ("OpenClaw",      "GPT-5.5",          "direct_asr"):   (+0.08, +0.02),
+    ("OpenClaw",      "DeepSeek-V4-Pro",  "direct_asr"):   ( 0.00, +0.08),
 }
 
 
@@ -493,9 +499,9 @@ def build_figure():
     _render_panel(ax_indirect, POINTS, "indirect_asr", "Indirect Attack Success Rate")
     _render_panel(ax_direct, POINTS, "direct_asr", "Direct Attack Success Rate")
 
-    ax_indirect.set_title("(a) Indirect Prompt Injection (Environment, Tool, Skill, Comb.)",
+    ax_indirect.set_title("(a) Indirect Threat Model (Environment, Tool, Skill, Comb.)",
                           fontsize=11, color="#111827", pad=8)
-    ax_direct.set_title("(b) Direct Prompt Injection", fontsize=11,
+    ax_direct.set_title("(b) Direct Threat Model", fontsize=11,
                         color="#111827", pad=8)
 
     ring_legend = [

@@ -2,9 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react"
 import {
+  ArrowDown,
+  ArrowUp,
   BarChart3,
   BookOpen,
   BrainCircuit,
+  Check,
   ChevronDown,
   Filter,
   FolderOpen,
@@ -18,7 +21,6 @@ import {
   Plane,
   Scale,
   Search,
-  Sparkles,
   Workflow,
   X,
   Code2,
@@ -93,14 +95,16 @@ const FRAMEWORK_LOGO_PATHS: Record<string, string> = {
 }
 
 const MODEL_LOGO_PATHS: Record<string, string> = {
-  "gpt-5-4": "/logo/openai-monoblossom.svg",
-  "gpt-5-2": "/logo/openai-monoblossom.svg",
-  "gpt-5-1": "/logo/openai-monoblossom.svg",
-  "gpt-oss-120b": "/logo/openai-monoblossom.svg",
+  "gpt-5-5": "/logo/framework-openai-agents.svg",
+  "gpt-5-4": "/logo/framework-openai-agents.svg",
+  "gpt-5-2": "/logo/framework-openai-agents.svg",
+  "gpt-5-1": "/logo/framework-openai-agents.svg",
+  "gpt-oss-120b": "/logo/framework-openai-agents.svg",
   "opus-4-6": "/logo/claude.svg",
   "sonnet-4-5": "/logo/claude.svg",
   "gemini-3-pro": "/logo/gemini.svg",
   "gemini-3-1-pro": "/logo/gemini.svg",
+  "deepseek-v4-pro": "/logo/deepseek.png",
 }
 
 const DOMAIN_VISUALS: Record<string, { icon: typeof Workflow; glow: string; screenshot?: string }> = {
@@ -434,8 +438,8 @@ function CategoryMatrixTable({
   }
 
   return (
-    <div className="w-full">
-      <table className="w-full table-auto text-sm">
+    <div className="w-full overflow-x-auto">
+      <table className="w-full min-w-[640px] table-auto text-sm">
         <thead>
           <tr className="border-b border-border bg-secondary/20 align-bottom">
             <th className="px-2 py-3 text-left text-xs font-medium text-muted-foreground">#</th>
@@ -895,12 +899,465 @@ function DomainMetricPanel({
   )
 }
 
+type DomainAgentRow = {
+  frameworkKey: string
+  frameworkName: string
+  modelKey: string
+  modelName: string
+  values: Partial<Record<BenchmarkMetricType, number | null>>
+}
+
+function DomainAgentTable({
+  metricType,
+  rows,
+}: {
+  metricType: BenchmarkMetricType
+  rows: DomainAgentRow[]
+}) {
+  const sorted = [...rows].sort((a, b) => {
+    const left = a.values[metricType] ?? null
+    const right = b.values[metricType] ?? null
+    if (left === null && right === null) return 0
+    if (left === null) return 1
+    if (right === null) return -1
+    return metricType === "bsr" ? right - left : right - left
+  })
+  if (sorted.length === 0) return null
+  return (
+    <div className="rounded-xl border border-border/60 bg-background/40 overflow-hidden">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-border/60 bg-secondary/20">
+            <th className="px-3 py-2 text-left text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+              #
+            </th>
+            <th className="px-3 py-2 text-left text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+              Framework
+            </th>
+            <th className="px-3 py-2 text-left text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+              Model
+            </th>
+            <th className="px-3 py-2 text-center text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+              Indirect ASR
+            </th>
+            <th className="px-3 py-2 text-center text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+              Direct ASR
+            </th>
+            <th className="px-3 py-2 text-center text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+              BSR
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {sorted.map((row, idx) => (
+            <tr
+              key={`${row.frameworkKey}-${row.modelKey}`}
+              className="border-b border-border/40 last:border-0 hover:bg-secondary/10"
+            >
+              <td className="px-3 py-2 font-mono text-xs text-muted-foreground">{idx + 1}</td>
+              <td className="px-3 py-2">
+                <FrameworkLabel
+                  frameworkKey={row.frameworkKey}
+                  frameworkName={row.frameworkName}
+                />
+              </td>
+              <td className="px-3 py-2">
+                <ModelLabel modelKey={row.modelKey} modelName={row.modelName} />
+              </td>
+              <td className="px-3 py-2 text-center">
+                <MetricCell
+                  metricType="indirect_asr"
+                  value={row.values.indirect_asr ?? null}
+                  emphasis={metricType === "indirect_asr"}
+                />
+              </td>
+              <td className="px-3 py-2 text-center">
+                <MetricCell
+                  metricType="direct_asr"
+                  value={row.values.direct_asr ?? null}
+                  emphasis={metricType === "direct_asr"}
+                />
+              </td>
+              <td className="px-3 py-2 text-center">
+                <MetricCell
+                  metricType="bsr"
+                  value={row.values.bsr ?? null}
+                  emphasis={metricType === "bsr"}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+// ---- Per-domain bar chart (horizontal bars, sorted by active metric) ----
+function DomainBarChart({
+  metricType,
+  rows,
+}: {
+  metricType: BenchmarkMetricType
+  rows: DomainAgentRow[]
+}) {
+  const sorted = [...rows]
+    .filter((r) => typeof r.values[metricType] === "number")
+    .sort((a, b) => {
+      const left = a.values[metricType] ?? 0
+      const right = b.values[metricType] ?? 0
+      return metricType === "bsr" ? right - left : right - left
+    })
+  if (sorted.length === 0) return null
+  const maxValue = Math.max(100, ...sorted.map((r) => r.values[metricType] ?? 0))
+  const isAsr = metricType !== "bsr"
+
+  return (
+    <div className="space-y-2 rounded-xl border border-border/60 bg-background/40 p-4">
+      {sorted.map((row) => {
+        const value = row.values[metricType] ?? 0
+        const pct = (value / maxValue) * 100
+        const color = isAsr
+          ? "bg-rose-500/70"
+          : "bg-emerald-500/70"
+        return (
+          <div
+            key={`${row.frameworkKey}-${row.modelKey}`}
+            className="grid grid-cols-[170px_1fr_60px] items-center gap-3"
+          >
+            <div className="flex items-center gap-2 truncate">
+              <BrandLogo
+                logoPath={MODEL_LOGO_PATHS[row.modelKey]}
+                alt={`${row.modelName} logo`}
+                size="sm"
+              />
+              <span className="truncate text-sm font-medium">{row.modelName}</span>
+            </div>
+            <div className="relative h-5 rounded-md bg-secondary/30 overflow-hidden">
+              <div
+                className={cn("absolute inset-y-0 left-0 rounded-md transition-all", color)}
+                style={{ width: `${pct}%` }}
+              />
+            </div>
+            <span className="text-right font-mono text-xs text-muted-foreground">
+              {value.toFixed(1)}%
+            </span>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+// ---- Per-domain scatter chart (BSR vs ASR, same style as homepage) ----
+const DOM_SCATTER_VB_W = 1000
+const DOM_SCATTER_VB_H = 560
+const DOM_SCATTER_PAD = { top: 30, right: 60, bottom: 56, left: 70 }
+const DOM_SCATTER_INNER_W =
+  DOM_SCATTER_VB_W - DOM_SCATTER_PAD.left - DOM_SCATTER_PAD.right
+const DOM_SCATTER_INNER_H =
+  DOM_SCATTER_VB_H - DOM_SCATTER_PAD.top - DOM_SCATTER_PAD.bottom
+
+function computeScatterBounds(points: { bsr: number; asr: number }[]) {
+  if (points.length === 0) return { xMin: 0, xMax: 100, yMin: 0, yMax: 100 }
+  const xs = points.map((p) => p.bsr)
+  const ys = points.map((p) => p.asr)
+  const xPad = Math.max((Math.max(...xs) - Math.min(...xs)) * 0.18, 6)
+  const yPad = Math.max((Math.max(...ys) - Math.min(...ys)) * 0.22, 6)
+  return {
+    xMin: Math.max(0, Math.floor((Math.min(...xs) - xPad) / 5) * 5),
+    xMax: Math.min(100, Math.ceil((Math.max(...xs) + xPad) / 5) * 5),
+    yMin: Math.max(0, Math.floor((Math.min(...ys) - yPad) / 5) * 5),
+    yMax: Math.min(100, Math.ceil((Math.max(...ys) + yPad) / 5) * 5),
+  }
+}
+
+function DomainScatterChart({
+  asrType,
+  rows,
+}: {
+  asrType: BenchmarkMetricType
+  rows: DomainAgentRow[]
+}) {
+  const points = rows
+    .map((row) => {
+      const asr = row.values[asrType]
+      const bsr = row.values.bsr
+      if (typeof asr !== "number" || typeof bsr !== "number") return null
+      return {
+        key: `${row.frameworkKey}:${row.modelKey}`,
+        primaryLabel: row.frameworkName,
+        secondaryLabel: row.modelName,
+        logoPath: FRAMEWORK_LOGO_PATHS[row.frameworkKey],
+        fallbackInitial: row.frameworkName.charAt(0),
+        bsr,
+        asr,
+      }
+    })
+    .filter((p): p is NonNullable<typeof p> => p !== null)
+
+  if (points.length === 0) return null
+
+  const bounds = computeScatterBounds(points)
+  const xPos = (bsr: number) =>
+    DOM_SCATTER_PAD.left +
+    ((bsr - bounds.xMin) / Math.max(1, bounds.xMax - bounds.xMin)) * DOM_SCATTER_INNER_W
+  const yPos = (asr: number) =>
+    DOM_SCATTER_PAD.top +
+    ((bounds.yMax - asr) / Math.max(1, bounds.yMax - bounds.yMin)) * DOM_SCATTER_INNER_H
+  const toPctX = (svgX: number) => (svgX / DOM_SCATTER_VB_W) * 100
+  const toPctY = (svgY: number) => (svgY / DOM_SCATTER_VB_H) * 100
+
+  // Pareto frontier (best agents: high BSR + low ASR)
+  const paretoSet = new Set(
+    points
+      .filter(
+        (p) =>
+          !points.some(
+            (q) =>
+              q.key !== p.key &&
+              q.bsr >= p.bsr &&
+              q.asr <= p.asr &&
+              (q.bsr > p.bsr || q.asr < p.asr)
+          )
+      )
+      .map((p) => p.key)
+  )
+  const frontier = points
+    .filter((p) => paretoSet.has(p.key))
+    .sort((a, b) => a.bsr - b.bsr)
+  const paretoPath =
+    frontier.length >= 2
+      ? frontier
+          .map((p, i) => `${i === 0 ? "M" : "L"} ${xPos(p.bsr)} ${yPos(p.asr)}`)
+          .join(" ")
+      : ""
+
+  const xStep = bounds.xMax - bounds.xMin <= 25 ? 5 : 10
+  const yStep = bounds.yMax - bounds.yMin <= 25 ? 5 : 10
+  const xTicks: number[] = []
+  for (let v = Math.ceil(bounds.xMin / xStep) * xStep; v <= bounds.xMax; v += xStep) {
+    xTicks.push(v)
+  }
+  const yTicks: number[] = []
+  for (let v = Math.ceil(bounds.yMin / yStep) * yStep; v <= bounds.yMax; v += yStep) {
+    yTicks.push(v)
+  }
+
+  const asrLabel = asrType === "indirect_asr" ? "Indirect ASR" : "Direct ASR"
+
+  return (
+    <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-card/80 via-card/50 to-card/80 p-2 shadow-sm shadow-black/5">
+      <div className="pointer-events-none absolute inset-0 -z-0">
+        <div className="absolute -left-20 -top-20 h-60 w-60 rounded-full bg-rose-500/[0.06] blur-3xl" />
+        <div className="absolute -bottom-20 -right-20 h-60 w-60 rounded-full bg-emerald-500/[0.06] blur-3xl" />
+      </div>
+      <div className="relative aspect-[1000/560] w-full">
+        <svg
+          viewBox={`0 0 ${DOM_SCATTER_VB_W} ${DOM_SCATTER_VB_H}`}
+          preserveAspectRatio="none"
+          className="absolute inset-0 h-full w-full"
+        >
+          <defs>
+            <linearGradient id="dom-quad-bg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="rgb(244, 63, 94)" stopOpacity="0.12" />
+              <stop offset="45%" stopColor="rgb(244, 63, 94)" stopOpacity="0.01" />
+              <stop offset="55%" stopColor="rgb(16, 185, 129)" stopOpacity="0.02" />
+              <stop offset="100%" stopColor="rgb(16, 185, 129)" stopOpacity="0.16" />
+            </linearGradient>
+            <linearGradient id="dom-frontier-stroke" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="rgb(16, 185, 129)" stopOpacity="0.35" />
+              <stop offset="100%" stopColor="rgb(16, 185, 129)" stopOpacity="0.85" />
+            </linearGradient>
+          </defs>
+
+          <rect
+            x={DOM_SCATTER_PAD.left}
+            y={DOM_SCATTER_PAD.top}
+            width={DOM_SCATTER_INNER_W}
+            height={DOM_SCATTER_INNER_H}
+            fill="url(#dom-quad-bg)"
+          />
+
+          {xTicks.map((tick) => (
+            <line
+              key={`dx-${tick}`}
+              x1={xPos(tick)}
+              y1={DOM_SCATTER_PAD.top}
+              x2={xPos(tick)}
+              y2={DOM_SCATTER_PAD.top + DOM_SCATTER_INNER_H}
+              stroke="currentColor"
+              className="text-border/40"
+              strokeWidth={1}
+              strokeDasharray="2 4"
+            />
+          ))}
+          {yTicks.map((tick) => (
+            <line
+              key={`dy-${tick}`}
+              x1={DOM_SCATTER_PAD.left}
+              y1={yPos(tick)}
+              x2={DOM_SCATTER_PAD.left + DOM_SCATTER_INNER_W}
+              y2={yPos(tick)}
+              stroke="currentColor"
+              className="text-border/40"
+              strokeWidth={1}
+              strokeDasharray="2 4"
+            />
+          ))}
+
+          <line
+            x1={DOM_SCATTER_PAD.left}
+            y1={DOM_SCATTER_PAD.top + DOM_SCATTER_INNER_H}
+            x2={DOM_SCATTER_PAD.left + DOM_SCATTER_INNER_W}
+            y2={DOM_SCATTER_PAD.top + DOM_SCATTER_INNER_H}
+            stroke="currentColor"
+            className="text-border"
+            strokeWidth={1.5}
+          />
+          <line
+            x1={DOM_SCATTER_PAD.left}
+            y1={DOM_SCATTER_PAD.top}
+            x2={DOM_SCATTER_PAD.left}
+            y2={DOM_SCATTER_PAD.top + DOM_SCATTER_INNER_H}
+            stroke="currentColor"
+            className="text-border"
+            strokeWidth={1.5}
+          />
+
+          {xTicks.map((tick) => (
+            <text
+              key={`dxt-${tick}`}
+              x={xPos(tick)}
+              y={DOM_SCATTER_PAD.top + DOM_SCATTER_INNER_H + 18}
+              textAnchor="middle"
+              className="fill-muted-foreground font-mono"
+              fontSize="11"
+            >
+              {tick}
+            </text>
+          ))}
+          {yTicks.map((tick) => (
+            <text
+              key={`dyt-${tick}`}
+              x={DOM_SCATTER_PAD.left - 10}
+              y={yPos(tick) + 4}
+              textAnchor="end"
+              className="fill-muted-foreground font-mono"
+              fontSize="11"
+            >
+              {tick}
+            </text>
+          ))}
+
+          <text
+            x={DOM_SCATTER_PAD.left + DOM_SCATTER_INNER_W / 2}
+            y={DOM_SCATTER_VB_H - 12}
+            textAnchor="middle"
+            className="fill-foreground font-semibold uppercase tracking-wider"
+            fontSize="12"
+          >
+            BSR — Benign Success Rate (%) →
+          </text>
+          <text
+            x={-(DOM_SCATTER_PAD.top + DOM_SCATTER_INNER_H / 2)}
+            y={18}
+            textAnchor="middle"
+            transform="rotate(-90)"
+            className="fill-foreground font-semibold uppercase tracking-wider"
+            fontSize="12"
+          >
+            ↑ {asrLabel} (%)
+          </text>
+
+          {paretoPath ? (
+            <path
+              d={paretoPath}
+              fill="none"
+              stroke="url(#dom-frontier-stroke)"
+              strokeWidth={2}
+              strokeDasharray="6 5"
+            />
+          ) : null}
+
+          <text
+            x={DOM_SCATTER_PAD.left + 10}
+            y={DOM_SCATTER_PAD.top + 18}
+            className="fill-rose-500/80 font-semibold uppercase tracking-wider"
+            fontSize="10"
+          >
+            ⚠ Worst: vulnerable & weak
+          </text>
+          <text
+            x={DOM_SCATTER_PAD.left + DOM_SCATTER_INNER_W - 10}
+            y={DOM_SCATTER_PAD.top + DOM_SCATTER_INNER_H - 10}
+            textAnchor="end"
+            className="fill-emerald-500/85 font-semibold uppercase tracking-wider"
+            fontSize="10"
+          >
+            ★ Ideal: capable & safe
+          </text>
+        </svg>
+
+        <div className="pointer-events-none absolute inset-0">
+          {points.map((p) => {
+            const sx = xPos(p.bsr)
+            const sy = yPos(p.asr)
+            const isPareto = paretoSet.has(p.key)
+            return (
+              <div
+                key={p.key}
+                className="pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2"
+                style={{ left: `${toPctX(sx)}%`, top: `${toPctY(sy)}%` }}
+              >
+                <div className="flex flex-col items-center">
+                  <div
+                    className={cn(
+                      "flex items-center justify-center rounded-full bg-background shadow-lg",
+                      isPareto
+                        ? "h-10 w-10 ring-2 ring-emerald-500/50 ring-offset-2 ring-offset-background"
+                        : "h-9 w-9 ring-1 ring-border"
+                    )}
+                  >
+                    {p.logoPath ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={p.logoPath}
+                        alt={p.primaryLabel}
+                        className="h-3/4 w-3/4 object-contain"
+                      />
+                    ) : (
+                      <span className="text-sm font-bold text-foreground">
+                        {p.fallbackInitial}
+                      </span>
+                    )}
+                  </div>
+                  <div className="mt-1 whitespace-nowrap rounded-md bg-card/70 px-1.5 py-0.5 text-center backdrop-blur-sm">
+                    <div className="text-[10px] font-semibold leading-tight">
+                      {p.primaryLabel}
+                    </div>
+                    <div className="text-[9px] text-muted-foreground leading-tight">
+                      {p.secondaryLabel}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function DomainSection({
   domain,
   metricStates,
+  agentRows,
 }: {
   domain: BenchmarkDomain
   metricStates: Partial<Record<BenchmarkMetricType, DomainMetricState>>
+  agentRows: DomainAgentRow[]
 }) {
   const domainVisual = DOMAIN_VISUALS[domain.key]
   const DomainIcon = domainVisual?.icon ?? BrainCircuit
@@ -1005,13 +1462,56 @@ function DomainSection({
             </div>
           </div>
 
-          <div className="mt-6 space-y-8">
-            <DomainMetricPanel
-              metricType={activeMetric}
-              viewMode={viewMode}
-              categoryTable={activeState?.table}
-              rows={activeState?.rows ?? []}
-            />
+          <div className="mt-6 space-y-6">
+            {agentRows.length > 0 ? (
+              <div className="space-y-3">
+                <div className="flex items-end justify-between gap-3">
+                  <div>
+                    <h3 className="text-base font-semibold tracking-tight">
+                      {viewMode === "scatter"
+                        ? `BSR vs ${
+                            activeMetric === "bsr"
+                              ? "Indirect ASR"
+                              : activeMetric === "indirect_asr"
+                              ? "Indirect ASR"
+                              : "Direct ASR"
+                          } in ${domain.label}`
+                        : viewMode === "bar"
+                        ? `${getMetricPanelTitle(activeMetric)} per agent in ${domain.label}`
+                        : `Per-agent results in ${domain.label}`}
+                    </h3>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {viewMode === "scatter"
+                        ? "Bottom-right corner is ideal: capable + safe."
+                        : `Sorted by ${
+                            activeMetric === "bsr"
+                              ? "BSR (higher = better)"
+                              : "ASR (higher = more vulnerable)"
+                          }.`}
+                    </p>
+                  </div>
+                </div>
+                {viewMode === "table" ? (
+                  <DomainAgentTable metricType={activeMetric} rows={agentRows} />
+                ) : viewMode === "bar" ? (
+                  <DomainBarChart metricType={activeMetric} rows={agentRows} />
+                ) : (
+                  <DomainScatterChart
+                    asrType={activeMetric === "bsr" ? "indirect_asr" : activeMetric}
+                    rows={agentRows}
+                  />
+                )}
+              </div>
+            ) : null}
+
+            {activeState?.table ? (
+              <DomainMetricPanel
+                metricType={activeMetric}
+                viewMode={viewMode}
+                categoryTable={activeState?.table}
+                rows={activeState?.rows ?? []}
+              />
+            ) : null}
           </div>
         </div>
       </div>
@@ -1027,6 +1527,9 @@ export function LeaderboardSection() {
   const [searchQuery, setSearchQuery] = useState("")
   const [frameworkKey, setFrameworkKey] = useState("all")
   const [modelKey, setModelKey] = useState("all")
+  const [taskSetFilter, setTaskSetFilter] = useState<"all" | "benign" | "indirect" | "direct">(
+    "all"
+  )
   const [selectedDomainKeys, setSelectedDomainKeys] = useState<string[]>([])
   const [showDomainFilter, setShowDomainFilter] = useState(false)
 
@@ -1134,6 +1637,45 @@ export function LeaderboardSection() {
     return byDomain
   }, [dataset, frameworkKey, modelKey, searchQuery])
 
+  const agentRowsByDomain = useMemo(() => {
+    const out = new Map<string, DomainAgentRow[]>()
+    if (!dataset) return out
+    const grouped = new Map<string, Map<string, DomainAgentRow>>()
+    for (const score of dataset.scores) {
+      // Apply the same filter logic as the per-domain category breakdowns.
+      if (frameworkKey !== "all" && score.frameworkKey !== frameworkKey) continue
+      if (modelKey !== "all" && score.modelKey !== modelKey) continue
+      if (
+        !matchesSearchQuery(
+          searchQuery,
+          score.frameworkName,
+          score.modelName,
+          `${score.frameworkName} ${score.modelName}`
+        )
+      ) {
+        continue
+      }
+      const domainBucket = grouped.get(score.domainKey) ?? new Map<string, DomainAgentRow>()
+      grouped.set(score.domainKey, domainBucket)
+      const comboKey = `${score.frameworkKey}::${score.modelKey}`
+      const row =
+        domainBucket.get(comboKey) ??
+        ({
+          frameworkKey: score.frameworkKey,
+          frameworkName: score.frameworkName,
+          modelKey: score.modelKey,
+          modelName: score.modelName,
+          values: {},
+        } satisfies DomainAgentRow)
+      row.values[score.metricType] = score.value
+      domainBucket.set(comboKey, row)
+    }
+    for (const [domainKey, bucket] of grouped) {
+      out.set(domainKey, Array.from(bucket.values()))
+    }
+    return out
+  }, [dataset, frameworkKey, modelKey, searchQuery])
+
   const visibleDomains = useMemo(() => {
     if (!dataset) {
       return []
@@ -1151,6 +1693,7 @@ export function LeaderboardSection() {
     searchQuery.length > 0 ||
     frameworkKey !== "all" ||
     modelKey !== "all" ||
+    taskSetFilter !== "all" ||
     selectedDomainKeys.length > 0
 
   const toggleDomain = (domainKey: string) => {
@@ -1165,13 +1708,14 @@ export function LeaderboardSection() {
     setSearchQuery("")
     setFrameworkKey("all")
     setModelKey("all")
+    setTaskSetFilter("all")
     setSelectedDomainKeys([])
   }
 
   if (loading) {
     return (
       <section className="min-h-screen">
-        <div className="mx-auto max-w-7xl px-4 py-16 lg:px-6">
+        <div className="mx-auto max-w-[1600px] px-4 py-16 lg:px-6">
           <div className="flex min-h-[40vh] items-center justify-center">
             <p className="text-muted-foreground">Loading benchmark results...</p>
           </div>
@@ -1183,7 +1727,7 @@ export function LeaderboardSection() {
   if (!dataset) {
     return (
       <section className="min-h-screen">
-        <div className="mx-auto max-w-7xl px-4 py-16 lg:px-6">
+        <div className="mx-auto max-w-[1600px] px-4 py-16 lg:px-6">
           <div className="rounded-2xl border border-border bg-card p-8 text-center">
             <p className="text-lg font-medium mb-2">Benchmark data unavailable</p>
             <p className="text-muted-foreground">
@@ -1197,7 +1741,7 @@ export function LeaderboardSection() {
 
   return (
     <section className="min-h-screen">
-      <div className="mx-auto max-w-7xl px-4 py-12 md:py-16">
+      <div className="mx-auto max-w-[1600px] px-4 py-12 md:py-16">
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
           <span>Home</span>
           <span className="text-muted-foreground/50">{">"}</span>
@@ -1208,101 +1752,134 @@ export function LeaderboardSection() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(16,185,129,0.12),transparent_35%)]" />
           <div className="relative flex flex-col gap-6">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary mb-4">
-                <Sparkles className="h-3.5 w-3.5" />
-                Paper-backed leaderboard
-          </div>
               <h1 className="text-3xl md:text-4xl font-semibold tracking-tight mb-3">
-                DT-Bench Leaderboard
+                Leaderboard
               </h1>
               <p className="max-w-3xl text-muted-foreground">
-                A richer leaderboard experience inspired by arena-style ranking pages, with icons, animated domain sections, and flexible table, scatter, and bar views.
+                Latest benchmark results of AI agents on{" "}
+                <code className="font-mono text-foreground">dtap-bench==1.0</code>.
               </p>
         </div>
 
             <div className="rounded-2xl border border-border/60 bg-background/50 p-5">
-              <div className="grid gap-3 md:grid-cols-3 xl:grid-cols-5">
-                <div className="relative md:col-span-2 xl:col-span-2">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
+              <div className="flex flex-col gap-2 lg:flex-row lg:items-center">
+                <div className="relative flex-1 min-w-0">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
                     placeholder="Search framework or model"
                     className="pl-9 h-10 bg-background border-border"
-                value={searchQuery}
+                    value={searchQuery}
                     onChange={(event) => setSearchQuery(event.target.value)}
-              />
-            </div>
+                  />
+                </div>
 
-                <Select value={frameworkKey} onValueChange={setFrameworkKey}>
-                  <SelectTrigger className="h-10">
-                    <SelectValue placeholder="Agent framework" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All frameworks</SelectItem>
-                    {dataset.frameworks.map((framework) => (
-                      <SelectItem key={framework.key} value={framework.key}>
-                        {framework.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:flex lg:flex-none lg:items-center">
+                  <Select value={frameworkKey} onValueChange={setFrameworkKey}>
+                    <SelectTrigger className="h-10 lg:w-[160px]">
+                      <SelectValue placeholder="Agent framework" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All frameworks</SelectItem>
+                      {dataset.frameworks.map((framework) => (
+                        <SelectItem key={framework.key} value={framework.key}>
+                          {framework.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
-                <Select value={modelKey} onValueChange={setModelKey}>
-                  <SelectTrigger className="h-10">
-                    <SelectValue placeholder="Model" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All models</SelectItem>
-                    {availableModels.map((model) => (
-                      <SelectItem key={model.key} value={model.key}>
-                        {model.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  <Select value={modelKey} onValueChange={setModelKey}>
+                    <SelectTrigger className="h-10 lg:w-[150px]">
+                      <SelectValue placeholder="Model" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All models</SelectItem>
+                      {availableModels.map((model) => (
+                        <SelectItem key={model.key} value={model.key}>
+                          {model.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
-            <div className="relative">
-              <Button
-                variant="outline"
-                size="sm"
-                    className="h-10 w-full justify-between gap-2 bg-transparent"
-                    onClick={() => setShowDomainFilter((open) => !open)}
-              >
-                    <span className="inline-flex items-center gap-2">
-                <Filter className="h-3.5 w-3.5" />
-                Domains
-                    </span>
-                    <span className="inline-flex items-center gap-2">
-                      {selectedDomainKeys.length > 0 && (
-                        <span className="rounded-full bg-primary px-1.5 py-0.5 text-xs text-primary-foreground">
-                          {selectedDomainKeys.length}
-                  </span>
-                )}
-                <ChevronDown className="h-3.5 w-3.5" />
-                    </span>
-              </Button>
+                  <Select
+                    value={taskSetFilter}
+                    onValueChange={(value) =>
+                      setTaskSetFilter(value as typeof taskSetFilter)
+                    }
+                  >
+                    <SelectTrigger className="h-10 lg:w-[160px]">
+                      <SelectValue placeholder="Task set" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All task sets</SelectItem>
+                      <SelectItem value="benign">Benign (BSR)</SelectItem>
+                      <SelectItem value="indirect">Indirect (ASR)</SelectItem>
+                      <SelectItem value="direct">Direct (ASR)</SelectItem>
+                    </SelectContent>
+                  </Select>
 
-              {showDomainFilter && (
-                    <div className="absolute top-full left-0 right-0 mt-1 rounded-xl border border-border bg-popover p-3 shadow-lg z-50">
-                      <div className="flex flex-wrap gap-1.5 max-h-52 overflow-y-auto">
-                        {dataset.domains.map((domain) => (
-                      <button
-                            key={domain.key}
-                            onClick={() => toggleDomain(domain.key)}
-                        className={cn(
-                              "rounded-full border px-2.5 py-1 text-xs transition-colors",
-                              selectedDomainKeys.includes(domain.key)
-                                ? "border-primary bg-primary text-primary-foreground"
-                                : "border-border text-muted-foreground hover:text-foreground"
-                            )}
+                  <div className="relative lg:w-[170px]">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-10 w-full justify-between gap-2 bg-transparent"
+                      onClick={() => setShowDomainFilter((open) => !open)}
+                    >
+                      <span className="inline-flex items-center gap-2 truncate">
+                        <Filter className="h-3.5 w-3.5 shrink-0" />
+                        <span className="truncate">
+                          {selectedDomainKeys.length === 0
+                            ? "All domains"
+                            : `${selectedDomainKeys.length} domain${
+                                selectedDomainKeys.length === 1 ? "" : "s"
+                              }`}
+                        </span>
+                      </span>
+                      <ChevronDown className="h-3.5 w-3.5 shrink-0" />
+                    </Button>
+
+                    {showDomainFilter && (
+                      <div className="absolute top-full right-0 left-0 mt-1 w-[260px] rounded-xl border border-border bg-popover p-2 shadow-lg z-50 lg:left-auto">
+                        <div className="grid grid-cols-2 gap-1 max-h-64 overflow-y-auto">
+                          {dataset.domains.map((domain) => {
+                            const checked = selectedDomainKeys.includes(domain.key)
+                            return (
+                              <button
+                                key={domain.key}
+                                onClick={() => toggleDomain(domain.key)}
+                                className={cn(
+                                  "flex items-center justify-between rounded-md px-2.5 py-1.5 text-xs transition-colors",
+                                  checked
+                                    ? "bg-primary/10 text-primary"
+                                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                                )}
+                              >
+                                <span>{domain.label}</span>
+                                {checked ? <Check className="h-3.5 w-3.5" /> : null}
+                              </button>
+                            )
+                          })}
+                        </div>
+                        <div className="mt-2 flex items-center justify-between border-t border-border pt-2">
+                          <button
+                            className="text-xs text-muted-foreground hover:text-foreground"
+                            onClick={() => setSelectedDomainKeys([])}
                           >
-                            {domain.shortLabel}
-                      </button>
-                    ))}
+                            Clear
+                          </button>
+                          <button
+                            className="text-xs text-muted-foreground hover:text-foreground"
+                            onClick={() => setShowDomainFilter(false)}
+                          >
+                            Done
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
-              )}
-                </div>
-            </div>
+              </div>
 
               <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <p className="text-sm text-muted-foreground">
@@ -1344,28 +1921,41 @@ export function LeaderboardSection() {
 
         <Card className="border-border/70 bg-card/80 backdrop-blur-sm shadow-lg shadow-black/5 mb-10">
           <CardHeader className="gap-2">
-            <CardTitle className="text-xl">Overall Security and Utility Evaluation Leaderboard</CardTitle>
+            <CardTitle className="text-xl">Overall Results across Domains</CardTitle>
             <CardDescription>
-              Three global rankings stacked together: Indirect ASR and Direct ASR measure security (lower is safer),
-              while BSR captures benign utility (higher is better).
+              Metrics: Indirect ASR and Direct ASR measure security (lower is more robust),
+              while BSR captures benign utility (higher is more capable).
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-10">
-            {GLOBAL_METRIC_ORDER.map((metric) => {
+            {GLOBAL_METRIC_ORDER.filter((metric) => {
+              if (taskSetFilter === "all") return true
+              if (taskSetFilter === "benign") return metric === "bsr"
+              if (taskSetFilter === "indirect") return metric === "indirect_asr"
+              if (taskSetFilter === "direct") return metric === "direct_asr"
+              return true
+            }).map((metric) => {
               const rows = overviewEntriesByMetric[metric]
               return (
                 <div key={metric} className="space-y-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-base font-semibold tracking-tight">{getMetricPanelTitle(metric)}</h3>
+                      <h3 className="inline-flex items-center gap-1.5 text-base font-semibold tracking-tight">
+                        <span>{getMetricPanelTitle(metric)}</span>
+                        {metric === "bsr" ? (
+                          <ArrowUp className="h-4 w-4 text-emerald-500 dark:text-emerald-400" />
+                        ) : (
+                          <ArrowDown className="h-4 w-4 text-rose-500 dark:text-rose-400" />
+                        )}
+                      </h3>
                       <Badge variant="outline" className="rounded-full text-xs">
                         {rows.length} agents
                       </Badge>
                     </div>
                     <div className="text-xs text-muted-foreground">{getMetricPanelDescription(metric)}</div>
                   </div>
-                  <div className="rounded-xl border border-border/60">
-                    <table className="w-full table-auto text-sm">
+                  <div className="rounded-xl border border-border/60 overflow-x-auto">
+                    <table className="w-full min-w-[640px] table-auto text-sm">
               <thead>
                         <tr className="border-b border-border bg-secondary/20 align-bottom">
                           <th className="px-2 py-3 text-left text-xs font-medium text-muted-foreground">#</th>
@@ -1423,7 +2013,7 @@ export function LeaderboardSection() {
 
         <div className="flex items-center justify-between gap-4 mb-6">
           <div>
-            <h2 className="text-2xl font-semibold tracking-tight">Domain sections</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">Per-Domain Results</h2>
             <p className="text-sm text-muted-foreground mt-1">
               Each domain includes benign task success rate plus direct and indirect attack success rate views.
             </p>
@@ -1445,6 +2035,7 @@ export function LeaderboardSection() {
                 <DomainSection
                   domain={domain}
                   metricStates={categoryState ?? {}}
+                  agentRows={agentRowsByDomain.get(domain.key) ?? []}
                 />
               </div>
             )

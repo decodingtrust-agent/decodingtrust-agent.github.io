@@ -1,9 +1,12 @@
 export interface TrajectoryRun {
+  run_id?: number
   sdk: string
   model: string
   ts: string
   trajectory: string
   judge: string
+  attack_success?: boolean | null
+  task_success?: boolean | null
 }
 
 export interface TrajectoryManifestEntry {

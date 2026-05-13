@@ -8,14 +8,14 @@ export function RedTeamingOverviewContent() {
   return (
     <div>
       <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-        DT-Red (DecodingTrust Red-teaming Agent) is an automated adversarial testing
+        DTap-Red (DecodingTrust Red-teaming Agent) is an automated adversarial testing
         platform that evaluates AI agent safety by attempting to make victim agents violate their safety
         constraints through multi-faceted attacks.
       </p>
 
       <Callout type="info" title="What is Red-teaming?">
         Red-teaming is the practice of simulating adversarial attacks against AI systems to identify
-        vulnerabilities before they can be exploited. DT-Red automates this process with multiple
+        vulnerabilities before they can be exploited. DTap-Red automates this process with multiple
         attack strategies and injection techniques.
       </Callout>
 

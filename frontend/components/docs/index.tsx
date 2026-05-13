@@ -11,6 +11,10 @@ import {
   WrapPrebuiltAgentsContent,
   AddCustomAgentsContent,
   UseCustomModelsContent,
+  InstallFromSourceContent,
+  InstallEnvironmentContent,
+  EvalDecodingTrustContent,
+  EvalInspectContent,
   PlaceholderContent,
   RedTeamingOverviewContent,
   RedTeamingQuickstartContent,
@@ -25,15 +29,24 @@ export function DocsSection() {
 
   // Handle navigation from content buttons
   const handleNavigate = (slug: string) => {
-    // Ensure parent sections are expanded based on slug
-    const supportedAgentsSlugs = ["off-the-shelf-agents", "wrap-prebuilt-agents", "add-custom-agents", "use-custom-models"]
-    const redTeamingSlugs = ["red-teaming-overview", "red-teaming-quickstart", "attack-skills", "injection-mcp-server"]
-
-    if (supportedAgentsSlugs.includes(slug) && !expandedSections.includes("supported-agents")) {
-      setExpandedSections((prev) => [...prev, "supported-agents"])
+    const parentBySlug: Record<string, string> = {
+      "off-the-shelf-agents": "supported-agents",
+      "wrap-prebuilt-agents": "supported-agents",
+      "add-custom-agents": "supported-agents",
+      "use-custom-models": "supported-agents",
+      "red-teaming-overview": "red-teaming-agent",
+      "red-teaming-quickstart": "red-teaming-agent",
+      "attack-skills": "red-teaming-agent",
+      "injection-mcp-server": "red-teaming-agent",
+      "install-sdk": "installation",
+      "install-source": "installation",
+      "install-environment": "installation",
+      "eval-decodingtrust": "run-evaluation",
+      "eval-inspect": "run-evaluation",
     }
-    if (redTeamingSlugs.includes(slug) && !expandedSections.includes("red-teaming-agent")) {
-      setExpandedSections((prev) => [...prev, "red-teaming-agent"])
+    const parent = parentBySlug[slug]
+    if (parent && !expandedSections.includes(parent)) {
+      setExpandedSections((prev) => [...prev, parent])
     }
     setActiveSection(slug)
   }
@@ -53,6 +66,14 @@ export function DocsSection() {
         return <AddCustomAgentsContent />
       case "use-custom-models":
         return <UseCustomModelsContent />
+      case "install-source":
+        return <InstallFromSourceContent />
+      case "install-environment":
+        return <InstallEnvironmentContent />
+      case "eval-decodingtrust":
+        return <EvalDecodingTrustContent />
+      case "eval-inspect":
+        return <EvalInspectContent />
       case "red-teaming-overview":
         return <RedTeamingOverviewContent />
       case "red-teaming-quickstart":

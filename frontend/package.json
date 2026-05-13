@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "trajectories:manifest": "tsx scripts/build-trajectory-manifest.ts",
-    "trajectories:unpack": "node scripts/unzip-trajectories.mjs && npm run trajectories:manifest",
+    "trajectories:unpack": "node scripts/unzip-trajectories.mjs && python3 ../backend/traj-api/indexer.py",
     "build": "BASELINE_BROWSER_MAPPING_IGNORE_OLD_DATA=true next build",
     "build:export": "DT_STATIC_EXPORT=1 BASELINE_BROWSER_MAPPING_IGNORE_OLD_DATA=true next build",
     "dev": "next dev",

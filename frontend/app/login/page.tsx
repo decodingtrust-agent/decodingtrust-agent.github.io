@@ -24,7 +24,7 @@ export default function LoginPage() {
           <div className="flex justify-center mb-6">
             <Image
               src="/logo-no-text.png"
-              alt="DT-Agent Logo"
+              alt="DTap Logo"
               width={48}
               height={48}
               className="rounded-lg"
@@ -45,7 +45,7 @@ export default function LoginPage() {
           </p>
 
           <Button className="w-full" asChild>
-            <Link href="/registry">Browse registry</Link>
+            <Link href="/benchmark">Browse benchmark</Link>
           </Button>
         </div>
       </div>

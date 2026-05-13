@@ -115,7 +115,7 @@ from dt_arena.src.types.trajectory import Trajectory
 
 class CustomAgent(Agent):
     """
-    Custom agent implementation following the DT-Agent interface.
+    Custom agent implementation following the DTap interface.
     """
 
     def __init__(

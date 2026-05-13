@@ -14,6 +14,13 @@ venv/
 **/venv/
 .venv/
 **/.venv/
+.venv-*/
+**/.venv-*/
+
+# Sibling worktrees / clones that live next to this repo
+/DT-public-release/
+/DecodingTrust-Agent/
+/DecodingTrust-Agent-Platform/
 *.egg-info/
 /.pnp
 .pnp.js
@@ -27,10 +34,11 @@ venv/
 /out/
 /frontend/out/
 
-# Trajectory data (3.2 GB / 127k JSONs) - too big for git, served by nginx
-# directly. Drop trajectory zips into ./trajectory/ and run:
+# Trajectory + dataset data — owned by the FastAPI service, served via
+# /traj-api/*. Drop trajectory zips into ./trajectory/ and run:
 #   cd frontend && npm run trajectories:unpack
-/frontend/public/data/trajectories/
+/backend/data/
+/backend/traj-api/.venv/
 /trajectory/
 
 # Per-deploy logs from the webhook handler

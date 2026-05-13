@@ -11,18 +11,18 @@ export function Footer() {
             <div className="flex items-center gap-3 mb-4">
               <Image
                 src="/dt-agent-logo-circled.png"
-                alt="DT-Agent Logo"
+                alt="DecodingTrust-Agent Platform Logo"
                 width={36}
                 height={36}
                 className="rounded-full"
               />
               <div>
-                <span className="text-sm font-semibold">DT-Agent</span>
+                <span className="text-sm font-semibold">DecodingTrust-Agent Platform (DTap)</span>
               </div>
             </div>
             <p className="text-sm text-muted-foreground max-w-sm mb-6">
-              DecodingTrust Agent — a real-world simulation platform for advanced red-teaming of AI agents,
-              powered by DT-Red and DT-Bench.
+              DecodingTrust-Agent Platform (DTap): A Controllable and Interactive Red-Teaming
+              Platform for AI Agents.
             </p>
             <div className="flex gap-3">
               <a
@@ -34,7 +34,7 @@ export function Footer() {
                 <Github className="h-4 w-4" />
               </a>
               <a
-                href="https://discord.com"
+                href="https://discord.gg/z8ZhVwPqUk"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center w-9 h-9 rounded-full bg-secondary hover:bg-secondary/80 transition-colors"
@@ -42,7 +42,7 @@ export function Footer() {
                 <MessageCircle className="h-4 w-4" />
               </a>
               <a
-                href="https://huggingface.co"
+                href="https://github.com/AI-secure/DecodingTrust-Agent/tree/main/benchmark"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center w-9 h-9 rounded-full bg-secondary hover:bg-secondary/80 transition-colors"
@@ -92,15 +92,19 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="https://github.com/AI-secure/DecodingTrust-Agent/tree/main/benchmark"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
                 >
-                  <Database className="h-4 w-4" /> HuggingFace
+                  <Database className="h-4 w-4" /> Dataset
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
+                  href="https://arxiv.org/pdf/2605.04808"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
                 >
                   <FileText className="h-4 w-4" /> arXiv Paper
@@ -112,7 +116,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-border/50 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} DT-Agent. Research collaboration.
+            © {new Date().getFullYear()} DecodingTrust-Agent Platform (DTap). Research collaboration.
           </p>
           <div className="flex gap-6 text-sm text-muted-foreground">
             <a href="#" className="hover:text-foreground transition-colors">

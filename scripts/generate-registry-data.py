@@ -19,8 +19,8 @@ import yaml
 from pathlib import Path
 
 
-DATASET_ROOT = Path("/scr/zhaorun/DecodingTrust-Agent/dataset")
-OUTPUT_DIR = Path("/scr/zhaorun/decodingtrust-agent.github.io/frontend/public/data")
+DATASET_ROOT = Path("/home/zhaorun/decodingtrust-agent.github.io/DecodingTrust-Agent-Platform/dataset")
+OUTPUT_DIR = Path("/home/zhaorun/decodingtrust-agent.github.io/backend/data")
 
 DOMAIN_AUTHORS = {
     "browser": "Tianneng Shi",

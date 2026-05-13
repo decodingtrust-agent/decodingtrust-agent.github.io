@@ -13,14 +13,16 @@ const FRAMEWORK_LOGO_PATHS: Record<string, string> = {
 }
 
 const MODEL_LOGO_PATHS: Record<string, string> = {
-  "gpt-5-4": "/logo/openai-monoblossom.svg",
-  "gpt-5-2": "/logo/openai-monoblossom.svg",
-  "gpt-5-1": "/logo/openai-monoblossom.svg",
-  "gpt-oss-120b": "/logo/openai-monoblossom.svg",
+  "gpt-5-5": "/logo/framework-openai-agents.svg",
+  "gpt-5-4": "/logo/framework-openai-agents.svg",
+  "gpt-5-2": "/logo/framework-openai-agents.svg",
+  "gpt-5-1": "/logo/framework-openai-agents.svg",
+  "gpt-oss-120b": "/logo/framework-openai-agents.svg",
   "opus-4-6": "/logo/claude.svg",
   "sonnet-4-5": "/logo/claude.svg",
   "gemini-3-pro": "/logo/gemini.svg",
   "gemini-3-1-pro": "/logo/gemini.svg",
+  "deepseek-v4-pro": "/logo/deepseek.png",
 }
 
 type AsrTab = "indirect" | "direct"
@@ -303,10 +305,6 @@ export function BenchmarkScatter() {
       <div className="mx-auto max-w-7xl px-4 py-20 md:py-28">
         <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-              <ScatterChart className="h-3 w-3" />
-              Capability vs. Vulnerability
-            </div>
             <h2 className="mb-2 text-3xl font-bold md:text-4xl">
               The Safety–Capability <span className="text-primary">Trade-off</span>
             </h2>
@@ -332,7 +330,7 @@ export function BenchmarkScatter() {
             value={mode}
             onChange={setMode}
             options={[
-              { value: "combo", label: "By Combination", icon: <Layers3 className="h-3 w-3" /> },
+              { value: "combo", label: "By Agent", icon: <Layers3 className="h-3 w-3" /> },
               { value: "framework", label: "By Framework", icon: <Layers3 className="h-3 w-3" /> },
               { value: "model", label: "By Model", icon: <BrainCircuit className="h-3 w-3" /> },
             ]}

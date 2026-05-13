@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "DecodingTrust Agent Platform",
   description:
-    "DecodingTrust Agent Platform — a real-world simulation platform for advanced red-teaming of AI agents, featuring DT-Red autonomous red-teaming and DT-Bench comprehensive benchmark.",
+    "DecodingTrust Agent Platform — a real-world simulation platform for advanced red-teaming of AI agents, featuring DTap-Red autonomous red-teaming and DTap-Bench comprehensive benchmark.",
   keywords: ["AI security", "agent evaluation", "red teaming", "benchmark", "AI safety", "LLM security"],
   icons: {
     icon: "/dt-agent-logo.png",
