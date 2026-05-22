@@ -15,8 +15,6 @@ import {
   Search,
   Server,
   Shield,
-  Terminal,
-  Trophy,
   Zap,
 } from "lucide-react"
 
@@ -115,20 +113,6 @@ const SECTIONS: SidebarSection[] = [
       { title: "Attack Skills", href: "/docs/attack-skills" },
       { title: "Injection MCP Server", href: "/docs/injection-mcp-server" },
     ],
-  },
-  {
-    title: "AgentHarm",
-    icon: Terminal,
-    slug: "agent-harm",
-    href: "/docs/agent-harm",
-    items: [],
-  },
-  {
-    title: "Leaderboard",
-    icon: Trophy,
-    slug: "leaderboard",
-    href: "/leaderboard",
-    items: [],
   },
   {
     title: "Contribution",

@@ -3,7 +3,9 @@
 # dependencies
 node_modules/
 **/node_modules/
-
+dtap-agent-trajectories/
+DecodingTrust-Agent/
+DecodingTrust-Agent-Platform/
 # Python
 __pycache__/
 **/__pycache__/

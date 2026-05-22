@@ -6,13 +6,11 @@ import {
   ChevronDown,
   Database,
   Zap,
-  Terminal,
   Package,
   Server,
   Play,
   Cpu,
   Shield,
-  Trophy,
   GitBranch,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -105,8 +103,6 @@ export const docsHierarchy: SidebarSection[] = [
       { title: "Injection MCP Server", slug: "injection-mcp-server" },
     ],
   },
-  { title: "AgentHarm", icon: Terminal, slug: "agent-harm", items: [] },
-  { title: "Leaderboard", icon: Trophy, slug: "leaderboard", items: [] },
   { title: "Contribution", icon: GitBranch, slug: "contribution", items: [] },
 ]
 

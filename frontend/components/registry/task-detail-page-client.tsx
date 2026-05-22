@@ -38,6 +38,7 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
 import { TrajectoryTab } from "@/components/registry/trajectory-tab"
+import { orderRunsForResults, sdkDisplayName } from "@/lib/trajectory-keys"
 
 /* ────────────────────────────────────────────────────────────── */
 /*  Types                                                        */
@@ -985,13 +986,6 @@ interface ForTaskLeaderboardResponse {
   under_attack: LeaderboardEntry | null
 }
 
-const SDK_DISPLAY_NAMES: Record<string, string> = {
-  openaisdk: "OpenAI Agents SDK",
-  googleadk: "Google ADK",
-  claudesdk: "Claude SDK",
-  openclaw: "OpenClaw",
-}
-
 const SDK_LOGO_PATHS: Record<string, string> = {
   openaisdk: "/logo/framework-openai-agents.svg",
   googleadk: "/logo/framework-google-adk.png",
@@ -999,26 +993,8 @@ const SDK_LOGO_PATHS: Record<string, string> = {
   openclaw: "/logo/openclaw.svg",
 }
 
-function sdkDisplayName(sdk: string): string {
-  return SDK_DISPLAY_NAMES[sdk] ?? sdk
-}
-
 function sdkLogoPath(sdk: string): string {
   return SDK_LOGO_PATHS[sdk] ?? ""
-}
-
-/** Deduplicate runs by sdk+model, keeping the most recent (first in DESC order). */
-function deduplicateRuns(runs: LeaderboardRun[]): LeaderboardRun[] {
-  const seen = new Set<string>()
-  const out: LeaderboardRun[] = []
-  for (const r of runs) {
-    const key = `${r.sdk}::${r.model}`
-    if (!seen.has(key)) {
-      seen.add(key)
-      out.push(r)
-    }
-  }
-  return out
 }
 
 function ResultBadge({
@@ -1149,15 +1125,7 @@ function LeaderboardTab({
     if (!data) return []
     const entry = isMalicious ? data.under_attack : data.no_attack
     if (!entry) return []
-    const deduped = deduplicateRuns(entry.runs ?? [])
-    return deduped.sort((a, b) => {
-      const aSuccess = isMalicious ? a.attack_success === true : a.task_success === true
-      const bSuccess = isMalicious ? b.attack_success === true : b.task_success === true
-      if (aSuccess !== bSuccess) return aSuccess ? -1 : 1
-      const sdkCmp = sdkDisplayName(a.sdk).localeCompare(sdkDisplayName(b.sdk))
-      if (sdkCmp !== 0) return sdkCmp
-      return a.model.localeCompare(b.model)
-    })
+    return orderRunsForResults(entry.runs ?? [], isMalicious)
   }, [data, isMalicious])
 
   return (

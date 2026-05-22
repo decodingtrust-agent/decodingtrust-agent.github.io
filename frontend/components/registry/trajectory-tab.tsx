@@ -28,7 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
-import { type TrajectoryRun } from "@/lib/trajectory-keys"
+import { type TrajectoryRun, orderRunsForResults } from "@/lib/trajectory-keys"
 import { useStoredString } from "@/lib/use-stored-state"
 
 interface TrajectoryEntry {
@@ -128,12 +128,16 @@ export function TrajectoryTab({
   const [data, setData] = useState<ForTaskResponse | null>(null)
   const [fetchErr, setFetchErr] = useState<string | null>(null)
   const [selectedRunIdx, setSelectedRunIdx] = useState<number>(0)
-  // Sticky cross-task preferences for the dropdowns. First-time visitors
-  // land on OpenClaw + gpt-5.2 by default; subsequent picks override.
-  const [preferredSdk, setPreferredSdk] = useStoredString("dt:traj:sdk", "openclaw")
+  // Per-task dropdown preference. Stored under a slug-scoped key so a pick on
+  // one task never carries to another. Empty = no pick for this task yet, so
+  // we default to the Results top row (see the selection effect below).
+  const [preferredSdk, setPreferredSdk] = useStoredString(
+    `dt:traj:${slug}:sdk`,
+    ""
+  )
   const [preferredModel, setPreferredModel] = useStoredString(
-    "dt:traj:model",
-    "openai_gpt-5.2"
+    `dt:traj:${slug}:model`,
+    ""
   )
 
   useEffect(() => {
@@ -173,15 +177,15 @@ export function TrajectoryTab({
     : null
   const runs: TrajectoryRun[] = activeEntry?.runs ?? []
 
-  // When the dataset / view changes, prefer a run matching the user's last
-  // (sdk, model) selection, then sdk-only, then index 0. Trial index itself
-  // is task-specific and resets.
+  // Pick which run to show whenever the task (slug → preference), data, or view
+  // changes: this task's remembered pick if any, otherwise the Results top row.
   useEffect(() => {
     if (runs.length === 0) {
       setSelectedRunIdx(0)
       return
     }
     let idx = -1
+    // 1. Honor a pick stored for THIS task (dropdown choice or share-link hint).
     if (preferredSdk && preferredModel) {
       idx = runs.findIndex(
         (r) => r.sdk === preferredSdk && r.model === preferredModel
@@ -190,11 +194,21 @@ export function TrajectoryTab({
     if (idx < 0 && preferredSdk) {
       idx = runs.findIndex((r) => r.sdk === preferredSdk)
     }
+    // 2. No pick for this task: land on the exact run shown at the top of the
+    //    Results tab. Both tabs share orderRunsForResults() so the default can
+    //    never drift from what the Results list ranks first.
+    if (idx < 0) {
+      const useAttack = isMalicious && activeView === "under_attack"
+      const top = orderRunsForResults(runs, useAttack)[0]
+      idx = top
+        ? runs.findIndex((r) => r.sdk === top.sdk && r.model === top.model)
+        : -1
+    }
     setSelectedRunIdx(idx >= 0 ? idx : 0)
-    // Only re-run when the underlying data or view changes — not on every
-    // preference write, since user picks already update the index directly.
+    // runs/isMalicious are derived from data/activeView/task; the meaningful
+    // triggers are the view, the fetched data, and this task's stored pick.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeView, data])
+  }, [activeView, data, preferredSdk, preferredModel])
 
   const selectedRun: TrajectoryRun | null =
     runs[Math.min(selectedRunIdx, runs.length - 1)] ?? null

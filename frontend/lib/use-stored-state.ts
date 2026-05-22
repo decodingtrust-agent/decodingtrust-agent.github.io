@@ -3,26 +3,26 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 
 /**
- * String state mirrored to localStorage. The stored value is read once on
- * mount; subsequent writes (via the returned setter) push to storage
- * immediately. SSR-safe — initial render uses `fallback`, real value
- * arrives after hydration.
+ * String state mirrored to localStorage. The value is read on mount and again
+ * whenever `key` changes (e.g. per-task storage keys), so it always reflects
+ * the current key's stored entry. Writes (via the returned setter) push to
+ * storage immediately. SSR-safe — initial render uses `fallback`, the real
+ * value arrives after hydration.
  */
 export function useStoredString(
   key: string,
   fallback: string
 ): [string, (v: string) => void] {
   const [value, setValue] = useState<string>(fallback)
-  const hydrated = useRef(false)
+  const fallbackRef = useRef(fallback)
+  fallbackRef.current = fallback
 
   useEffect(() => {
-    if (hydrated.current) return
-    hydrated.current = true
     try {
       const stored = window.localStorage.getItem(key)
-      if (stored != null) setValue(stored)
+      setValue(stored != null ? stored : fallbackRef.current)
     } catch {
-      /* storage unavailable / quota / private mode — silently ignore */
+      /* storage unavailable / quota / private mode — keep current value */
     }
   }, [key])
 
