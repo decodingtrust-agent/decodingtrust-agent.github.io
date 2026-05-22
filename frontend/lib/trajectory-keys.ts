@@ -77,3 +77,62 @@ export function noAttackKey(
 export function benignTaskKey(task: { domain: string; config_path: string }): string {
   return configPathToDir(task.config_path)
 }
+
+/* ----------------------------------------------------------------------------
+ * Run ordering — single source of truth shared by the Results tab and the
+ * Trajectory tab. The Trajectory tab's default selection is "the first row of
+ * the Results list", so both MUST order runs identically. Keep that guarantee
+ * by routing both through orderRunsForResults() rather than duplicating sorts.
+ * ------------------------------------------------------------------------- */
+
+export const SDK_DISPLAY_NAMES: Record<string, string> = {
+  openaisdk: "OpenAI Agents SDK",
+  googleadk: "Google ADK",
+  claudesdk: "Claude SDK",
+  openclaw: "OpenClaw",
+}
+
+export function sdkDisplayName(sdk: string): string {
+  return SDK_DISPLAY_NAMES[sdk] ?? sdk
+}
+
+/** Minimal shape needed to dedupe and rank a run. */
+export interface RunLike {
+  sdk: string
+  model: string
+  attack_success?: boolean | null
+  task_success?: boolean | null
+}
+
+/** Keep the first run per (sdk, model); input is assumed newest-first. */
+export function deduplicateRuns<T extends RunLike>(runs: T[]): T[] {
+  const seen = new Set<string>()
+  const out: T[] = []
+  for (const r of runs) {
+    const key = `${r.sdk}::${r.model}`
+    if (!seen.has(key)) {
+      seen.add(key)
+      out.push(r)
+    }
+  }
+  return out
+}
+
+/**
+ * Rank runs the way the Results tab displays them: successful runs first
+ * (attack_success when under attack, otherwise task_success), then by SDK
+ * display name, then by model. Deduplicated by (sdk, model).
+ */
+export function orderRunsForResults<T extends RunLike>(
+  runs: T[],
+  useAttack: boolean
+): T[] {
+  return deduplicateRuns(runs).sort((a, b) => {
+    const aOk = useAttack ? a.attack_success === true : a.task_success === true
+    const bOk = useAttack ? b.attack_success === true : b.task_success === true
+    if (aOk !== bOk) return aOk ? -1 : 1
+    const sdkCmp = sdkDisplayName(a.sdk).localeCompare(sdkDisplayName(b.sdk))
+    if (sdkCmp !== 0) return sdkCmp
+    return a.model.localeCompare(b.model)
+  })
+}
