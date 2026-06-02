@@ -9,7 +9,6 @@ import {
   ChevronRight,
   Cpu,
   Database,
-  GitBranch,
   Package,
   Play,
   Search,
@@ -106,20 +105,12 @@ const SECTIONS: SidebarSection[] = [
     title: "Red-teaming Agent",
     icon: Shield,
     slug: "red-teaming",
-    href: "/docs/red-teaming-overview",
+    href: "/docs/red-teaming-quickstart",
     items: [
-      { title: "Overview", href: "/docs/red-teaming-overview" },
       { title: "Quick Start", href: "/docs/red-teaming-quickstart" },
       { title: "Attack Skills", href: "/docs/attack-skills" },
       { title: "Injection MCP Server", href: "/docs/injection-mcp-server" },
     ],
-  },
-  {
-    title: "Contribution",
-    icon: GitBranch,
-    slug: "contribution",
-    href: "/docs/contribution",
-    items: [],
   },
 ]
 

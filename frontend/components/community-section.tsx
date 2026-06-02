@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import { Github, FileText, Database, Package, ExternalLink, ArrowRight } from "lucide-react"
+import { CitationBlock } from "@/components/citation-block"
 
 const DISCORD_INVITE = "https://discord.gg/z8ZhVwPqUk"
 // Replace with the DecodingTrust-Agent Discord server ID (Server Settings → Widget → Server ID).
@@ -162,6 +163,8 @@ export function CommunitySection() {
             ))}
           </div>
         </div>
+
+        <CitationBlock className="mt-12" />
 
         <div className="mt-12 p-6 rounded-lg border border-border bg-card">
           <h3 className="text-lg font-semibold mb-4">Contributing</h3>

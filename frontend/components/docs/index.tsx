@@ -16,7 +16,6 @@ import {
   EvalDecodingTrustContent,
   EvalInspectContent,
   PlaceholderContent,
-  RedTeamingOverviewContent,
   RedTeamingQuickstartContent,
   AttackSkillsContent,
   InjectionMCPServerContent,
@@ -34,7 +33,6 @@ export function DocsSection() {
       "wrap-prebuilt-agents": "supported-agents",
       "add-custom-agents": "supported-agents",
       "use-custom-models": "supported-agents",
-      "red-teaming-overview": "red-teaming-agent",
       "red-teaming-quickstart": "red-teaming-agent",
       "attack-skills": "red-teaming-agent",
       "injection-mcp-server": "red-teaming-agent",
@@ -74,8 +72,6 @@ export function DocsSection() {
         return <EvalDecodingTrustContent />
       case "eval-inspect":
         return <EvalInspectContent />
-      case "red-teaming-overview":
-        return <RedTeamingOverviewContent />
       case "red-teaming-quickstart":
         return <RedTeamingQuickstartContent />
       case "attack-skills":
