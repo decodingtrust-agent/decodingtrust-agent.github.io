@@ -11,7 +11,6 @@ import {
   Play,
   Cpu,
   Shield,
-  GitBranch,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { DOMAINS } from "@/lib/domains"
@@ -97,13 +96,11 @@ export const docsHierarchy: SidebarSection[] = [
     icon: Shield,
     slug: "red-teaming-agent",
     items: [
-      { title: "Overview", slug: "red-teaming-overview" },
       { title: "Quick Start", slug: "red-teaming-quickstart" },
       { title: "Attack Skills", slug: "attack-skills" },
       { title: "Injection MCP Server", slug: "injection-mcp-server" },
     ],
   },
-  { title: "Contribution", icon: GitBranch, slug: "contribution", items: [] },
 ]
 
 interface DocsSidebarProps {

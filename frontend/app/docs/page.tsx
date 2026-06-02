@@ -5,7 +5,6 @@ import {
   Database,
   Server,
   Zap,
-  Shield,
   Cpu,
   Play,
   Package,
@@ -26,7 +25,6 @@ const TOP_LINKS = [
   { title: "Install from Source", href: "/docs/install-source", desc: "Clone, set up the venv, install editable.", icon: Package },
   { title: "Eval with decodingtrust-agent", href: "/docs/eval-decodingtrust", desc: "Run a JSONL of tasks across 14 domains.", icon: Play },
   { title: "Off-the-Shelf Agents", href: "/docs/off-the-shelf-agents", desc: "OpenAI, Claude, Google, LangChain, OpenClaw.", icon: Cpu },
-  { title: "Red-teaming Overview", href: "/docs/red-teaming-overview", desc: "Adversarial loop, attack skills, judges.", icon: Shield },
 ]
 
 export default function DocsLandingPage() {
