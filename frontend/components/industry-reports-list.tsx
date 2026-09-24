@@ -30,10 +30,7 @@ function ReportCard({ report }: { report: IndustryReport }) {
           />
           <span className="text-sm font-semibold">{report.partner}</span>
           <span className="text-muted-foreground/50">×</span>
-          <span className="text-sm font-semibold">
-            <span className="text-foreground">Decoding</span>
-            <span className="text-[oklch(0.7_0.14_220)]">Trust Agent</span>
-          </span>
+          <span className="text-sm font-semibold text-[oklch(0.7_0.14_220)]">DTap</span>
           <span className="rounded-md border border-border/70 bg-secondary/40 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
             Whitepaper
           </span>

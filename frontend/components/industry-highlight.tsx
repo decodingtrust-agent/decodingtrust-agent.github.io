@@ -1,44 +1,7 @@
 import Link from "next/link"
-import { ArrowUpRight, Download, FileText, Users } from "lucide-react"
+import { ArrowUpRight, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { FEATURED_REPORT, industryReportHref, type IndustryMetric } from "@/lib/industry"
-
-/** Compact inline stat, so the numbers survive next to the paper snapshot. */
-function MetricPill({ metric }: { metric: IndustryMetric }) {
-  return (
-    <div
-      className={cn(
-        "flex flex-col gap-0.5 rounded-xl border px-3 py-2",
-        metric.headline
-          ? "border-emerald-500/40 bg-emerald-500/10"
-          : "border-border/60 bg-secondary/20",
-      )}
-    >
-      <span className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
-        {metric.label}
-      </span>
-      <span className="flex items-baseline gap-1.5">
-        <span
-          className={cn(
-            "font-mono text-xl font-bold leading-none",
-            metric.headline ? "text-emerald-600 dark:text-emerald-400" : "text-foreground",
-          )}
-        >
-          {metric.value}
-        </span>
-        <span
-          className={cn(
-            "text-[11px] font-semibold",
-            metric.headline ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground",
-          )}
-        >
-          {metric.rank}
-        </span>
-      </span>
-    </div>
-  )
-}
+import { FEATURED_REPORT } from "@/lib/industry"
 
 export function IndustryHighlight() {
   const report = FEATURED_REPORT
@@ -69,8 +32,8 @@ export function IndustryHighlight() {
 
         <div className="mt-8 overflow-hidden rounded-3xl border border-border/60 bg-card/70 shadow-sm shadow-black/5 backdrop-blur-sm">
           <div className="grid gap-8 p-6 md:p-8 lg:grid-cols-2 lg:gap-10">
-            {/* Left: identity, pitch, numbers, actions */}
-            <div className="flex min-w-0 flex-col">
+            {/* Left: who, what, and one way in. */}
+            <div className="flex min-w-0 flex-col justify-center">
               <div className="flex flex-wrap items-center gap-2.5">
                 <img
                   src={report.partnerLogo}
@@ -79,10 +42,7 @@ export function IndustryHighlight() {
                 />
                 <span className="text-base font-semibold">{report.partner}</span>
                 <span className="text-muted-foreground/50">×</span>
-                <span className="text-base font-semibold">
-                  <span className="text-foreground">Decoding</span>
-                  <span className="text-[oklch(0.7_0.14_220)]">Trust Agent</span>
-                </span>
+                <span className="text-base font-semibold text-[oklch(0.7_0.14_220)]">DTap</span>
                 <span className="rounded-md border border-border/70 bg-secondary/40 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
                   Whitepaper
                 </span>
@@ -91,53 +51,29 @@ export function IndustryHighlight() {
               <h3 className="mt-4 text-xl font-bold leading-snug md:text-2xl">{report.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{report.blurb}</p>
 
-              <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
-                <span className="inline-flex items-center gap-1.5">
-                  <Users className="h-3.5 w-3.5" />
-                  Pokee AI · UChicago · UIUC
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <FileText className="h-3.5 w-3.5" />
-                  {report.scope}
-                </span>
+              <div className="mt-4 inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                <Users className="h-3.5 w-3.5" />
+                {report.partner}
               </div>
 
-              <div className="mt-5 grid grid-cols-3 gap-2.5">
-                {report.metrics.map((metric) => (
-                  <MetricPill key={metric.label} metric={metric} />
-                ))}
-              </div>
-              <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground/80">
-                {report.system}, macro-average over 14 domains. The harness differs from the stock
-                runner, and ASR must be read relative to capability — the report states both.
-              </p>
-
-              <div className="mt-auto flex flex-wrap gap-3 pt-6">
+              <div className="mt-6">
                 <Button
                   asChild
                   className="bg-[oklch(0.7_0.14_220)] text-white hover:bg-[oklch(0.65_0.14_220)] shadow-lg shadow-[oklch(0.5_0.14_220/0.3)]"
                 >
-                  <Link href={industryReportHref(report.slug)}>
+                  <a href={report.pdfPath} target="_blank" rel="noopener noreferrer">
                     Read the Report
                     <ArrowUpRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button
-                  variant="outline"
-                  asChild
-                  className="border-border bg-transparent hover:bg-secondary"
-                >
-                  <a href={report.pdfPath} target="_blank" rel="noopener noreferrer">
-                    <Download className="mr-2 h-4 w-4" />
-                    PDF
                   </a>
                 </Button>
               </div>
             </div>
 
             {/* Right: the paper itself — title through abstract, off page one. */}
-            <Link
-              href={industryReportHref(report.slug)}
+            <a
+              href={report.pdfPath}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group/paper relative block self-center overflow-hidden rounded-xl border border-border/70 bg-white shadow-md transition-transform hover:-translate-y-1"
               aria-label={`Read ${report.title}`}
             >
@@ -153,7 +89,7 @@ export function IndustryHighlight() {
                   {report.pages}-page whitepaper
                 </span>
               </span>
-            </Link>
+            </a>
           </div>
         </div>
 

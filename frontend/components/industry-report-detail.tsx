@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { AlertTriangle, ArrowDown, ArrowLeft, ArrowUp, Check, Copy, Download, ExternalLink } from "lucide-react"
+import { ArrowDown, ArrowLeft, ArrowUp, Check, Copy, ExternalLink, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import type { IndustryDomainRow, IndustryReport } from "@/lib/industry"
@@ -195,11 +195,7 @@ function ReportArticle({ report }: { report: IndustryReport }) {
           <ExternalLink className="h-3.5 w-3.5 opacity-60" />
         </a>
         <span className="text-muted-foreground/50">×</span>
-        <span className="text-base font-semibold">
-          <span className="text-foreground">Decoding</span>
-          <span className="text-[oklch(0.7_0.14_220)]">Trust</span>
-          <span className="text-[oklch(0.7_0.14_220)]"> Agent</span>
-        </span>
+        <span className="text-base font-semibold text-[oklch(0.7_0.14_220)]">DTap</span>
         <span className="rounded-md border border-border/70 bg-secondary/40 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
           Whitepaper
         </span>
@@ -232,8 +228,8 @@ function ReportArticle({ report }: { report: IndustryReport }) {
           className="bg-[oklch(0.7_0.14_220)] text-white hover:bg-[oklch(0.65_0.14_220)] shadow-lg shadow-[oklch(0.5_0.14_220/0.3)]"
         >
           <a href={report.pdfPath} target="_blank" rel="noopener noreferrer">
-            <Download className="mr-2 h-4 w-4" />
-            Download PDF
+            <FileText className="mr-2 h-4 w-4" />
+            Read Report
           </a>
         </Button>
       </div>
@@ -264,49 +260,6 @@ function ReportArticle({ report }: { report: IndustryReport }) {
         <p className="text-sm leading-relaxed text-muted-foreground">{report.abstract}</p>
       </div>
 
-      {/* Headline metrics */}
-      <div className="mt-10">
-        <h3 className="mb-1 text-lg font-semibold">Headline Results</h3>
-        <p className="mb-4 text-sm text-muted-foreground">
-          {report.system}, macro-average over all 14 domains, against the ten published leaderboard
-          agents on the benchmark&rsquo;s own full basis.
-        </p>
-        <div className="grid gap-3 sm:grid-cols-3">
-          {report.metrics.map((metric) => (
-            <div
-              key={metric.label}
-              className={cn(
-                "rounded-2xl border px-5 py-5 text-center",
-                metric.headline
-                  ? "border-emerald-500/40 bg-emerald-500/10"
-                  : "border-border/60 bg-secondary/20",
-              )}
-            >
-              <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                {metric.label}
-              </div>
-              <div
-                className={cn(
-                  "mt-2 font-mono text-4xl font-bold leading-none",
-                  metric.headline ? "text-emerald-600 dark:text-emerald-400" : "text-foreground",
-                )}
-              >
-                {metric.value}
-              </div>
-              <div
-                className={cn(
-                  "mt-2 text-sm font-semibold",
-                  metric.headline ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground",
-                )}
-              >
-                {metric.rank}
-              </div>
-              <div className="mt-0.5 text-[10px] text-muted-foreground/70">{metric.hint}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* Per-domain */}
       <div className="mt-10">
         <h3 className="mb-1 text-lg font-semibold">Per-Domain Results</h3>
@@ -320,32 +273,16 @@ function ReportArticle({ report }: { report: IndustryReport }) {
       {/* Findings */}
       <div className="mt-10">
         <h3 className="mb-4 text-lg font-semibold">Key Findings</h3>
-        <ul className="space-y-3">
-          {report.findings.map((finding) => (
+        <ol className="space-y-3">
+          {report.findings.map((finding, index) => (
             <li key={finding} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+              <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-border/70 bg-secondary/40 font-mono text-[11px] font-semibold text-foreground">
+                {index + 1}
+              </span>
               <span>{finding}</span>
             </li>
           ))}
-        </ul>
-      </div>
-
-      {/* Caveats — kept as prominent as the findings on purpose. */}
-      <div className="mt-10">
-        <div className="mb-4 flex items-center gap-2">
-          <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-          <h3 className="text-lg font-semibold">How to Read These Numbers</h3>
-        </div>
-        <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 p-6">
-          <ul className="space-y-3">
-            {report.caveats.map((caveat) => (
-              <li key={caveat} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500/70" />
-                <span>{caveat}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        </ol>
       </div>
 
       <div className="mt-10">

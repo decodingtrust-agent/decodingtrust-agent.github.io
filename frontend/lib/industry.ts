@@ -55,6 +55,12 @@ export interface IndustryReport {
   metrics: IndustryMetric[]
   domains: IndustryDomainRow[]
   findings: string[]
+  /**
+   * The report's own stated limits. Not rendered on the detail page right now —
+   * the PDF carries them, and the leaderboard marks the harness difference with
+   * a dagger. Kept here so the page can surface them again without re-reading
+   * the paper.
+   */
   caveats: string[]
   bibtex: string
 }
