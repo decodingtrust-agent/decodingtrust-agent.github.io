@@ -7,7 +7,7 @@ import { ArrowRight, FileText, Play, Database, Trophy, ScrollText } from "lucide
 import { Button } from "@/components/ui/button"
 import { loadBenchmarkDataset, type BenchmarkDataset } from "@/lib/benchmark"
 import { wallShots } from "@/lib/env-showcase"
-import { FEATURED_REPORT } from "@/lib/industry"
+import { FEATURED_REPORT, industryReportHref } from "@/lib/industry"
 
 const WALL_ROW_COUNT = 4
 const wallRows = Array.from({ length: WALL_ROW_COUNT }, (_, rowIndex) =>
@@ -97,7 +97,7 @@ export function HeroSection() {
         {/* Announcement banner */}
         <div className="flex justify-center mb-8">
           <Link
-            href={`/industry#${FEATURED_REPORT.slug}`}
+            href={industryReportHref(FEATURED_REPORT.slug)}
             className="group inline-flex max-w-full items-center gap-2 rounded-full border border-primary/30 bg-primary/5 backdrop-blur-sm px-5 py-2 shadow-lg shadow-primary/5 transition-colors hover:border-primary/50 hover:bg-primary/10"
           >
             <span className="relative flex h-2 w-2 shrink-0">

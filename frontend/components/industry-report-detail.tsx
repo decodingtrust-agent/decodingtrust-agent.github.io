@@ -1,10 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { AlertTriangle, ArrowDown, ArrowUp, Check, Copy, Download, ExternalLink, Info } from "lucide-react"
+import Link from "next/link"
+import { AlertTriangle, ArrowDown, ArrowLeft, ArrowUp, Check, Copy, Download, ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { INDUSTRY_REPORTS, type IndustryDomainRow, type IndustryReport } from "@/lib/industry"
+import type { IndustryDomainRow, IndustryReport } from "@/lib/industry"
 
 /* Reuse the leaderboard's heat scale so a number means the same thing here as
    it does on /leaderboard. Mirrors normalizeScore() in leaderboard-preview. */
@@ -175,6 +176,8 @@ function BibtexBlock({ bibtex }: { bibtex: string }) {
 function ReportArticle({ report }: { report: IndustryReport }) {
   return (
     <article id={report.slug} className="scroll-mt-24">
+      <div className="grid gap-8 sm:grid-cols-[1fr_auto]">
+        <div className="min-w-0">
       {/* Identity */}
       <div className="flex flex-wrap items-center gap-2.5">
         <img
@@ -233,6 +236,26 @@ function ReportArticle({ report }: { report: IndustryReport }) {
             Download PDF
           </a>
         </Button>
+      </div>
+        </div>
+
+        {/* Snapshot of the paper's first page. */}
+        <a
+          href={report.pdfPath}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group/thumb hidden shrink-0 sm:block"
+          aria-label={`Open ${report.title} as a PDF`}
+        >
+          <img
+            src={report.thumbnail}
+            alt={`First page of ${report.title}`}
+            className="w-[200px] rounded-md border border-border/70 bg-white shadow-md transition-transform group-hover/thumb:-translate-y-1"
+          />
+          <span className="mt-2 block text-center text-[11px] text-muted-foreground">
+            {report.pages}-page PDF
+          </span>
+        </a>
       </div>
 
       {/* Abstract */}
@@ -332,60 +355,19 @@ function ReportArticle({ report }: { report: IndustryReport }) {
   )
 }
 
-export function IndustrySection() {
+export function IndustryReportDetail({ report }: { report: IndustryReport }) {
   return (
     <section className="min-h-screen">
-      <div className="mx-auto max-w-5xl px-4 py-16 md:py-24">
-        <div className="mb-12 text-center">
-          <h1 className="mb-4 text-3xl font-bold md:text-4xl">Industry Reports</h1>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Security evaluations of production agent systems, measured on DecodingTrust-Agent by the
-            teams that build them.
-          </p>
-        </div>
+      <div className="mx-auto max-w-5xl px-4 py-12 md:py-16">
+        <Link
+          href="/community/industry"
+          className="mb-8 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          All industry reports
+        </Link>
 
-        {/* What these are, and what they are not. */}
-        <div className="mb-14 flex gap-3 rounded-2xl border border-border/60 bg-secondary/20 p-5">
-          <Info className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            These reports are authored by our industry partners using the platform&rsquo;s own
-            environments, attacks and judges. DTap provides the benchmark and reviews the
-            methodology; the runs and the claims are the partner&rsquo;s. Each report states the
-            conditions it was measured under — read those before comparing a figure here with a row
-            on the{" "}
-            <a
-              href="/leaderboard"
-              className="font-medium text-[oklch(0.7_0.14_220)] hover:underline"
-            >
-              leaderboard
-            </a>
-            .
-          </p>
-        </div>
-
-        <div className="space-y-20">
-          {INDUSTRY_REPORTS.map((report) => (
-            <ReportArticle key={report.slug} report={report} />
-          ))}
-        </div>
-
-        <div className="mt-20 rounded-2xl border border-border/60 bg-card/70 p-6 text-center">
-          <h3 className="text-lg font-semibold">Evaluating your own agent on DTap?</h3>
-          <p className="mx-auto mt-2 max-w-xl text-sm text-muted-foreground">
-            Run the benchmark, then talk to us about publishing the results here.
-          </p>
-          <div className="mt-5 flex flex-wrap justify-center gap-3">
-            <Button variant="outline" asChild className="border-border bg-transparent hover:bg-secondary">
-              <a href="/quickstart">Get Started</a>
-            </Button>
-            <Button variant="outline" asChild className="border-border bg-transparent hover:bg-secondary">
-              <a href="https://discord.gg/z8ZhVwPqUk" target="_blank" rel="noopener noreferrer">
-                Join the Discord
-                <ExternalLink className="ml-2 h-4 w-4" />
-              </a>
-            </Button>
-          </div>
-        </div>
+        <ReportArticle report={report} />
       </div>
     </section>
   )

@@ -1,11 +1,6 @@
-import { IndustrySection } from "@/components/industry-section"
+import { redirect } from "next/navigation"
 
-export const metadata = {
-  title: "Industry Reports | DTap",
-  description:
-    "Security evaluations of production agent systems measured on DecodingTrust-Agent, including the Pokee AI enterprise agent and model security whitepaper.",
-}
-
-export default function IndustryPage() {
-  return <IndustrySection />
+/** /industry is no longer a top-level section — it lives under Community. */
+export default function IndustryRedirect() {
+  redirect("/community/industry")
 }

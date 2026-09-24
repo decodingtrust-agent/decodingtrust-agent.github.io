@@ -2,7 +2,7 @@ import Link from "next/link"
 import { ArrowUpRight, Download, FileText, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { FEATURED_REPORT } from "@/lib/industry"
+import { FEATURED_REPORT, industryReportHref } from "@/lib/industry"
 
 function MetricTile({
   label,
@@ -77,7 +77,7 @@ export function IndustryHighlight() {
             asChild
             className="hidden border-border bg-transparent hover:bg-secondary md:flex"
           >
-            <Link href="/industry">
+            <Link href="/community/industry">
               View All Reports
               <ArrowUpRight className="ml-2 h-4 w-4" />
             </Link>
@@ -131,7 +131,7 @@ export function IndustryHighlight() {
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <Button asChild className="bg-[oklch(0.7_0.14_220)] text-white hover:bg-[oklch(0.65_0.14_220)] shadow-lg shadow-[oklch(0.5_0.14_220/0.3)]">
-                  <Link href={`/industry#${report.slug}`}>
+                  <Link href={industryReportHref(report.slug)}>
                     Read the Report
                     <ArrowUpRight className="ml-2 h-4 w-4" />
                   </Link>
@@ -165,7 +165,7 @@ export function IndustryHighlight() {
         </div>
 
         <Button variant="outline" asChild className="mt-6 w-full border-border bg-transparent md:hidden">
-          <Link href="/industry">
+          <Link href="/community/industry">
             View All Reports
             <ArrowUpRight className="ml-2 h-4 w-4" />
           </Link>

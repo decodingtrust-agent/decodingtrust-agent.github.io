@@ -112,7 +112,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="/industry"
+                  href="/community/industry"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
                 >
                   <ShieldCheck className="h-4 w-4" /> Industry Reports

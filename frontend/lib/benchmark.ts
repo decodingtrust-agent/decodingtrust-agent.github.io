@@ -539,7 +539,7 @@ export function rankBenchmarkEntries(entries: BenchmarkEntry[], selectedDomainKe
  */
 export const MODEL_RUN_NOTES: Record<string, string> = {
   "pokee-isaac-28b":
-    "Run in Pokee's own agent scaffold rather than DTap's stock runner, with the coding path restricted to MCP (native shell and file tools disabled). A system-level result, not a model-level one; its indirect figures are a guards-inactive measurement. Source: the Pokee AI whitepaper on /industry.",
+    "Run in Pokee's own agent scaffold rather than DTap's stock runner, with the coding path restricted to MCP (native shell and file tools disabled). A system-level result, not a model-level one; its indirect figures are a guards-inactive measurement. Source: the Pokee AI whitepaper under Community → Industry Reports.",
 }
 
 export function modelRunNote(modelKey: string): string | undefined {

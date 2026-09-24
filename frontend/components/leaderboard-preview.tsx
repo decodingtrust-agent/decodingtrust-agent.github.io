@@ -370,7 +370,7 @@ export function LeaderboardPreview() {
               <span className="font-semibold text-amber-600 dark:text-amber-400">†</span> Run under a
               non-stock harness, so the row is a system-level result rather than a model-level one.
               See{" "}
-              <Link href="/industry" className="font-medium hover:underline">
+              <Link href="/community/industry" className="font-medium hover:underline">
                 Industry Reports
               </Link>{" "}
               for the conditions.

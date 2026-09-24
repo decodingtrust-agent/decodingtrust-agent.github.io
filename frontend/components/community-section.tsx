@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Github, FileText, Database, Package, ExternalLink, ArrowRight, ShieldCheck } from "lucide-react"
+import { Github, FileText, Database, Package, ExternalLink, ArrowRight } from "lucide-react"
 import { CitationBlock } from "@/components/citation-block"
 
 const DISCORD_INVITE = "https://discord.gg/z8ZhVwPqUk"
@@ -71,14 +71,6 @@ const resources = [
     link: "https://arxiv.org/pdf/2605.04808",
     linkText: "arxiv.org/abs/2605.04808",
   },
-  {
-    icon: ShieldCheck,
-    title: "Industry Reports",
-    description: "Partner security evaluations measured on DTap.",
-    link: "/industry",
-    linkText: "Pokee AI × DTap whitepaper",
-    internal: true,
-  },
 ]
 
 export function CommunitySection() {
@@ -86,15 +78,7 @@ export function CommunitySection() {
   const memberLabel = onlineCount != null ? `${formatMemberCount(onlineCount)} members online` : "Live community"
 
   return (
-    <section className="min-h-screen">
-      <div className="mx-auto max-w-5xl px-4 py-16 md:py-24">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">Community & Resources</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Join DTap community and contribute to advancing AI agent security.
-          </p>
-        </div>
-
+    <>
         <div className="mb-12">
           <h2 className="text-xl font-semibold mb-6">Join the Community</h2>
           <a
@@ -215,7 +199,6 @@ export function CommunitySection() {
             </li>
           </ul>
         </div>
-      </div>
-    </section>
+    </>
   )
 }

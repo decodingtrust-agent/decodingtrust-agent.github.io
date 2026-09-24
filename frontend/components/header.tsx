@@ -19,7 +19,6 @@ import { DOMAINS } from "@/lib/domains"
 
 const navItems = [
   { label: "Docs", href: "/docs" },
-  { label: "Industry", href: "/industry" },
   { label: "Community", href: "/community" },
   { label: "About", href: "/about" },
 ]
