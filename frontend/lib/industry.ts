@@ -45,6 +45,8 @@ export interface IndustryReport {
   pdfPath: string
   /** Rendered first page of the PDF, used as the card thumbnail. */
   thumbnail: string
+  /** Title-through-abstract crop of page one, for wide feature slots. */
+  heroImage: string
   pages: number
   abstract: string
   /** Short pitch used on the homepage highlight — one sentence. */
@@ -77,6 +79,7 @@ export const POKEE_ISAAC_REPORT: IndustryReport = {
   date: "September 2026",
   pdfPath: "/papers/pokee-ai-dtap-security-whitepaper.pdf",
   thumbnail: "/papers/pokee-ai-dtap-security-whitepaper-page1.png",
+  heroImage: "/papers/pokee-ai-dtap-security-whitepaper-hero.png",
   pages: 36,
   abstract:
     "AI agents turn language-model outputs into actions with persistent effects on enterprise systems, so their security is a property of the whole execution stack, not of the model alone. This report maps the agent attack surface — model and planner, tools and skills, retrieval and memory, external environments, and serving infrastructure — analyzes a vendor-neutral reference architecture for enterprise agent deployment, identifies eight vulnerability classes that conventional application-security tooling is not built to find, and proposes a hardened architecture of eight security modules. It then evaluates Pokee-Isaac 28B v0.1 as a complete agent system on DecodingTrust-Agent across all 14 domains and 6,651 judged tasks.",
