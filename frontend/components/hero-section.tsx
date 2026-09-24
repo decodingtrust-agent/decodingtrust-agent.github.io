@@ -7,6 +7,7 @@ import { ArrowRight, FileText, Play, Database, Trophy, ScrollText } from "lucide
 import { Button } from "@/components/ui/button"
 import { loadBenchmarkDataset, type BenchmarkDataset } from "@/lib/benchmark"
 import { wallShots } from "@/lib/env-showcase"
+import { FEATURED_REPORT } from "@/lib/industry"
 
 const WALL_ROW_COUNT = 4
 const wallRows = Array.from({ length: WALL_ROW_COUNT }, (_, rowIndex) =>
@@ -95,16 +96,21 @@ export function HeroSection() {
       <div className="mx-auto max-w-5xl px-4 py-12 md:py-16 lg:py-20 relative z-10 -translate-y-8 md:-translate-y-12">
         {/* Announcement banner */}
         <div className="flex justify-center mb-8">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 backdrop-blur-sm px-5 py-2 shadow-lg shadow-primary/5">
-            <span className="relative flex h-2 w-2">
+          <Link
+            href={`/industry#${FEATURED_REPORT.slug}`}
+            className="group inline-flex max-w-full items-center gap-2 rounded-full border border-primary/30 bg-primary/5 backdrop-blur-sm px-5 py-2 shadow-lg shadow-primary/5 transition-colors hover:border-primary/50 hover:bg-primary/10"
+          >
+            <span className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
             </span>
-            <span className="text-sm font-medium text-primary">v1.0 Released</span>
-            <span className="h-4 w-px bg-primary/30" />
-            <span className="text-sm text-muted-foreground">Read the announcement</span>
-            <ArrowRight className="h-3.5 w-3.5 text-primary" />
-          </div>
+            <span className="text-sm font-medium text-primary whitespace-nowrap">New Whitepaper</span>
+            <span className="h-4 w-px bg-primary/30 shrink-0" />
+            <span className="truncate text-sm text-muted-foreground">
+              {FEATURED_REPORT.partner} &times; DTap &mdash; Enterprise Agent and Model Security
+            </span>
+            <ArrowRight className="h-3.5 w-3.5 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" />
+          </Link>
         </div>
 
         <div className="text-center mb-10">

@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import Link from "next/link"
 import {
   ArrowDown,
   ArrowUp,
@@ -54,6 +55,7 @@ import {
   formatPercent,
   isHigherBetterMetric,
   loadBenchmarkDataset,
+  modelRunNote,
   rankBenchmarkEntries,
   type BenchmarkCategoryEntry,
   type BenchmarkCategoryTable,
@@ -92,6 +94,7 @@ const FRAMEWORK_LOGO_PATHS: Record<string, string> = {
   "claude-code": "/logo/framework-claude-code.svg",
   "google-adk": "/logo/framework-google-adk.png",
   openclaw: "/logo/openclaw.svg",
+  "pokee-harness": "/logo/pokee.png",
 }
 
 const MODEL_LOGO_PATHS: Record<string, string> = {
@@ -105,6 +108,7 @@ const MODEL_LOGO_PATHS: Record<string, string> = {
   "gemini-3-pro": "/logo/gemini.svg",
   "gemini-3-1-pro": "/logo/gemini.svg",
   "deepseek-v4-pro": "/logo/deepseek.png",
+  "pokee-isaac-28b": "/logo/pokee.png",
 }
 
 const DOMAIN_VISUALS: Record<string, { icon: typeof Workflow; glow: string; screenshot?: string }> = {
@@ -225,11 +229,29 @@ function FrameworkLabel({ frameworkKey, frameworkName }: { frameworkKey: string;
   )
 }
 
+/** Dagger marking a row whose run conditions differ from the stock harness. */
+function RunNoteMark({ modelKey }: { modelKey: string }) {
+  const note = modelRunNote(modelKey)
+  if (!note) return null
+  return (
+    <sup
+      title={note}
+      aria-label={note}
+      className="ml-0.5 cursor-help text-[10px] font-semibold text-amber-600 dark:text-amber-400"
+    >
+      †
+    </sup>
+  )
+}
+
 function ModelLabel({ modelKey, modelName }: { modelKey: string; modelName: string }) {
   return (
     <div className="flex items-center gap-2.5">
       <BrandLogo logoPath={MODEL_LOGO_PATHS[modelKey]} alt={`${modelName} logo`} />
-      <span className="font-medium truncate">{modelName}</span>
+      <span className="font-medium truncate">
+        {modelName}
+        <RunNoteMark modelKey={modelKey} />
+      </span>
     </div>
   )
 }
@@ -278,7 +300,10 @@ function SeriesLegend({
                 size="sm"
               />
               <div className="min-w-0">
-                <div className="truncate text-sm font-medium text-foreground">{row.modelName}</div>
+                <div className="truncate text-sm font-medium text-foreground">
+                  {row.modelName}
+                  <RunNoteMark modelKey={row.modelKey} />
+                </div>
                 <div className="truncate text-[11px] text-muted-foreground">{row.frameworkName}</div>
               </div>
             </div>
@@ -340,7 +365,10 @@ function ChartTooltipRow({
         <BrandLogo logoPath={FRAMEWORK_LOGO_PATHS[frameworkKey]} alt={`${frameworkName} logo`} size="sm" />
         <BrandLogo logoPath={MODEL_LOGO_PATHS[modelKey]} alt={`${modelName} logo`} size="sm" />
         <div className="min-w-0">
-          <div className="truncate text-xs font-medium text-foreground">{modelName}</div>
+          <div className="truncate text-xs font-medium text-foreground">
+            {modelName}
+            <RunNoteMark modelKey={modelKey} />
+          </div>
           <div className="truncate text-[11px] text-muted-foreground">{frameworkName}</div>
         </div>
       </div>
@@ -1999,6 +2027,17 @@ export function LeaderboardSection() {
                 ))}
               </tbody>
             </table>
+                    {rows.some((row) => modelRunNote(row.modelKey)) ? (
+                      <div className="border-t border-border/50 bg-secondary/10 px-4 py-3 text-[11px] leading-relaxed text-muted-foreground">
+                        <span className="font-semibold text-amber-600 dark:text-amber-400">&dagger;</span>{" "}
+                        Run under a non-stock harness, so the row is a system-level result rather than
+                        a model-level one. See{" "}
+                        <Link href="/industry" className="font-medium hover:underline">
+                          Industry Reports
+                        </Link>{" "}
+                        for the conditions.
+                      </div>
+                    ) : null}
                     {rows.length === 0 ? (
                       <div className="border-t border-border p-8 text-center text-muted-foreground">
                         No published results match the current filters.

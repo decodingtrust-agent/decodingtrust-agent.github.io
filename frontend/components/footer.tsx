@@ -1,4 +1,4 @@
-import { Github, MessageCircle, FileText, Database, ExternalLink } from "lucide-react"
+import { Github, MessageCircle, FileText, Database, ExternalLink, ShieldCheck } from "lucide-react"
 import Image from "next/image"
 
 export function Footer() {
@@ -108,6 +108,14 @@ export function Footer() {
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
                 >
                   <FileText className="h-4 w-4" /> arXiv Paper
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/industry"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+                >
+                  <ShieldCheck className="h-4 w-4" /> Industry Reports
                 </a>
               </li>
             </ul>

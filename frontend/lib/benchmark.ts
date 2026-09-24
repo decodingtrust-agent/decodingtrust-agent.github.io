@@ -530,3 +530,18 @@ export function rankBenchmarkEntries(entries: BenchmarkEntry[], selectedDomainKe
       )
     })
 }
+
+/**
+ * Rows whose run conditions differ from the benchmark's stock harness, keyed by
+ * model key. A row with a note is marked with a dagger wherever it is listed,
+ * and the note is spelled out in a footnote under the table — the figure is a
+ * system-level result and must not be read as a model-level one.
+ */
+export const MODEL_RUN_NOTES: Record<string, string> = {
+  "pokee-isaac-28b":
+    "Run in Pokee's own agent scaffold rather than DTap's stock runner, with the coding path restricted to MCP (native shell and file tools disabled). A system-level result, not a model-level one; its indirect figures are a guards-inactive measurement. Source: the Pokee AI whitepaper on /industry.",
+}
+
+export function modelRunNote(modelKey: string): string | undefined {
+  return MODEL_RUN_NOTES[modelKey]
+}

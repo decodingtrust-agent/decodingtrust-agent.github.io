@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react"
 import Image from "next/image"
-import { Github, FileText, Database, Package, ExternalLink, ArrowRight } from "lucide-react"
+import Link from "next/link"
+import { Github, FileText, Database, Package, ExternalLink, ArrowRight, ShieldCheck } from "lucide-react"
 import { CitationBlock } from "@/components/citation-block"
 
 const DISCORD_INVITE = "https://discord.gg/z8ZhVwPqUk"
@@ -69,6 +70,14 @@ const resources = [
     description: "Read our technical paper on arXiv.",
     link: "https://arxiv.org/pdf/2605.04808",
     linkText: "arxiv.org/abs/2605.04808",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Industry Reports",
+    description: "Partner security evaluations measured on DTap.",
+    link: "/industry",
+    linkText: "Pokee AI × DTap whitepaper",
+    internal: true,
   },
 ]
 
@@ -142,25 +151,41 @@ export function CommunitySection() {
         <div>
           <h2 className="text-xl font-semibold mb-6">Resources</h2>
           <div className="grid gap-4 md:grid-cols-2">
-            {resources.map((resource) => (
-              <a
-                key={resource.title}
-                href={resource.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-start gap-4 p-4 rounded-lg border border-border bg-card hover:border-accent/50 transition-colors"
-              >
-                <div className="p-2 rounded-lg bg-secondary group-hover:bg-accent/10 transition-colors">
-                  <resource.icon className="h-5 w-5 text-accent" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-medium mb-1 group-hover:text-accent transition-colors">{resource.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-2">{resource.description}</p>
-                  <p className="text-xs font-mono text-muted-foreground">{resource.linkText}</p>
-                </div>
-                <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-accent transition-colors" />
-              </a>
-            ))}
+            {resources.map((resource) => {
+              const isInternal = "internal" in resource && resource.internal
+              const LinkIcon = isInternal ? ArrowRight : ExternalLink
+              const body = (
+                <>
+                  <div className="p-2 rounded-lg bg-secondary group-hover:bg-accent/10 transition-colors">
+                    <resource.icon className="h-5 w-5 text-accent" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-medium mb-1 group-hover:text-accent transition-colors">{resource.title}</h3>
+                    <p className="text-sm text-muted-foreground mb-2">{resource.description}</p>
+                    <p className="text-xs font-mono text-muted-foreground">{resource.linkText}</p>
+                  </div>
+                  <LinkIcon className="h-4 w-4 text-muted-foreground group-hover:text-accent transition-colors" />
+                </>
+              )
+              const cardClass =
+                "group flex items-start gap-4 p-4 rounded-lg border border-border bg-card hover:border-accent/50 transition-colors"
+
+              return isInternal ? (
+                <Link key={resource.title} href={resource.link} className={cardClass}>
+                  {body}
+                </Link>
+              ) : (
+                <a
+                  key={resource.title}
+                  href={resource.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cardClass}
+                >
+                  {body}
+                </a>
+              )
+            })}
           </div>
         </div>
 

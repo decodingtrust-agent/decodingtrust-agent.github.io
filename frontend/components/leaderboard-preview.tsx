@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import {
   formatPercent,
   loadBenchmarkDataset,
+  modelRunNote,
   type BenchmarkDataset,
   type BenchmarkMetricType,
 } from "@/lib/benchmark"
@@ -19,6 +20,7 @@ const FRAMEWORK_LOGO_PATHS: Record<string, string> = {
   "claude-code": "/logo/framework-claude-code.svg",
   "google-adk": "/logo/framework-google-adk.png",
   openclaw: "/logo/openclaw.svg",
+  "pokee-harness": "/logo/pokee.png",
 }
 
 const MODEL_LOGO_PATHS: Record<string, string> = {
@@ -32,6 +34,7 @@ const MODEL_LOGO_PATHS: Record<string, string> = {
   "gemini-3-pro": "/logo/gemini.svg",
   "gemini-3-1-pro": "/logo/gemini.svg",
   "deepseek-v4-pro": "/logo/deepseek.png",
+  "pokee-isaac-28b": "/logo/pokee.png",
 }
 
 const METRIC_LABELS: Record<BenchmarkMetricType, string> = {
@@ -150,6 +153,21 @@ function RankBadge({ rank }: { rank: number }) {
     <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/70 bg-background text-sm font-mono font-medium text-muted-foreground">
       {rank}
     </span>
+  )
+}
+
+/** Dagger marking a row whose run conditions differ from the stock harness. */
+function RunNoteMark({ modelKey }: { modelKey: string }) {
+  const note = modelRunNote(modelKey)
+  if (!note) return null
+  return (
+    <sup
+      title={note}
+      aria-label={note}
+      className="ml-0.5 cursor-help text-[10px] font-semibold text-amber-600 dark:text-amber-400"
+    >
+      †
+    </sup>
   )
 }
 
@@ -329,6 +347,7 @@ export function LeaderboardPreview() {
                             />
                             <span className="truncate text-base font-medium">
                               {row.modelName}
+                              <RunNoteMark modelKey={row.modelKey} />
                             </span>
                           </div>
                         </td>
@@ -346,6 +365,17 @@ export function LeaderboardPreview() {
                   })}
             </tbody>
           </table>
+          {comboRows.some((row) => modelRunNote(row.modelKey)) ? (
+            <div className="border-t border-border/50 bg-secondary/10 px-4 py-3 text-[11px] leading-relaxed text-muted-foreground">
+              <span className="font-semibold text-amber-600 dark:text-amber-400">†</span> Run under a
+              non-stock harness, so the row is a system-level result rather than a model-level one.
+              See{" "}
+              <Link href="/industry" className="font-medium hover:underline">
+                Industry Reports
+              </Link>{" "}
+              for the conditions.
+            </div>
+          ) : null}
         </div>
 
         <Button variant="outline" asChild className="mt-6 w-full border-border bg-transparent md:hidden">
