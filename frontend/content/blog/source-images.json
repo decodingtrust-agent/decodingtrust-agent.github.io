@@ -1,0 +1,83 @@
+[
+  {
+    "image": "/blog/muse-spark-1-3/cover.png",
+    "source": "https://research.meta.ai/static/muse-spark-1-3-evaluation-report",
+    "source_sha256": "84df67c9f4610e574fd82f39227b0e6a266e6e1fd0e6ea21c3420f1661e0835e",
+    "pdf_page": 1,
+    "label": "Report cover",
+    "region_points": null
+  },
+  {
+    "image": "/blog/muse-spark-1-3/figure-25.png",
+    "source": "https://research.meta.ai/static/muse-spark-1-3-evaluation-report",
+    "source_sha256": "84df67c9f4610e574fd82f39227b0e6a266e6e1fd0e6ea21c3420f1661e0835e",
+    "pdf_page": 61,
+    "label": "Figure 25",
+    "region_points": [
+      80,
+      56,
+      450,
+      277
+    ]
+  },
+  {
+    "image": "/blog/muse-spark-1-3/figure-29.png",
+    "source": "https://research.meta.ai/static/muse-spark-1-3-evaluation-report",
+    "source_sha256": "84df67c9f4610e574fd82f39227b0e6a266e6e1fd0e6ea21c3420f1661e0835e",
+    "pdf_page": 66,
+    "label": "Figure 29",
+    "region_points": [
+      80,
+      56,
+      450,
+      277
+    ]
+  },
+  {
+    "image": "/blog/pokee-ai/cover.png",
+    "source": "/papers/pokee-ai-dtap-security-whitepaper.pdf",
+    "source_sha256": "0d3f950dcb5ab3408770261cfe82626b8560f7c467cf6c4ee06b08a619939d57",
+    "pdf_page": 1,
+    "label": "White paper first page",
+    "region_points": null
+  },
+  {
+    "image": "/blog/pokee-ai/figure-1.png",
+    "source": "/papers/pokee-ai-dtap-security-whitepaper.pdf",
+    "source_sha256": "0d3f950dcb5ab3408770261cfe82626b8560f7c467cf6c4ee06b08a619939d57",
+    "pdf_page": 7,
+    "label": "Figure 1",
+    "region_points": [
+      100,
+      159,
+      405,
+      308
+    ]
+  },
+  {
+    "image": "/blog/pokee-ai/figure-2.png",
+    "source": "/papers/pokee-ai-dtap-security-whitepaper.pdf",
+    "source_sha256": "0d3f950dcb5ab3408770261cfe82626b8560f7c467cf6c4ee06b08a619939d57",
+    "pdf_page": 12,
+    "label": "Figure 2",
+    "region_points": [
+      112,
+      88,
+      395,
+      546
+    ]
+  },
+  {
+    "image": "/blog/pokee-ai/table-8.png",
+    "source": "/papers/pokee-ai-dtap-security-whitepaper.pdf",
+    "source_sha256": "0d3f950dcb5ab3408770261cfe82626b8560f7c467cf6c4ee06b08a619939d57",
+    "pdf_page": 24,
+    "label": "Table 8",
+    "region_points": [
+      100,
+      138,
+      410,
+      124
+    ]
+  }
+]

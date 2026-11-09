@@ -24,6 +24,7 @@ const navItems = [
 ]
 
 const quickstartItem = { label: "Quickstart", href: "/quickstart" }
+const blogItem = { label: "Blog", href: "/blog" }
 
 function UpcomingBenchmark({ benchmark, mobile = false }: {
   benchmark: typeof UPCOMING_BENCHMARKS[number]
@@ -78,7 +79,7 @@ export function Header() {
             height={48}
             className="rounded-full"
           />
-          <span className="text-base font-semibold tracking-tight hidden sm:inline">
+          <span className="text-base font-semibold tracking-tight hidden whitespace-nowrap sm:inline">
             <span className="text-foreground">Decoding</span>
             <span className="text-[oklch(0.7_0.14_220)]">Trust</span>
             <span className="text-[oklch(0.7_0.14_220)]"> Agent</span>
@@ -86,7 +87,7 @@ export function Header() {
         </Link>
 
         {/* Nav items - inline with logo */}
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="hidden xl:flex items-center gap-1">
           {/* Quickstart */}
           <Link
             href={quickstartItem.href}
@@ -98,6 +99,12 @@ export function Header() {
             )}
           >
             {quickstartItem.label}
+          </Link>
+
+          <Link href={blogItem.href} aria-current={pathname === "/blog" || pathname?.startsWith("/blog/") ? "page" : undefined}
+            className={cn("rounded-md px-3 py-1.5 text-sm transition-colors",
+              pathname === "/blog" || pathname?.startsWith("/blog/") ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground")}>
+            {blogItem.label}
           </Link>
 
           <DropdownMenu>
@@ -203,7 +210,7 @@ export function Header() {
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden h-8 w-8"
+            className="xl:hidden h-8 w-8"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close navigation" : "Open navigation"}
             aria-expanded={mobileMenuOpen}
@@ -216,7 +223,7 @@ export function Header() {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div id="mobile-navigation" className="max-h-[calc(100dvh-5rem)] overflow-y-auto lg:hidden border-t border-border bg-background">
+        <div id="mobile-navigation" className="max-h-[calc(100dvh-5rem)] overflow-y-auto xl:hidden border-t border-border bg-background">
           <nav className="flex flex-col p-4 gap-1">
             <Link
               href={quickstartItem.href}
@@ -229,6 +236,12 @@ export function Header() {
               )}
             >
               {quickstartItem.label}
+            </Link>
+            <Link href={blogItem.href} onClick={() => setMobileMenuOpen(false)}
+              aria-current={pathname === "/blog" || pathname?.startsWith("/blog/") ? "page" : undefined}
+              className={cn("rounded px-4 py-2 text-sm transition-colors",
+                pathname === "/blog" || pathname?.startsWith("/blog/") ? "bg-secondary font-medium text-foreground" : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground")}>
+              {blogItem.label}
             </Link>
             <div className="rounded-md border border-border/60 p-2">
               <p className="px-2 py-1 text-xs font-medium text-muted-foreground">Benchmark</p>

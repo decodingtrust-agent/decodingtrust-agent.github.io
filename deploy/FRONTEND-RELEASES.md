@@ -32,7 +32,8 @@ The base unit, `/etc/decodingtrust-frontend.env`, nginx and the trajectory servi
    running the build as `zhaorun`. This preserves build-time public configuration without copying secrets.
 4. Start a transient candidate service on `127.0.0.1:3101` from the new release, using the same environment file.
    Check `/`, `/benchmark`, `/benchmarks`, `/benchmarks/dtap-mas`, `/leaderboard`, `/leaderboard/dtap-mas`
-   and the MAS visualization assets and task JSON. Stop the candidate after verification.
+   and the MAS visualization assets and task JSON. Also check `/blog`, both published articles, and their original
+   report image assets. Stop the candidate after verification.
 5. Save the previous service working directory, current symlink target and existing `10-release.conf`
    (or its absence) under the new release's `deployment-backup/`. Preserve file permissions when backing up.
    Sync the source checkout to the same pushed commit by fast-forward or tracking branch checkout.
@@ -45,7 +46,8 @@ The base unit, `/etc/decodingtrust-frontend.env`, nginx and the trajectory servi
    ```
 
    Run `systemctl daemon-reload` and `systemctl restart decodingtrust-frontend` as root.
-7. Verify the public pages, disabled benchmark menus, task tabs and leaderboard tables in a browser.
+7. Verify the public pages, disabled benchmark menus, task tabs, leaderboard tables, blog articles and homepage
+   horizontal blog scrollbar in a browser.
    Confirm the source checkout, `.release-commit` and GitHub branch point to the same SHA.
    Confirm the trajectory API PID and data file metadata are unchanged.
 
