@@ -1,4 +1,4 @@
-import TaskDetailPageClient from "@/components/registry/task-detail-page-client"
+import TaskDetailPageClient from "@/benchmarks/dtap/components/task-detail-page-client"
 import { getRegistrySlugs } from "@/lib/static-export"
 
 export function generateStaticParams() {

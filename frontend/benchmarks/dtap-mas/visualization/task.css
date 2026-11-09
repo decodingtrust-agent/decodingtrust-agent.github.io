@@ -1,0 +1,450 @@
+/* Task Explorer layout. Colors, font and the shared header / pill / tab / callout styles: dtap-theme.css */
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; min-height: 100%; }
+body { background: var(--bg); color: var(--fg); display: flex; flex-direction: column; font-size: 13px; line-height: 1.5; }
+button, input, select { font: inherit; color: inherit; }
+button { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 5px 11px; cursor: pointer; }
+button:hover { border-color: var(--accent); }
+code { font-size: 12px; background: var(--surface-2); padding: 0 4px; border-radius: 4px; }
+
+/* Agents get their own hue so a person (blue) and the agent acting for them (violet) never look alike. */
+:root { --agent: #7c3aed; --agent-soft: color-mix(in oklch, #7c3aed 14%, transparent); }
+:root[data-theme="dark"] { --agent: #a78bfa; --agent-soft: color-mix(in oklch, #a78bfa 20%, transparent); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --agent: #a78bfa; --agent-soft: color-mix(in oklch, #a78bfa 20%, transparent); } }
+
+/* Page head: back link, title, meta, tags, the malicious goal. Inline padding lines up with the header column. */
+.head { display: grid; gap: 8px; padding: 14px max(24px, calc((100% - 1100px) / 2 + 24px));
+  border-bottom: 1px solid var(--line); flex: none; }
+.back { display: inline-flex; align-items: center; gap: 6px; justify-self: start; font-size: 14px; color: var(--muted);
+  text-decoration: none; transition: color .15s; }
+.back:hover { color: var(--fg); }
+.back svg { width: 16px; height: 16px; }
+.title { margin: 8px 0 4px; font-size: clamp(24px, 2.5vw, 36px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.25; overflow-wrap: anywhere; }
+.meta { color: var(--muted); font-size: 12.5px; }
+.tagrow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.tagrow .actions { margin-left: auto; display: flex; gap: 8px; }
+.badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.head .dt-alert { margin-top: 2px; }
+
+/* Single top-to-bottom column: scenario info (head) -> network -> interaction (channel chips + detail pane). */
+main { flex: 1; width: 100%; max-width: 1100px; margin: 0 auto; padding: 16px 24px 48px; box-sizing: border-box;
+       display: flex; flex-direction: column; gap: 14px; }
+@media (max-width: 760px) { main { padding: 12px 16px 40px; } }
+
+.stage { position: relative; height: 440px; border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+  background: var(--surface); transition: height .18s ease; }
+.stage.folded { height: 52px; }
+.stage.folded #graph, .stage.folded #legend, .stage.folded #tip { display: none; }
+#graph { width: 100%; height: 100%; display: block; cursor: grab; touch-action: none; }
+#graph:active { cursor: grabbing; }
+.node-person { cursor: move; }
+.layers { position: absolute; top: 10px; left: 12px; right: 12px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; box-shadow: var(--shadow); z-index: 1; }
+.layers .label { color: var(--muted); font-size: 12px; }
+.layers label { display: inline-flex; gap: 5px; align-items: center; cursor: pointer; font-size: 12.5px; }
+.layers .fit { padding: 2px 10px; font-size: 12px; border-radius: 999px; }
+.layers .spacer { flex: 1; }
+.layers .fold { display: inline-flex; align-items: center; gap: 5px; }
+.layers .fold svg { width: 14px; height: 14px; }
+.legend { position: absolute; bottom: 10px; left: 12px; background: var(--surface); border: 1px solid var(--line);
+  border-radius: 10px; padding: 8px 10px; font-size: 12px; box-shadow: var(--shadow); max-width: calc(100% - 148px); }
+.legend .row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.legend .item { display: inline-flex; gap: 6px; align-items: center; }
+.legend svg { overflow: visible; }
+.tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+  padding: 6px 9px; font-size: 12px; box-shadow: var(--shadow); max-width: 320px; z-index: 2; }
+
+/* The interaction strip under the graph: click a channel for its conversation, an agent for its memory. */
+.chanbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.chanbar .grp { color: var(--muted); font-size: 12px; margin-right: 2px; }
+.chanbar .pick { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--line); border-radius: 999px;
+  padding: 2px 10px; font-size: 12px; background: var(--surface); cursor: pointer; }
+.chanbar .pick:hover { border-color: var(--accent); }
+.chanbar .pick svg { width: 13px; height: 13px; }
+.chanbar .pick.ch.on { border-color: var(--accent); background: var(--accent-soft); }
+.chanbar .pick.ag { }
+.chanbar .pick.ag svg { color: var(--agent); }
+.chanbar .pick.ag.on { border-color: var(--agent); background: var(--agent-soft); }
+.chanbar .sep { width: 1px; align-self: stretch; background: var(--line); margin: 0 4px; }
+
+.panel { display: flex; flex-direction: column; min-height: 0; background: var(--bg);
+  border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.panel .dt-tabs { margin: 10px 12px 0; flex-wrap: wrap; }
+.panel .dt-tabs button { padding: 6px 12px; }
+.pane { overflow: auto; padding: 14px 18px 26px; min-height: 240px; flex: 1; }
+.pane.tall { max-height: none; }
+.pane h2 { font-size: 15px; margin: 18px 0 8px; }
+.pane h2:first-child { margin-top: 0; }
+.pane h3 { font-size: 12.5px; margin: 12px 0 4px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.pane p { margin: 4px 0 8px; }
+
+/* A banner the pane shows when it is driven by a click (an agent's memory, a channel's conversation). */
+.ctxbar { display: flex; align-items: center; gap: 8px; margin: -2px 0 12px; padding: 7px 11px; border-radius: 10px;
+  background: var(--surface-2); border: 1px solid var(--line); font-size: 12.5px; }
+.ctxbar.mem { background: var(--agent-soft); border-color: color-mix(in oklch, var(--agent) 35%, transparent); }
+.ctxbar.conv { background: var(--accent-soft); border-color: color-mix(in oklch, var(--accent) 35%, transparent); }
+.ctxbar svg { width: 15px; height: 15px; }
+.ctxbar b { font-weight: 600; }
+.ctxbar .close { margin-left: auto; cursor: pointer; color: var(--muted); border: none; background: none; padding: 2px 6px; }
+.ctxbar .close:hover { color: var(--fg); }
+
+.card { border: 1px solid var(--line); border-radius: 0.75rem; padding: 12px 14px; margin: 8px 0; background: var(--surface); }
+.card.attack { border-color: color-mix(in oklch, var(--attack) 35%, transparent); background: var(--attack-soft); }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: 3px 12px; font-size: 12.5px; }
+.kv b { color: var(--muted); font-weight: 500; }
+ol.steps { margin: 4px 0; padding-left: 20px; }
+ol.steps li { margin: 3px 0; }
+.chip { display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 0 7px; font-size: 11.5px;
+  margin: 0 3px 3px 0; background: var(--surface-2); white-space: nowrap; }
+.chip.svc-paypal { border-color: #1f6fb2; color: #1f6fb2; }
+.chip.harm { border-color: var(--attack); color: var(--attack); font-weight: 600; }
+.chip.cite { font-size: 11px; }
+.filters { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 8px; }
+.filters select { padding: 4px 6px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+
+/* Conversation: a chat transcript. DMs face each other (iMessage-style); group rooms read top-down with avatars. */
+.chat { display: flex; flex-direction: column; gap: 3px; }
+.chat .day { align-self: center; margin: 12px 0 8px; font-size: 11.5px; color: var(--muted); background: var(--surface-2);
+  border: 1px solid var(--line); border-radius: 999px; padding: 1px 12px; }
+.turn { display: flex; gap: 8px; align-items: flex-end; max-width: 82%; }
+.turn.right { align-self: flex-end; flex-direction: row-reverse; }
+.turn.left { align-self: flex-start; }
+.turn.same { margin-top: -1px; }
+.turn .av { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; color: #fff;
+  font-size: 11px; font-weight: 700; box-shadow: inset 0 0 0 2px var(--surface); }
+.turn.same .av { visibility: hidden; }
+.bubble { position: relative; border-radius: 14px; padding: 7px 11px; background: var(--surface-2); border: 1px solid var(--line);
+  min-width: 0; }
+.turn.right .bubble { background: var(--accent-soft); border-color: color-mix(in oklch, var(--accent) 30%, transparent); }
+.bubble.asset { outline: 2px solid color-mix(in oklch, var(--attack) 55%, transparent); outline-offset: 1px; }
+.bubble .meta { font-size: 11px; color: var(--muted); margin-bottom: 2px; display: flex; gap: 7px; flex-wrap: wrap; }
+.bubble .meta .nm { font-weight: 600; color: var(--fg); }
+.bubble .subj { font-weight: 600; margin-bottom: 2px; }
+.bubble .body { white-space: pre-wrap; word-break: break-word; }
+.bubble .tags { margin-top: 4px; }
+.chat .kind { align-self: center; font-size: 11px; color: var(--muted); margin: 2px 0; }
+
+/* Task-flow dependency graph: cards in HTML (so the text wraps and is never clipped), edges in an SVG overlay. */
+.flow-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 6px 0 12px; font-size: 12px; }
+.flow-legend .item { display: inline-flex; align-items: center; gap: 6px; }
+.flow-legend .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.flow-legend .sw.inj { background: var(--attack); border-radius: 2px; height: 3px; }
+.flowgraph { position: relative; padding: 6px 4px 10px; }
+/* reserve a right lane for the injected-input mock so it never overlaps or clips, even when the target is a
+   rightmost node in a wide parallel row */
+.flowgraph.has-inj { padding-right: 268px; }
+@media (max-width: 760px) { .flowgraph.has-inj { padding-right: 4px; } }
+.flow-edges { position: absolute; top: 0; left: 0; z-index: 0; pointer-events: none; overflow: visible; }
+.flow-rows { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 34px; }
+.flow-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+.flow-node { position: relative; flex: 1 1 170px; max-width: 400px; min-width: 170px; box-sizing: border-box;
+  border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 9px 13px 11px; box-shadow: var(--shadow); }
+.flow-node.target { border-color: var(--attack); box-shadow: 0 0 0 3px var(--attack-soft), var(--shadow); }
+.flow-node.entry { border-color: var(--attack); background: color-mix(in oklch, var(--attack) 6%, var(--surface)); box-shadow: 0 0 0 3px var(--attack-soft), var(--shadow); }
+.flow-node.onpath { border-color: color-mix(in oklch, var(--attack) 50%, transparent); border-style: dashed; background: color-mix(in oklch, var(--attack) 4%, var(--surface)); }
+.flow-node.entry .flow-step, .flow-node.entry .flow-who { color: var(--attack); border-color: var(--attack); }
+.flow-tag.entry { color: var(--attack); }
+.flow-tag.harm { color: var(--attack); }
+.flow-tag.path { color: var(--attack); font-size: 9.5px; font-weight: 700; margin-left: auto; letter-spacing: .02em; }
+.flow-legend .sw.warn { background: var(--attack); border-radius: 2px; height: 3px; }
+.flow-top { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.flow-step { font-size: 10px; font-weight: 700; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 0 5px; }
+.flow-who { font-size: 11px; font-weight: 700; color: var(--fg); text-transform: uppercase; letter-spacing: .03em; }
+.flow-node.target .flow-step, .flow-node.target .flow-who { color: var(--attack); border-color: var(--attack); }
+.flow-tag { margin-left: auto; font-size: 10.5px; font-weight: 800; color: var(--attack); letter-spacing: .02em; }
+.flow-sub { font-size: 12.5px; line-height: 1.38; color: var(--fg); }
+.flow-prod { margin-top: 5px; font-size: 11px; color: var(--muted); }
+
+/* The injected-input mock at the source end of the injection arrow — made to read like the real app. */
+.inj-card { position: absolute; z-index: 2; border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+  background: var(--surface); box-shadow: 0 8px 24px rgba(0, 0, 0, .16); font-size: 11.5px; }
+.inj-chrome { display: flex; align-items: center; gap: 6px; padding: 5px 9px; background: var(--svc, #4b5563); color: #fff;
+  font-weight: 700; font-size: 11px; }
+.inj-chrome img { width: 14px; height: 14px; border-radius: 3px; background: #fff; padding: 1px; box-sizing: border-box; }
+.inj-xlogo { font-weight: 900; font-size: 13px; line-height: 1; width: 14px; text-align: center; }
+.inj-chrome-sub { margin-left: auto; font-weight: 500; opacity: .85; font-size: 10px; }
+.inj-pad { padding: 8px 9px; }
+.inj-row { display: flex; align-items: flex-start; gap: 7px; margin-bottom: 6px; }
+.inj-av { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 9px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.inj-who { line-height: 1.22; min-width: 0; }
+.inj-name { font-weight: 700; }
+.inj-addr { color: var(--muted); font-size: 10px; word-break: break-word; }
+.inj-time { margin-left: auto; color: var(--muted); font-size: 10px; flex: none; }
+.inj-subj { font-weight: 700; font-size: 12px; margin-bottom: 7px; }
+.inj-bubble { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; line-height: 1.36; }
+.inj-card[data-medium="whatsapp"] .inj-bubble { background: #dcf8c6; border-color: #c2e7a0; color: #10231a; }
+.inj-body { line-height: 1.38; }
+.inj-flag { border-top: 1px dashed var(--attack); color: var(--attack); background: var(--attack-soft); font-weight: 700;
+  font-size: 10px; padding: 5px 9px; }
+
+/* inbox messages: between the blue user input and the green final */
+:root { --inbox: color-mix(in oklch, var(--accent) 45%, var(--ok)); }
+
+/* Trajectory — same look as the DTAP site's trajectory view: a rail of steps coloured by role (input blue, reasoning
+   violet, tool amber, final green, a harmful action red), cards with a border and the surface background, and
+   collapsible tool input / result. The agents x rounds grid on top is the only selector. */
+.traj-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; font-size: 12px; color: var(--muted); margin: 2px 0 14px; }
+.traj-meta span { display: inline-flex; align-items: center; gap: 5px; }
+.traj-meta svg { width: 13px; height: 13px; }
+.traj-pill { border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; font-size: 11px; }
+.traj-ts { margin-left: auto; font-family: ui-monospace, monospace; opacity: .7; }
+.traj-goal { border: 1px solid color-mix(in oklch, var(--attack) 35%, transparent); background: var(--attack-soft); border-radius: 12px; margin-bottom: 12px; }
+.traj-goal-head { display: flex; align-items: center; gap: 7px; padding: 8px 14px; border-bottom: 1px solid color-mix(in oklch, var(--attack) 30%, transparent);
+  color: var(--attack); font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.traj-goal-head svg, .traj-judge-head svg { width: 14px; height: 14px; }
+.traj-goal p { margin: 0; padding: 10px 14px; font-size: 13px; line-height: 1.5; }
+.traj-judge { border: 1px solid var(--line); border-radius: 14px; background: var(--surface); margin-bottom: 14px; overflow: hidden; }
+.traj-judge-head { display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-bottom: 1px solid var(--line); font-size: 13px; font-weight: 700; }
+.traj-judge-head svg { color: var(--warn); }
+.traj-judge-body { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 14px; font-size: 12.5px; }
+.traj-verdict { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 2px 11px; font-size: 12px; font-weight: 600; border: 1px solid; }
+.traj-verdict i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.traj-verdict.ok { color: var(--ok); border-color: color-mix(in oklch, var(--ok) 45%, transparent); background: color-mix(in oklch, var(--ok) 10%, transparent); }
+.traj-verdict.bad { color: var(--attack); border-color: color-mix(in oklch, var(--attack) 45%, transparent); background: var(--attack-soft); }
+.traj-ev { color: var(--muted); } .traj-ev code { font-size: 11.5px; color: var(--fg); }
+.traj-hint { font-size: 12px; color: var(--muted); margin: 4px 0 10px; line-height: 1.5; }
+.traj-reset { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 1px 10px; font-size: 11.5px; cursor: pointer; color: var(--fg); margin-left: 6px; }
+
+/* Sequence view: one fixed-width column + axis per agent; the vertical axis follows real time. Cards are plain
+   bordered boxes (no coloured edge); only the little icon and the label carry the kind of step. */
+.tq-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; margin: 4px 0 8px; }
+.tq-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.tq-chip { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 3px 12px; font-size: 12px; cursor: pointer;
+  color: var(--muted); display: inline-flex; align-items: center; gap: 5px; }
+.tq-chip.on { color: var(--fg); border-color: color-mix(in oklch, var(--fg) 45%, transparent); font-weight: 600; }
+.tq-chip.reset { border-style: dashed; }
+.tq-mode { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: var(--surface); }
+.tq-mode button { border: 0; background: transparent; padding: 4px 12px; font-size: 12px; cursor: pointer; color: var(--muted); }
+.tq-mode button.on { background: var(--accent-soft); color: var(--fg); font-weight: 600; }
+.tq-legend { display: flex; flex-direction: column; gap: 5px; font-size: 10.5px; font-weight: 700; letter-spacing: .1em; margin: 2px 0 12px; }
+.tq-legend .row { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.tq-legend span { display: inline-flex; align-items: center; gap: 6px; color: var(--c, var(--muted)); }
+.tq-legend span::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--c, var(--muted)); }
+.tq-legend .user { --c: var(--accent); } .tq-legend .inbox { --c: var(--inbox); }
+.tq-legend .tool { --c: var(--warn); } .tq-legend .final { --c: var(--ok); } .tq-legend .bad { --c: var(--attack); }
+.tq-legend .bad::before { height: 0; border-top: 2px dashed var(--attack); border-radius: 0; background: none; width: 16px; }
+.tq-scroll { overflow-x: auto; padding-bottom: 8px; }
+.tq-wrap { position: relative; }
+.tq-canvas { position: relative; overflow: hidden; margin: 0 auto; }
+.tq-canvas .tq-wrap { position: absolute; left: 0; top: 0; transform-origin: top left; }
+.tq-lane { position: absolute; top: 0; bottom: 0; border-radius: 14px; background: color-mix(in oklch, var(--fg) 3.5%, transparent); }
+.tq-lane i { position: absolute; left: 50%; bottom: 10px; width: 2px; margin-left: -1px; background: color-mix(in oklch, var(--fg) 13%, transparent); border-radius: 2px; }
+.tq-head { position: absolute; top: 0; height: 66px; padding: 9px 8px 0; text-align: center; font-size: 13px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 1px; overflow: hidden; }
+.tq-head small { font-weight: 500; font-size: 10.5px; color: var(--muted); line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.tq-name { display: inline-flex; align-items: center; gap: 6px; }
+.tq-guide { position: absolute; left: 0; right: 0; height: 0; border-top: 1px dashed color-mix(in oklch, var(--fg) 16%, transparent); pointer-events: none; }
+.tq-guide span { position: absolute; left: 4px; top: -8px; font-size: 10.5px; font-family: ui-monospace, monospace; color: var(--muted); background: var(--bg); padding: 0 3px; }
+.tq-links { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; }
+.tq-node { position: absolute; box-sizing: border-box; text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 7px 10px 8px;
+  cursor: pointer; font: inherit; font-size: 11.5px; line-height: 1.4; color: var(--fg); display: flex; flex-direction: column; gap: 3px; overflow: hidden;
+  transition: box-shadow .12s, border-color .12s; }
+.tq-node:hover { box-shadow: var(--shadow); border-color: color-mix(in oklch, var(--fg) 28%, transparent); }
+.tq-node.sel { border-color: var(--fg); box-shadow: 0 0 0 2px color-mix(in oklch, var(--fg) 18%, transparent); }
+.tq-node.input { --tc: var(--accent); } .tq-node.inbox { --tc: var(--inbox); } .tq-node.agent { --tc: var(--agent); }
+.tq-node.tool { --tc: var(--warn); } .tq-node.final { --tc: var(--ok); }
+.tq-node.tainted { background: color-mix(in oklch, var(--attack) 6%, var(--surface)); border-color: color-mix(in oklch, var(--attack) 38%, var(--line)); }
+.tq-node.hot { --tc: var(--attack); background: var(--attack-soft); border-color: color-mix(in oklch, var(--attack) 60%, transparent); }
+.tq-top { display: flex; align-items: center; gap: 6px; font-size: 9.5px; letter-spacing: .1em; color: var(--tc); white-space: nowrap; }
+.tq-top b { font-weight: 700; } .tq-top time { margin-left: auto; font-family: ui-monospace, monospace; letter-spacing: 0; color: var(--muted); }
+.tq-ico { display: inline-flex; flex: none; width: 17px; height: 17px; border-radius: 50%; background: color-mix(in oklch, var(--tc) 14%, transparent); align-items: center; justify-content: center; font-style: normal; }
+.tq-ico svg { width: 10px; height: 10px; }
+.tq-ico.logo { background: transparent; width: 18px; height: 18px; }
+.tq-ico.logo img { width: 17px; height: 17px; object-fit: contain; }
+.tq-badge { align-self: flex-start; font-style: normal; font-size: 9px; letter-spacing: .04em; text-transform: uppercase; font-weight: 700; color: var(--attack); border: 1px solid color-mix(in oklch, var(--attack) 50%, transparent); border-radius: 4px; padding: 0 4px; }
+.tq-text { margin: 0; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.tq-tool { font-family: ui-monospace, monospace; font-size: 11.5px; padding-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tq-tgt { color: var(--muted); font-size: 11px; padding-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tq-think { margin: 2px 0 0; color: var(--muted); font-style: italic; font-size: 11px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.tq-detail { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 14px; padding-left: 0 !important; }
+.tq-from { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--muted); margin: -2px 0 7px; flex-wrap: wrap; }
+.tq-from svg { width: 13px; height: 13px; } .tq-from code { font-size: 11px; }
+.tq-from.bad { color: var(--attack); }
+.tq-pop { --tc: var(--muted); }
+.tq-pop.input { --tc: var(--accent); } .tq-pop.inbox { --tc: var(--inbox); } .tq-pop.agent { --tc: var(--agent); }
+.tq-pop.tool { --tc: var(--warn); } .tq-pop.final { --tc: var(--ok); } .tq-pop.hot { --tc: var(--attack); }
+.tq-pop .traj-label { padding-right: 22px; }
+.traj-stack { display: flex; flex-direction: column; gap: 8px; }
+.traj-card.thought { background: transparent; color: var(--muted); font-style: italic; }
+.traj-cap { display: flex; align-items: center; gap: 5px; font-style: normal; font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--agent); margin-bottom: 3px; }
+.traj-cap svg { width: 12px; height: 12px; }
+
+/* the rail of steps */
+.traj-steps { list-style: none; margin: 0; padding: 0; position: relative; display: flex; flex-direction: column; gap: 16px; }
+.traj-steps::before { content: ""; position: absolute; left: 12px; top: 8px; bottom: 8px; width: 1px; background: var(--line); }
+.traj-step { position: relative; padding-left: 34px; --tc: var(--muted); }
+.traj-step.input { --tc: var(--accent); } .traj-step.inbox { --tc: var(--inbox); } .traj-step.agent { --tc: var(--agent); } .traj-step.tool { --tc: var(--warn); }
+.traj-step.final { --tc: var(--ok); } .traj-step.hot { --tc: var(--attack); }
+.traj-dot { position: absolute; left: 0; top: 2px; width: 25px; height: 25px; border-radius: 50%; border: 2px solid color-mix(in oklch, var(--tc) 62%, transparent);
+  background: var(--bg); display: flex; align-items: center; justify-content: center; }
+.traj-dot svg { width: 13px; height: 13px; color: var(--tc); }
+.traj-label { display: flex; align-items: baseline; gap: 9px; margin-bottom: 6px; font-size: 11px; }
+.traj-label b { letter-spacing: .14em; color: var(--tc); font-weight: 700; }
+.traj-who { font-weight: 600; color: var(--fg); font-size: 11.5px; }
+.traj-time { margin-left: auto; font-family: ui-monospace, monospace; color: var(--muted); opacity: .7; }
+.traj-card { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 10px 14px; font-size: 13px; line-height: 1.55;
+  white-space: pre-wrap; overflow-wrap: anywhere; }
+.traj-card.tainted { border-color: color-mix(in oklch, var(--attack) 45%, var(--line)); background: color-mix(in oklch, var(--attack) 7%, var(--surface)); }
+.traj-card.final { border-color: color-mix(in oklch, var(--ok) 35%, transparent); background: color-mix(in oklch, var(--ok) 6%, transparent); }
+.traj-card.tool { padding: 0; border-radius: 10px; white-space: normal; }
+.traj-card.tool.hot { border-color: color-mix(in oklch, var(--attack) 50%, transparent); background: var(--attack-soft); }
+.traj-card-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 9px 14px; }
+.traj-logo { width: 16px; height: 16px; object-fit: contain; flex: none; }
+.traj-server { display: inline-flex; align-items: center; gap: 7px; font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  border: 1px solid var(--line); background: color-mix(in oklch, var(--fg) 4%, transparent); border-radius: 7px; padding: 2px 9px 2px 7px; color: var(--muted); }
+.traj-label .traj-logo { width: 15px; height: 15px; align-self: center; margin-right: -3px; }
+.traj-dot .traj-logo { width: 15px; height: 15px; }
+.traj-toolname { font-family: ui-monospace, monospace; font-size: 13px; font-weight: 600; overflow-wrap: anywhere; }
+.traj-inline { font-family: ui-monospace, monospace; font-size: 11.5px; color: var(--muted); overflow-wrap: anywhere; }
+.traj-flag { display: inline-flex; align-items: center; gap: 4px; margin-left: auto; font-size: 11px; font-weight: 700; color: var(--attack); }
+.traj-flag svg { width: 12px; height: 12px; }
+.traj-disc { border-top: 1px solid color-mix(in oklch, var(--line) 80%, transparent); }
+.traj-disc summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 7px 14px; font-size: 11px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.traj-disc summary::-webkit-details-marker { display: none; }
+.traj-disc summary:hover { color: var(--fg); }
+.traj-disc summary svg { width: 12px; height: 12px; transition: transform .15s; }
+.traj-disc[open] summary svg { transform: rotate(90deg); }
+.traj-kv { display: grid; grid-template-columns: minmax(64px, max-content) 1fr; gap: 6px 12px; padding: 2px 14px 11px 28px; font-size: 12px; }
+.traj-k { font-family: ui-monospace, monospace; color: var(--muted); }
+.traj-val { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5; }
+.traj-null, .traj-empty { color: var(--muted); font-style: italic; padding: 0 14px 10px 28px; }
+.traj-json { margin: 0; font-family: ui-monospace, monospace; font-size: 11.5px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px;
+  padding: 7px 9px; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 260px; overflow: auto; }
+
+/* A pinned info card that points at the node the reader clicked in the graph. */
+.pop { position: fixed; z-index: 50; width: 300px; max-width: calc(100vw - 20px); background: var(--surface); border: 1px solid var(--line);
+  border-radius: 14px; box-shadow: 0 12px 36px rgba(0, 0, 0, .18), var(--shadow); padding: 12px 13px; font-size: 12.5px; }
+.pop-body { overscroll-behavior: contain; overflow: auto; max-height: min(440px, calc(100vh - 48px)); }   /* the box scrolls inside, so the arrow is never clipped */
+.pop.wide { width: min(580px, calc(100vw - 20px)); padding: 14px 16px; }
+.pop.wide .pop-body { max-height: calc(100vh - 56px); padding-right: 2px; }
+.pop::before { content: ""; position: absolute; left: var(--ax, 50%); width: 11px; height: 11px; background: var(--surface);
+  border: 1px solid var(--line); transform: translateX(-50%) rotate(45deg); }
+.pop.below::before { top: -6px; border-right: 0; border-bottom: 0; }
+.pop.above::before { bottom: -6px; border-left: 0; border-top: 0; }
+.pop.at-right::before { left: -6px; top: var(--ay, 50%); transform: translateY(-50%) rotate(45deg); border-top: 0; border-right: 0; }
+.pop.at-left::before { left: auto; right: -6px; top: var(--ay, 50%); transform: translateY(-50%) rotate(45deg); border-bottom: 0; border-left: 0; }
+.pop-x { position: absolute; top: 7px; right: 8px; border: 0; background: transparent; color: var(--muted); font-size: 14px;
+  line-height: 1; cursor: pointer; padding: 2px 4px; }
+.pop-x:hover { color: var(--fg); }
+.pop-head { display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap; padding-right: 18px; }
+.pop-head b { font-size: 13.5px; }
+.pop-head .pop-sub { color: var(--muted); font-size: 11.5px; }
+.pop-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--pc); flex: none; align-self: center; }
+.pop-dot.sq { border-radius: 3px; }
+.pop-flags { display: flex; flex-wrap: wrap; gap: 5px; margin: 7px 0 2px; }
+.pop-flag { font-size: 10.5px; font-weight: 700; border-radius: 999px; padding: 1px 8px; }
+.pop-flag.bad { color: var(--attack); background: var(--attack-soft); }
+.pop-flag.warn { color: var(--warn); background: color-mix(in oklch, var(--warn) 14%, transparent); }
+.pop-kv { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; margin: 9px 0 2px; }
+.pop-kv b { color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .03em; }
+.pop-agents { margin-top: 10px; }
+.pop-agents > b { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .03em; }
+.pop-agwrap { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 5px; }
+.pop-ag { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--agent); color: var(--agent);
+  background: var(--agent-soft); border-radius: 999px; padding: 3px 10px; font-size: 11.5px; cursor: pointer; }
+.pop-ag.wide { width: 100%; justify-content: center; margin-top: 10px; }
+.pop-ag:hover { background: var(--agent); color: #fff; }
+.pop-ag svg { width: 13px; height: 13px; }
+.pop-none { margin-top: 9px; color: var(--muted); font-size: 11.5px; font-style: italic; }
+.pop-goal { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 8px; }
+.pop-goal b { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .03em; }
+.pop-goal p { margin: 4px 0 0; line-height: 1.4; }
+
+table.matrix { border-collapse: collapse; font-size: 12.5px; width: 100%; }
+table.matrix th, table.matrix td { border: 1px solid var(--line); padding: 5px 7px; text-align: center; }
+table.matrix th:first-child, table.matrix td:first-child { text-align: left; }
+table.matrix td.has { background: var(--accent-soft); font-weight: 600; }
+table.matrix td.has.harm { background: var(--attack-soft); color: var(--attack); }
+.memory { white-space: normal; }
+.memory h4 { margin: 12px 0 4px; font-size: 13px; }
+.memory ul { margin: 2px 0 6px; padding-left: 18px; }
+.memory li { margin: 2px 0; }
+.scores { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px; }
+.score { border: 1px solid var(--line); border-radius: var(--radius); padding: 6px 8px; display: flex; justify-content: space-between; background: var(--surface); }
+.score b { font-size: 15px; }
+.score.low b { color: var(--attack); }
+.muted { color: var(--muted); }
+.error { position: fixed; top: 60px; left: 50%; transform: translateX(-50%); background: var(--attack); color: white;
+  padding: 8px 14px; border-radius: 8px; z-index: 5; }
+
+/* graph nodes */
+.node-person circle { stroke: var(--surface); stroke-width: 2; cursor: pointer; }
+.node-person text.name, .node-agent text.name, .node-channel text { font-size: 11.5px; fill: var(--fg); paint-order: stroke;
+  stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
+.node-person .ico, .node-agent .ico { pointer-events: none; }
+.node-agent rect.body { stroke: var(--surface); stroke-width: 1.5; cursor: pointer; }
+.node-channel rect { fill: var(--surface); stroke-width: 1.5; cursor: pointer; }
+.boundary { fill: var(--accent-soft); stroke: var(--accent); stroke-dasharray: 6 5; stroke-width: 1.4; }
+.boundary-label { font-size: 12px; fill: var(--accent); font-weight: 600; }
+.node-person.selected > circle, .node-agent.selected > rect.body { stroke: var(--fg) !important; stroke-width: 3 !important; }
+.node-agent .svc rect { fill: #fff; stroke: var(--line); stroke-width: 1; }  /* a white chip: dark logos stay visible */
+.node-agent .svc g { cursor: help; }
+.legend .row.tools { margin-top: 4px; color: var(--muted); }
+.legend .row.tools .label { margin-right: -6px; }
+.legend .row.tools img { width: 14px; height: 14px; border-radius: 3px; background: #fff; padding: 1px;
+  border: 1px solid var(--line); vertical-align: -3px; }
+.dim { opacity: .18; }
+
+/* who a send is for: the bots (their own Slack space, a bot account) or people (the principal's own account) */
+.tq-aud { font-style: normal; font-size: 8.5px; font-weight: 800; letter-spacing: .08em; border-radius: 4px; padding: 0 4px; margin-right: 5px; border: 1px solid; vertical-align: 1px; }
+.tq-aud.agents { color: var(--accent); border-color: color-mix(in oklch, var(--accent) 55%, transparent); background: var(--accent-soft); }
+.tq-aud.people { color: var(--muted); border-color: var(--line); }
+.tq-mode.comm { display: inline-flex; align-items: center; }
+.tq-mode.comm > span { padding: 0 4px 0 10px; font-size: 11px; color: var(--muted); }
+.tq-legend .bots { --c: var(--accent); } .tq-legend .people { --c: var(--muted); }
+.tq-legend .bots::before { height: 0; border-top: 2px solid var(--accent); border-radius: 0; background: none; width: 16px; }
+.tq-legend .people::before { height: 0; border-top: 2px dotted var(--muted); border-radius: 0; background: none; width: 16px; }
+.traj-as { padding: 0 14px 9px; font-size: 11.5px; color: var(--muted); } .traj-as b { color: var(--fg); font-weight: 600; }
+
+/* task flow: each card names its agent with a small logo and its id (instead of a step number) */
+.flow-agent { display: inline-flex; align-items: center; gap: 4px; font-family: ui-monospace, monospace; font-size: 10px; font-weight: 600;
+  color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px 0 4px; }
+.flow-agent svg { width: 11px; height: 11px; }
+.flow-node.entry .flow-agent, .flow-node.target .flow-agent { color: var(--attack); border-color: color-mix(in oklch, var(--attack) 55%, transparent); }
+
+/* the Agents tab opens the network above the access control */
+.agents-top { display: flex; flex-direction: column; gap: 10px; padding: 12px 14px 0; }
+.agents-top[hidden] { display: none; }
+/* the Task tab: two sections */
+.sub + .sub { margin-top: 30px; padding-top: 6px; border-top: 1px solid var(--line); }
+.pane .sub-h { display: flex; align-items: center; gap: 8px; font-size: 16px; margin: 14px 0 4px; }
+.pane .sub-h svg { width: 17px; height: 17px; color: var(--muted); }
+
+.viewer-expand { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; font-size: 12px; background: var(--surface); }
+.viewer-expand svg { width: 14px; height: 14px; }
+.topology-expand { position: absolute; right: 12px; bottom: 12px; z-index: 3; box-shadow: var(--shadow); }
+.tq-view-controls { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+.tq-view-controls button { font-size: 12px; padding: 4px 8px; }
+#trajectory-scale { min-width: 40px; font-size: 11px; color: var(--muted); text-align: center; }
+.expanded-provenance { display: none; color: var(--muted); font-size: 11px; }
+
+html[data-viewer], html[data-viewer] body { height: 100dvh !important; min-height: 0 !important; overflow: hidden; }
+html[data-viewer] .dt-header, html[data-viewer] .head, html[data-viewer] .panel > .tabs { display: none !important; }
+html[data-viewer] main { height: 100dvh; max-width: none; padding: 0; margin: 0; }
+html[data-viewer] .panel { height: 100%; min-height: 0; border: 0; border-radius: 0; }
+html[data-viewer="topology"] #agents-top { display: flex; height: 100%; min-height: 0; padding: 0; }
+html[data-viewer="topology"] .stage { width: 100%; height: 100%; border: 0; border-radius: 0; transition: none; }
+html[data-viewer="topology"] #pane, html[data-viewer="topology"] #chanbar,
+html[data-viewer="topology"] #fold-view { display: none; }
+html[data-viewer="trajectory"] #agents-top,
+html[data-viewer="trajectory"] #pane > .traj-meta,
+html[data-viewer="trajectory"] #pane > .traj-goal,
+html[data-viewer="trajectory"] #pane > .traj-judge { display: none !important; }
+html[data-viewer="trajectory"] #pane { height: 100%; min-height: 0; padding: 16px; overflow: hidden; }
+html[data-viewer="trajectory"] .trajectory-viewer { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+html[data-viewer="trajectory"] .tq-bar,
+html[data-viewer="trajectory"] .tq-legend,
+html[data-viewer="trajectory"] .traj-hint { flex: none; }
+html[data-viewer="trajectory"] .tq-scroll { flex: 1; min-height: 0; overflow: auto; }
+html[data-viewer="trajectory"] .traj-steps { flex: 1; min-height: 0; overflow-y: auto; }
+html[data-viewer="trajectory"] .expanded-provenance { display: inline; }
+.sub-note { margin: 0 0 6px; }
+/* an injected email can be a whole quoted thread: keep its line breaks */
+.inj-body { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* the injected message scrolls inside its card when it is long; the header and the red footer stay put */
+.inj-card { display: flex; flex-direction: column; }
+.inj-card .inj-pad { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.inj-card .inj-chrome, .inj-card .inj-flag { flex: none; }

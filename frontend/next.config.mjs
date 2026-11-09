@@ -13,6 +13,8 @@ const isStaticExport = process.env.DT_STATIC_EXPORT === "1"
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   ...(isStaticExport ? { output: "export", trailingSlash: true } : {}),
+  ...(process.env.DT_BUILD_DIR ? { distDir: process.env.DT_BUILD_DIR } : {}),
+  ...(process.env.DT_BUILD_WORKERS ? { experimental: { cpus: Number(process.env.DT_BUILD_WORKERS) } } : {}),
   turbopack: {
     root: __dirname,
   },
@@ -23,6 +25,12 @@ const nextConfig = {
     unoptimized: true,
   },
   allowedDevOrigins: ["decodingtrust-agent.ngrok.io"],
+  async rewrites() {
+    const previewApi = process.env.DT_PREVIEW_API_ORIGIN
+    return process.env.NODE_ENV === "development" && previewApi
+      ? [{ source: "/traj-api/:path*", destination: `${previewApi.replace(/\/$/, "")}/traj-api/:path*` }]
+      : []
+  },
 }
 
 export default nextConfig

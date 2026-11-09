@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Task Explorer · DecodingTrust Agent</title>
+<link rel="icon" href="assets/dt-agent-logo.png">
+<script src="site-bridge.js"></script>
+<link rel="stylesheet" href="dtap-theme.css">
+<link rel="stylesheet" href="task.css">
+<script src="vendor/d3.min.js"></script>
+<script src="vendor/lucide.min.js"></script>  <!-- the site's lucide-react version -->
+<link rel="stylesheet" href="embed.css">
+</head>
+<body data-view="task">
+<header class="dt-header">
+  <div class="dt-header-inner">
+    <a class="dt-brand" href="/">
+      <img src="assets/dt-agent-logo.png" alt="DTap Logo">
+      <span class="word">Decoding<b>Trust Agent</b></span>
+    </a>
+    <nav class="dt-nav" aria-label="Site">
+      <a href="/quickstart">Quickstart</a>
+      <a class="on" href="/benchmarks">Benchmark</a>
+      <a href="/leaderboard">Leaderboard<i data-lucide="chevron-down"></i></a>
+      <a href="/docs">Docs</a>
+      <a href="/community">Community</a>
+      <a href="/about">About</a>
+    </nav>
+    <span class="dt-spacer"></span>
+    <div class="dt-icons">
+      <button id="theme" class="dt-icon" title="Toggle theme" aria-label="Toggle theme"><i data-lucide="sun"></i></button>
+      <a class="dt-icon" href="https://discord.gg/z8ZhVwPqUk" target="_blank" rel="noopener noreferrer" aria-label="Discord"><i data-lucide="message-circle"></i></a>
+      <a class="dt-icon" href="https://github.com/AI-secure/DecodingTrust-Agent" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i data-lucide="github"></i></a>
+    </div>
+  </div>
+</header>
+
+<section class="head">
+  <a id="back" class="back" href="tasks.html"><i data-lucide="arrow-left"></i>Back to DTap-MAS</a>
+  <h1 id="title" class="title">Task Explorer</h1>
+  <div id="sub" class="meta">Pick a task</div>
+  <div class="tagrow">
+    <div id="badges" class="badges"></div>
+    <div class="actions">
+      <a id="pair-link" class="dt-btn" href="#" hidden><span id="pair-text">Other version</span><i data-lucide="arrow-up-right"></i></a>
+    </div>
+  </div>
+  <div id="goal" class="dt-alert" hidden>
+    <div class="label"><i data-lucide="triangle-alert"></i>Red-Teaming goal</div>
+    <div id="goal-text" class="text"></div>
+  </div>
+</section>
+
+<main>
+  <aside class="panel">
+    <nav class="tabs dt-tabs" role="tablist" aria-label="Task details">
+      <button id="tab-task" role="tab" aria-selected="true" aria-controls="pane" data-tab="task" class="on"><i data-lucide="file-text"></i>Task</button>
+      <button id="tab-agents" role="tab" aria-selected="false" aria-controls="pane" tabindex="-1" data-tab="agents"><i data-lucide="bot"></i>Agents</button>
+      <button id="tab-verifier" role="tab" aria-selected="false" aria-controls="pane" tabindex="-1" data-tab="verifier"><i data-lucide="list-checks"></i>Verifier</button>
+      <button id="tab-trajectory" role="tab" aria-selected="false" aria-controls="pane" tabindex="-1" data-tab="trajectory"><i data-lucide="play"></i>Trajectory</button>
+    </nav>
+    <!-- the network belongs to the Agents tab: it opens there, above the access control -->
+    <div id="agents-top" class="agents-top" hidden>
+    <section class="stage" id="stage">
+      <div class="layers" role="group" aria-label="Layers">
+        <button id="fold-view" class="fit fold" title="Collapse / expand the network"><i data-lucide="chevron-up"></i>Network</button>
+        <span class="label">Show</span>
+        <label><input type="checkbox" data-layer="ties" checked> People &amp; ties</label>
+        <label><input type="checkbox" data-layer="channels"> Channels</label>
+        <span class="spacer"></span>
+        <button id="fit-view" class="fit" title="Fit the graph to the window (F). Scroll to zoom, drag the background to pan, drag a person to move them.">Fit</button>
+      </div>
+      <svg id="graph" aria-label="People, agents and channels"></svg>
+      <div id="legend" class="legend"></div>
+      <div id="tip" class="tip" hidden></div>
+      <button id="expand-topology" class="viewer-expand topology-expand" aria-label="Expand agent topology" aria-expanded="false"><i data-lucide="maximize-2"></i><span>Expand</span></button>
+    </section>
+
+      <nav id="chanbar" class="chanbar" aria-label="Conversations and agents"></nav>
+    </div>
+    <div id="pane" class="pane" role="tabpanel" aria-labelledby="tab-task"></div>
+  </aside>
+</main>
+<div id="error" class="error" hidden></div>
+<div id="pop" class="pop" hidden></div>
+<script src="task.js"></script>
+</body>
+</html>

@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "benchmarks:prepare": "node scripts/prepare-benchmarks.mjs",
+    "predev": "npm run benchmarks:prepare",
+    "prebuild": "npm run benchmarks:prepare",
+    "prebuild:export": "npm run benchmarks:prepare",
     "trajectories:unpack": "node scripts/unzip-trajectories.mjs && python3 ../backend/traj-api/indexer.py",
     "build": "BASELINE_BROWSER_MAPPING_IGNORE_OLD_DATA=true next build",
     "build:export": "DT_STATIC_EXPORT=1 BASELINE_BROWSER_MAPPING_IGNORE_OLD_DATA=true next build",
@@ -68,13 +72,14 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.9",
     "@types/node": "^22",
+    "@types/prismjs": "^1.26.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "baseline-browser-mapping": "^2.10.19",
     "postcss": "^8.5",
     "tailwindcss": "^4.1.9",
-    "tw-animate-css": "1.3.3",
     "tsx": "^4.20.5",
+    "tw-animate-css": "1.3.3",
     "typescript": "^5"
   }
 }

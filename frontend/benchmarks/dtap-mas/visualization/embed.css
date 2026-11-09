@@ -1,0 +1,6 @@
+html[data-embed="true"] .dt-header { display: none; }
+html[data-embed="true"] body[data-view="tasks"] .hero { display: none; }
+html[data-embed="true"]:has(body:not([data-view="worlds"])),
+html[data-embed="true"] body:not([data-view="worlds"]) { height: auto; min-height: 0; }
+html[data-embed="true"] body[data-view="task"] .head { padding-top: 28px; }
+html[data-embed="true"] body[data-view="worlds"] .bar { padding-top: 18px; padding-bottom: 18px; }
