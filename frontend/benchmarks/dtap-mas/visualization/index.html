@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Topology Explorer · DecodingTrust Agent</title>
+<link rel="icon" href="assets/dt-agent-logo.png">
+<script src="site-bridge.js"></script>
+<link rel="stylesheet" href="dtap-theme.css">
+<link rel="stylesheet" href="style.css">
+<script src="vendor/d3.min.js"></script>
+<script src="vendor/lucide.min.js"></script>  <!-- the site's lucide-react version -->
+<link rel="stylesheet" href="embed.css">
+</head>
+<body data-view="worlds">
+<header class="dt-header">
+  <div class="dt-header-inner">
+    <a class="dt-brand" href="/">
+      <img src="assets/dt-agent-logo.png" alt="DTap Logo">
+      <span class="word">Decoding<b>Trust Agent</b></span>
+    </a>
+    <nav class="dt-nav" aria-label="Site">
+      <a href="/quickstart">Quickstart</a>
+      <a class="on" href="/benchmarks">Benchmark</a>
+      <a href="/leaderboard">Leaderboard<i data-lucide="chevron-down"></i></a>
+      <a href="/docs">Docs</a>
+      <a href="/community">Community</a>
+      <a href="/about">About</a>
+    </nav>
+    <span class="dt-spacer"></span>
+    <div class="dt-icons">
+      <button id="theme" class="dt-icon" title="Toggle theme" aria-label="Toggle theme"><i data-lucide="sun"></i></button>
+      <a class="dt-icon" href="https://discord.gg/z8ZhVwPqUk" target="_blank" rel="noopener noreferrer" aria-label="Discord"><i data-lucide="message-circle"></i></a>
+      <a class="dt-icon" href="https://github.com/AI-secure/DecodingTrust-Agent" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i data-lucide="github"></i></a>
+    </div>
+  </div>
+</header>
+
+<header class="bar">
+  <div class="brand">
+    <div>
+      <h1 id="world-title">Topology Explorer</h1>
+      <p id="world-sub">Load a world to begin</p>
+    </div>
+  </div>
+
+  <select id="world-pick" class="dt-select" hidden aria-label="World" title="Available benchmark worlds"></select>
+  <a id="tasks-link" class="dt-btn" hidden title="Synthesized tasks set in this world">Tasks in this world</a>
+
+  <div class="seg" role="group" aria-label="Layer">
+    <button id="layer-people" class="on" data-layer="people">People</button>
+    <button id="layer-agents" data-layer="agents" disabled title="Load an agent network to enable">Agents</button>
+  </div>
+
+  <div class="seg" role="group" aria-label="Tool">
+    <button id="tool-pan" class="on" title="Pan and select (P)">✋ Pan</button>
+    <button id="tool-box" title="Draw a box to zoom into a sub-topology (B, or Shift-drag)">⬚ Box zoom</button>
+  </div>
+
+  <div class="search">
+    <input id="search" type="search" placeholder="Find a person or agent  /" list="names" autocomplete="off">
+    <datalist id="names"></datalist>
+  </div>
+
+  <div class="actions">
+    <button id="back" disabled title="Return to the view before the last zoom (Backspace)">← Back</button>
+    <button id="fit" title="Fit everything (F)">Fit</button>
+    <button id="isolate" disabled title="Show only the selection (I)">Isolate</button>
+    <button id="exit-isolate" hidden>Show all</button>
+    <label class="file">World<input id="file-world" type="file" accept=".json,application/json"></label>
+    <label class="file">Agents<input id="file-agents" type="file" accept=".json,application/json"></label>
+  </div>
+</header>
+
+<main>
+  <section id="stage" aria-label="Topology graph">
+    <svg id="graph"></svg>
+    <div id="brush" hidden></div>
+    <div id="box-hint" class="box-hint" hidden>Drag a box around part of the network to zoom into it ·
+      <kbd>Esc</kbd> or <kbd>B</kbd> to stop</div>
+    <div id="empty" class="empty">
+      <h2>Drop a topology here</h2>
+      <p>Drag a world JSON (and optionally its <code>.agents.json</code>) onto this page,
+        or use the <b>World</b> / <b>Agents</b> buttons above.</p>
+      <button id="load-example">Load example world</button>
+      <p class="hint">Choose a world above, or drop your own world JSON here.</p>
+    </div>
+    <div id="error" class="error" hidden></div>
+    <div id="toast" class="toast" hidden></div>
+    <svg id="minimap" aria-label="Minimap"></svg>
+    <div id="legend" class="legend"></div>
+    <div id="tip" class="tip" hidden></div>
+    <div class="keys">
+      <span><kbd>scroll</kbd> zoom</span><span><kbd>drag</kbd> pan</span>
+      <span><kbd>B</kbd>/<kbd>⇧ drag</kbd> box zoom</span><span><kbd>I</kbd> isolate</span>
+      <span><kbd>F</kbd> fit</span><span><kbd>Esc</kbd> clear</span>
+    </div>
+  </section>
+
+  <aside id="panel" aria-live="polite"></aside>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

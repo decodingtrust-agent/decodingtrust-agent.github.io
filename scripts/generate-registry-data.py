@@ -44,7 +44,7 @@ def determine_type_and_threat(config_path: Path):
     parts = config_path.relative_to(DATASET_ROOT).parts
     if len(parts) >= 2 and parts[1] == "benign":
         return "benign", None
-    elif len(parts) >= 2 and parts[1] == "malicious":
+    elif len(parts) >= 2 and parts[1] in ("malicious", "rt"):
         threat_model = parts[2] if len(parts) > 2 and parts[2] in ("direct", "indirect") else None
         return "malicious", threat_model
     return "unknown", None

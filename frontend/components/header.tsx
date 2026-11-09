@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
 import { useTheme } from "@/components/theme-provider"
-import { DOMAINS } from "@/lib/domains"
+import { BENCHMARKS, UPCOMING_BENCHMARKS, isBenchmarkPath } from "@/benchmarks/registry"
 
 const navItems = [
   { label: "Docs", href: "/docs" },
@@ -24,7 +24,37 @@ const navItems = [
 ]
 
 const quickstartItem = { label: "Quickstart", href: "/quickstart" }
-const benchmarkItem = { label: "Benchmark", href: "/benchmark" }
+const blogItem = { label: "Blog", href: "/blog" }
+
+function UpcomingBenchmark({ benchmark, mobile = false }: {
+  benchmark: typeof UPCOMING_BENCHMARKS[number]
+  mobile?: boolean
+}) {
+  const content = <>
+    <span className="flex w-full items-center justify-between gap-3">
+      <span className="font-medium">{benchmark.name}</span>
+      {mobile && <span className="shrink-0 text-[10px]">Coming soon</span>}
+    </span>
+    <span className="text-xs leading-relaxed">{benchmark.tagline}</span>
+  </>
+
+  if (mobile) return (
+    <div aria-disabled="true" title="Coming soon" className="flex cursor-default flex-col gap-1 rounded px-3 py-2 text-sm text-muted-foreground/60">
+      {content}
+    </div>
+  )
+
+  return (
+    <div className="group relative" title="Coming soon">
+      <DropdownMenuItem disabled className="flex flex-col items-start gap-1 py-2.5 text-muted-foreground data-[disabled]:opacity-60">
+        {content}
+      </DropdownMenuItem>
+      <span role="tooltip" className="pointer-events-none absolute right-2 top-2 rounded bg-foreground px-2 py-1 text-[10px] text-background opacity-0 transition-opacity group-hover:opacity-100">
+        Coming soon
+      </span>
+    </div>
+  )
+}
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -32,6 +62,7 @@ export function Header() {
   const pathname = usePathname()
 
   const isLeaderboardActive = pathname === "/leaderboard" || pathname?.startsWith("/leaderboard/")
+  const isBenchmarkActive = isBenchmarkPath(pathname)
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
@@ -48,7 +79,7 @@ export function Header() {
             height={48}
             className="rounded-full"
           />
-          <span className="text-base font-semibold tracking-tight hidden sm:inline">
+          <span className="text-base font-semibold tracking-tight hidden whitespace-nowrap sm:inline">
             <span className="text-foreground">Decoding</span>
             <span className="text-[oklch(0.7_0.14_220)]">Trust</span>
             <span className="text-[oklch(0.7_0.14_220)]"> Agent</span>
@@ -56,7 +87,7 @@ export function Header() {
         </Link>
 
         {/* Nav items - inline with logo */}
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="hidden xl:flex items-center gap-1">
           {/* Quickstart */}
           <Link
             href={quickstartItem.href}
@@ -70,20 +101,44 @@ export function Header() {
             {quickstartItem.label}
           </Link>
 
-          {/* Benchmark */}
-          <Link
-            href={benchmarkItem.href}
-            className={cn(
-              "px-3 py-1.5 text-sm transition-colors",
-              (pathname === benchmarkItem.href || pathname?.startsWith(benchmarkItem.href + "/"))
-                ? "text-foreground font-medium"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            {benchmarkItem.label}
+          <Link href={blogItem.href} aria-current={pathname === "/blog" || pathname?.startsWith("/blog/") ? "page" : undefined}
+            className={cn("rounded-md px-3 py-1.5 text-sm transition-colors",
+              pathname === "/blog" || pathname?.startsWith("/blog/") ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground")}>
+            {blogItem.label}
           </Link>
 
-          {/* Leaderboard with domain dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className={cn("flex items-center gap-0.5 rounded-md px-3 py-1.5 text-sm outline-none transition-colors",
+                isBenchmarkActive ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground")}>
+                Benchmark<ChevronDown className="ml-0.5 h-3.5 w-3.5 opacity-60" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-72">
+              <DropdownMenuItem asChild>
+                <Link href="/benchmarks" aria-current={pathname === "/benchmarks" ? "page" : undefined} className="cursor-pointer">
+                  <LayoutGrid className="h-4 w-4" /><span className="font-medium">All Benchmarks</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              {BENCHMARKS.map((benchmark) => (
+                <DropdownMenuItem key={benchmark.id} asChild>
+                  <Link href={benchmark.href} aria-current={pathname === benchmark.href || pathname?.startsWith(benchmark.href + "/") ? "page" : undefined}
+                    className="flex cursor-pointer flex-col items-start gap-1 py-2.5">
+                    <span className="flex w-full items-center justify-between gap-4">
+                      <span className="font-medium">{benchmark.name}</span>
+                      <span className="text-xs text-muted-foreground">{benchmark.version}</span>
+                    </span>
+                    <span className="text-xs text-muted-foreground">{benchmark.tagline}</span>
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuSeparator />
+              {UPCOMING_BENCHMARKS.map((benchmark) => <UpcomingBenchmark key={benchmark.id} benchmark={benchmark} />)}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* Results grouped by benchmark. */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
@@ -98,24 +153,21 @@ export function Header() {
                 <ChevronDown className="h-3.5 w-3.5 ml-0.5 opacity-60" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-52">
-              <DropdownMenuItem asChild>
-                <Link href="/leaderboard" className="flex items-center gap-2 cursor-pointer">
-                  <LayoutGrid className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span className="font-medium">All Domains</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              {DOMAINS.map((domain) => (
-                <DropdownMenuItem key={domain.key} asChild>
-                  <Link
-                    href={`/leaderboard#domain-${domain.key}`}
-                    className="cursor-pointer"
-                  >
-                    {domain.label}
+            <DropdownMenuContent align="start" className="w-72">
+              {BENCHMARKS.map((benchmark) => (
+                <DropdownMenuItem key={benchmark.id} asChild>
+                  <Link href={benchmark.leaderboardHref} className="flex cursor-pointer flex-col items-start gap-1 py-2.5"
+                    aria-current={pathname === benchmark.leaderboardHref ? "page" : undefined}>
+                    <span className="flex w-full items-center justify-between gap-4">
+                      <span className="font-medium">{benchmark.name}</span>
+                      <span className="text-xs text-muted-foreground">{benchmark.version}</span>
+                    </span>
+                    <span className="text-xs text-muted-foreground">{benchmark.tagline}</span>
                   </Link>
                 </DropdownMenuItem>
               ))}
+              <DropdownMenuSeparator />
+              {UPCOMING_BENCHMARKS.map((benchmark) => <UpcomingBenchmark key={benchmark.id} benchmark={benchmark} />)}
             </DropdownMenuContent>
           </DropdownMenu>
 
@@ -158,8 +210,11 @@ export function Header() {
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden h-8 w-8"
+            className="xl:hidden h-8 w-8"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation"
           >
             {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </Button>
@@ -168,7 +223,7 @@ export function Header() {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-border bg-background">
+        <div id="mobile-navigation" className="max-h-[calc(100dvh-5rem)] overflow-y-auto xl:hidden border-t border-border bg-background">
           <nav className="flex flex-col p-4 gap-1">
             <Link
               href={quickstartItem.href}
@@ -182,30 +237,36 @@ export function Header() {
             >
               {quickstartItem.label}
             </Link>
-            <Link
-              href={benchmarkItem.href}
-              onClick={() => setMobileMenuOpen(false)}
-              className={cn(
-                "px-4 py-2 text-sm transition-colors rounded text-left",
-                (pathname === benchmarkItem.href || pathname?.startsWith(benchmarkItem.href + "/"))
-                  ? "text-foreground font-medium bg-secondary"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50",
-              )}
-            >
-              {benchmarkItem.label}
+            <Link href={blogItem.href} onClick={() => setMobileMenuOpen(false)}
+              aria-current={pathname === "/blog" || pathname?.startsWith("/blog/") ? "page" : undefined}
+              className={cn("rounded px-4 py-2 text-sm transition-colors",
+                pathname === "/blog" || pathname?.startsWith("/blog/") ? "bg-secondary font-medium text-foreground" : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground")}>
+              {blogItem.label}
             </Link>
-            <Link
-              href="/leaderboard"
-              onClick={() => setMobileMenuOpen(false)}
-              className={cn(
-                "px-4 py-2 text-sm transition-colors rounded text-left",
-                isLeaderboardActive
-                  ? "text-foreground font-medium bg-secondary"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50",
-              )}
-            >
-              Leaderboard
-            </Link>
+            <div className="rounded-md border border-border/60 p-2">
+              <p className="px-2 py-1 text-xs font-medium text-muted-foreground">Benchmark</p>
+              {[{ name: "All Benchmarks", href: "/benchmarks" }, ...BENCHMARKS].map((benchmark) => (
+                <Link key={benchmark.href} href={benchmark.href} onClick={() => setMobileMenuOpen(false)}
+                  className={cn("block rounded px-3 py-2 text-sm transition-colors",
+                    pathname === benchmark.href || (benchmark.href !== "/benchmarks" && pathname?.startsWith(benchmark.href + "/"))
+                      ? "bg-secondary font-medium text-foreground" : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground")}>
+                  {benchmark.name}
+                </Link>
+              ))}
+              {UPCOMING_BENCHMARKS.map((benchmark) => <UpcomingBenchmark key={benchmark.id} benchmark={benchmark} mobile />)}
+            </div>
+            <div className="rounded-md border border-border/60 p-2">
+              <p className="px-2 py-1 text-xs font-medium text-muted-foreground">Leaderboard</p>
+              {BENCHMARKS.map((benchmark) => (
+                <Link key={benchmark.id} href={benchmark.leaderboardHref} onClick={() => setMobileMenuOpen(false)}
+                  className={cn("block rounded px-3 py-2 text-sm transition-colors",
+                    pathname === benchmark.leaderboardHref ? "bg-secondary font-medium text-foreground"
+                      : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground")}>
+                  {benchmark.name}
+                </Link>
+              ))}
+              {UPCOMING_BENCHMARKS.map((benchmark) => <UpcomingBenchmark key={benchmark.id} benchmark={benchmark} mobile />)}
+            </div>
             {navItems.map((item) => (
               <Link
                 key={item.href}

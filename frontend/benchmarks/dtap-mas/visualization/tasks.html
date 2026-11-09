@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DTap-MAS · DecodingTrust Agent</title>
+<link rel="icon" href="assets/dt-agent-logo.png">
+<script src="site-bridge.js"></script>
+<link rel="stylesheet" href="dtap-theme.css">
+<link rel="stylesheet" href="tasks.css">
+<script src="vendor/lucide.min.js"></script>  <!-- the site's lucide-react version -->
+<link rel="stylesheet" href="embed.css">
+</head>
+<body data-view="tasks">
+<header class="dt-header">
+  <div class="dt-header-inner">
+    <a class="dt-brand" href="/">
+      <img src="assets/dt-agent-logo.png" alt="DTap Logo">
+      <span class="word">Decoding<b>Trust Agent</b></span>
+    </a>
+    <nav class="dt-nav" aria-label="Site">
+      <a href="/quickstart">Quickstart</a>
+      <a class="on" href="/benchmarks">Benchmark</a>
+      <a href="/leaderboard">Leaderboard<i data-lucide="chevron-down"></i></a>
+      <a href="/docs">Docs</a>
+      <a href="/community">Community</a>
+      <a href="/about">About</a>
+    </nav>
+    <span class="dt-spacer"></span>
+    <div class="dt-icons">
+      <button id="theme" class="dt-icon" title="Toggle theme" aria-label="Toggle theme"><i data-lucide="sun"></i></button>
+      <a class="dt-icon" href="https://discord.gg/z8ZhVwPqUk" target="_blank" rel="noopener noreferrer" aria-label="Discord"><i data-lucide="message-circle"></i></a>
+      <a class="dt-icon" href="https://github.com/AI-secure/DecodingTrust-Agent" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i data-lucide="github"></i></a>
+    </div>
+  </div>
+</header>
+
+<!-- The DTAP site's benchmark page (frontend/app/benchmark/page.tsx): hero, then the filtered task grid -->
+<section class="hero">
+  <div class="wrap">
+    <div class="crumb">
+      <a href="/">Home</a><span>/</span>
+      <a href="/benchmarks">Benchmark</a><span>/</span><span class="here">DTap-MAS</span>
+    </div>
+    <h1>dtap-mas==1.0</h1>
+    <p class="lead">A multi-user, multi-principal agent red-teaming benchmark: several people, each with their own agents,
+      share real services, and an outside attacker tries to turn their agents' collaboration against them. It includes a
+      benign task set and a red-teaming task set (indirect threat model).</p>
+    <div class="snippet">
+      <span class="dollar">$</span><code id="cmd">pip install decodingtrust-agent</code>
+      <button id="copy" class="copy" aria-label="Copy install command"><i data-lucide="copy"></i></button>
+    </div>
+  </div>
+</section>
+
+<section class="wrap content">
+  <div class="count-row">
+    <p>Explore tasks</p>
+    <button id="clear" class="clear" hidden>Clear filters</button>
+  </div>
+  <div class="filters">
+    <label class="search"><i data-lucide="search"></i><input id="q" type="search" placeholder="Search tasks"></label>
+    <select id="f-type" class="dt-select" aria-label="Type">
+      <option value="">All types</option><option value="benign">Benign</option><option value="rt">Red-Teaming</option>
+    </select>
+    <select id="f-domain" class="dt-select" aria-label="Domain"></select>
+    <select id="f-category" class="dt-select" aria-label="Risk category"></select>
+  </div>
+  <div id="grid" class="grid"></div>
+  <p id="empty" class="empty" hidden>No tasks match these filters.</p>
+  <div id="pages" class="pages" hidden></div>
+</section>
+<div id="error" class="error" hidden></div>
+<script src="tasks.js"></script>
+</body>
+</html>

@@ -7,7 +7,6 @@ import { ArrowRight, FileText, Play, Database, Trophy, ScrollText } from "lucide
 import { Button } from "@/components/ui/button"
 import { loadBenchmarkDataset, type BenchmarkDataset } from "@/lib/benchmark"
 import { wallShots } from "@/lib/env-showcase"
-import { FEATURED_REPORT, industryReportHref } from "@/lib/industry"
 
 const WALL_ROW_COUNT = 4
 const wallRows = Array.from({ length: WALL_ROW_COUNT }, (_, rowIndex) =>
@@ -97,17 +96,17 @@ export function HeroSection() {
         {/* Announcement banner */}
         <div className="flex justify-center mb-8">
           <Link
-            href={industryReportHref(FEATURED_REPORT.slug)}
+            href="/blog"
             className="group inline-flex max-w-full items-center gap-2 rounded-full border border-primary/30 bg-primary/5 backdrop-blur-sm px-5 py-2 shadow-lg shadow-primary/5 transition-colors hover:border-primary/50 hover:bg-primary/10"
           >
             <span className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
             </span>
-            <span className="text-sm font-medium text-primary whitespace-nowrap">New Whitepaper</span>
+            <span className="text-sm font-medium text-primary whitespace-nowrap">Latest Updates</span>
             <span className="h-4 w-px bg-primary/30 shrink-0" />
             <span className="truncate text-sm text-muted-foreground">
-              {FEATURED_REPORT.partner} &times; DTap &mdash; Enterprise Agent and Model Security
+              Research, evaluations, and new benchmarks from DTap
             </span>
             <ArrowRight className="h-3.5 w-3.5 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" />
           </Link>

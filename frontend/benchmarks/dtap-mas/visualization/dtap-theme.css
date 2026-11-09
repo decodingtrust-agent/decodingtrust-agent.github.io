@@ -1,0 +1,129 @@
+/* The DecodingTrust Agent Platform look (decodingtrust-agent.com, frontend/app/globals.css): JetBrains Mono
+   throughout, its oklch palette for light and dark, and the header, pill, tab, card and callout styles of its
+   benchmark pages. Both explorers load this file and keep their own layout in style.css / task.css. */
+@import url("vendor/fonts.css");
+
+:root {
+  /* DTAP tokens (light) */
+  --dt-background: oklch(0.99 0.005 260); --dt-foreground: oklch(0.15 0.02 260); --dt-card: oklch(1 0 0);
+  --dt-muted: oklch(0.96 0.005 260); --dt-muted-foreground: oklch(0.5 0.02 260); --dt-border: oklch(0.9 0.005 260);
+  --dt-primary: oklch(0.45 0.18 260); --dt-brand: oklch(0.7 0.14 220); --dt-danger: oklch(0.55 0.22 25);
+  --dt-success: oklch(0.55 0.15 145); --dt-warning: oklch(0.7 0.15 70); --dt-info: oklch(0.5 0.15 220);
+  /* the explorers' names for them */
+  --bg: var(--dt-background); --surface: var(--dt-card); --surface-2: var(--dt-muted); --fg: var(--dt-foreground);
+  --muted: var(--dt-muted-foreground); --line: var(--dt-border); --accent: var(--dt-primary);
+  --accent-soft: oklch(0.45 0.18 260 / 0.10); --attack: var(--dt-danger); --attack-soft: oklch(0.55 0.22 25 / 0.07);
+  --ok: var(--dt-success); --warn: var(--dt-warning); --halo: var(--dt-background);
+  --allow: var(--dt-success); --ask: var(--dt-warning); --forbid: var(--dt-danger);
+  --kin: oklch(0.6 0.15 45); --social: oklch(0.55 0.15 200); --work: oklch(0.55 0.15 145); --service: oklch(0.65 0.01 260);
+  --shadow: 0 1px 3px oklch(0.15 0.02 260 / 0.08), 0 6px 20px oklch(0.15 0.02 260 / 0.06);
+  --radius: 0.5rem;
+  /* Tailwind's red scale, which the site's malicious pill and goal callout use (red-50 … red-950) */
+  --red-50: oklch(0.971 0.013 17.38); --red-200: oklch(0.885 0.062 18.334); --red-400: oklch(0.704 0.191 22.216);
+  --red-500: oklch(0.637 0.237 25.331); --red-600: oklch(0.577 0.245 27.325); --red-800: oklch(0.444 0.177 26.899);
+  --red-900: oklch(0.396 0.141 25.723); --red-950: oklch(0.258 0.092 26.042);
+  /* light values; .dark-equivalents below */
+  --pill-red-border: var(--red-200); --pill-red-bg: var(--red-50); --pill-red-fg: var(--red-600);
+  --alert-border: var(--red-200); --alert-bg: oklch(0.971 0.013 17.38 / 0.5); --alert-label: var(--red-600);
+  --alert-fg: var(--red-900); --alert-icon: var(--red-500);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --dt-background: oklch(0.05 0.01 250); --dt-foreground: oklch(0.95 0.005 240); --dt-card: oklch(0.11 0.015 250);
+    --dt-muted: oklch(0.14 0.015 250); --dt-muted-foreground: oklch(0.6 0.015 240); --dt-border: oklch(0.28 0.02 250);
+    --dt-primary: oklch(0.7 0.14 220); --dt-danger: oklch(0.6 0.2 25); --dt-success: oklch(0.65 0.18 145);
+    --dt-warning: oklch(0.75 0.15 70); --dt-info: oklch(0.7 0.18 200);
+    --accent-soft: oklch(0.7 0.14 220 / 0.14); --attack-soft: oklch(0.6 0.2 25 / 0.12);
+    --kin: oklch(0.72 0.14 45); --social: oklch(0.72 0.13 200); --work: oklch(0.7 0.15 145); --service: oklch(0.6 0.01 250);
+    --shadow: 0 1px 3px oklch(0 0 0 / 0.5), 0 6px 20px oklch(0 0 0 / 0.4);
+    --pill-red-border: var(--red-800); --pill-red-bg: oklch(0.258 0.092 26.042 / 0.3); --pill-red-fg: var(--red-400);
+    --alert-border: oklch(0.396 0.141 25.723 / 0.5); --alert-bg: oklch(0.258 0.092 26.042 / 0.15);
+    --alert-label: var(--red-400); --alert-fg: var(--red-200);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --dt-background: oklch(0.05 0.01 250); --dt-foreground: oklch(0.95 0.005 240); --dt-card: oklch(0.11 0.015 250);
+  --dt-muted: oklch(0.14 0.015 250); --dt-muted-foreground: oklch(0.6 0.015 240); --dt-border: oklch(0.28 0.02 250);
+  --dt-primary: oklch(0.7 0.14 220); --dt-danger: oklch(0.6 0.2 25); --dt-success: oklch(0.65 0.18 145);
+  --dt-warning: oklch(0.75 0.15 70); --dt-info: oklch(0.7 0.18 200);
+  --accent-soft: oklch(0.7 0.14 220 / 0.14); --attack-soft: oklch(0.6 0.2 25 / 0.12);
+  --kin: oklch(0.72 0.14 45); --social: oklch(0.72 0.13 200); --work: oklch(0.7 0.15 145); --service: oklch(0.6 0.01 250);
+  --shadow: 0 1px 3px oklch(0 0 0 / 0.5), 0 6px 20px oklch(0 0 0 / 0.4);
+  --pill-red-border: var(--red-800); --pill-red-bg: oklch(0.258 0.092 26.042 / 0.3); --pill-red-fg: var(--red-400);
+  --alert-border: oklch(0.396 0.141 25.723 / 0.5); --alert-bg: oklch(0.258 0.092 26.042 / 0.15);
+  --alert-label: var(--red-400); --alert-fg: var(--red-200);
+  color-scheme: dark;
+}
+
+body { font-family: "JetBrains Mono", "Geist Mono", ui-monospace, monospace; -webkit-font-smoothing: antialiased; }
+code, kbd { font-family: "JetBrains Mono", ui-monospace, monospace; }
+
+/* Header: the site's own (components/header.tsx): h-20, max-w-7xl container, 48px circled logo + wordmark, the
+   site nav (text-sm, px-3 py-1.5; active text-foreground font-medium), and the theme / Discord / GitHub icons */
+.dt-header { position: sticky; top: 0; z-index: 20; flex: none; height: 80px;
+  border-bottom: 1px solid color-mix(in oklch, var(--line) 50%, transparent);
+  background: color-mix(in oklch, var(--bg) 80%, transparent); backdrop-filter: blur(24px); }
+.dt-header-inner { display: flex; align-items: center; height: 100%; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.dt-brand { display: flex; align-items: center; gap: 8px; margin-right: 32px; text-decoration: none; color: var(--fg);
+  transition: opacity .15s; }
+.dt-brand:hover { opacity: .8; }
+.dt-brand img { width: 48px; height: 48px; border-radius: 999px; }
+.dt-brand .word { font-size: 16px; font-weight: 600; letter-spacing: -0.025em; }
+.dt-brand .word b { font-weight: 600; color: var(--dt-brand); }
+.dt-nav { display: flex; align-items: center; gap: 4px; }
+.dt-nav a { display: inline-flex; align-items: center; padding: 6px 12px; font-size: 14px; color: var(--muted);
+  text-decoration: none; transition: color .15s; }
+.dt-nav a:hover { color: var(--fg); }
+.dt-nav a.on { color: var(--fg); font-weight: 500; }
+.dt-nav a svg { width: 14px; height: 14px; margin-left: 2px; opacity: .6; }
+.dt-spacer { flex: 1; }
+.dt-icons { display: flex; align-items: center; gap: 4px; }
+.dt-icon { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 0;
+  background: transparent; border-radius: var(--radius); cursor: pointer; color: var(--fg); }
+.dt-icon:hover { background: var(--surface-2); }
+@media (max-width: 1024px) { .dt-nav { display: none; } }
+
+/* Pills: the meta-row domain pill (text-foreground, py-0.5), #tags (text-muted-foreground, py-1) and the red one
+   (task-detail-page-client.tsx), and the rounded-full outline buttons beside them */
+.dt-pill { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--line); border-radius: 999px;
+  padding: 4px 10px; font-size: 12px; font-weight: 500; line-height: 1; background: transparent; color: var(--muted);
+  white-space: nowrap; }
+.dt-pill.solid { color: var(--fg); padding: 2px 10px; line-height: 1.5; }
+.dt-pill.danger { color: var(--pill-red-fg); background: var(--pill-red-bg); border-color: var(--pill-red-border);
+  font-weight: 600; }
+.dt-pill.ok { color: var(--ok); background: color-mix(in oklch, var(--ok) 8%, transparent);
+  border-color: color-mix(in oklch, var(--ok) 30%, transparent); font-weight: 600; }
+.dt-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border: 1px solid var(--line);
+  border-radius: 999px; background: transparent; color: var(--fg); font-size: 14px; font-weight: 500;
+  text-decoration: none; cursor: pointer; white-space: nowrap; transition: background .15s; }
+.dt-btn:hover { background: var(--surface-2); }
+.dt-btn.ghost { border-color: transparent; padding: 6px 4px; color: var(--muted); }
+.dt-btn.ghost:hover { background: transparent; color: var(--fg); }
+.dt-btn svg, .dt-icon svg { width: 16px; height: 16px; }
+
+/* Selects in the benchmark page's filter bar */
+.dt-select { appearance: none; padding: 7px 30px 7px 12px; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center;
+  color: var(--fg); font: inherit; font-size: 13px; cursor: pointer; box-shadow: 0 1px 2px oklch(0 0 0 / .04); }
+.dt-select:focus { outline: 2px solid color-mix(in oklch, var(--accent) 40%, transparent); outline-offset: 1px; }
+
+/* The MALICIOUS GOAL callout: rounded-lg border-red-200 bg-red-50/50 p-5; a red-600 uppercase label with the
+   triangle-alert icon; red-900 text (dark: red-900/50, red-950/15, red-400, red-200) */
+.dt-alert { border: 1px solid var(--alert-border); background: var(--alert-bg); border-radius: var(--radius);
+  padding: 16px 20px; }
+.dt-alert .label { display: flex; align-items: center; gap: 8px; color: var(--alert-label); font-size: 12px;
+  font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px; }
+.dt-alert .label svg { width: 16px; height: 16px; color: var(--alert-icon, var(--alert-label)); flex: none; }
+.dt-alert .text { color: var(--alert-fg); font-size: 15px; font-weight: 500; line-height: 1.65; white-space: pre-wrap; }
+
+/* Tabs: TabsList bg-muted/50 h-11 p-1 rounded-xl; TabsTrigger gap-1.5 px-4 rounded-lg, active: background + shadow */
+.dt-tabs { display: flex; gap: 2px; padding: 4px; min-height: 44px; background: color-mix(in oklch, var(--surface-2) 50%, transparent);
+  border-radius: 0.75rem; }
+.dt-tabs button { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 0;
+  background: transparent; border-radius: var(--radius); padding: 6px 12px; font-size: 13px; font-weight: 500;
+  color: var(--fg); cursor: pointer; white-space: nowrap; }
+.dt-tabs button:hover { color: var(--fg); }
+.dt-tabs button.on { background: var(--bg); box-shadow: 0 1px 3px oklch(0 0 0 / .1), 0 1px 2px oklch(0 0 0 / .06); }
+.dt-tabs button svg { width: 15px; height: 15px; }

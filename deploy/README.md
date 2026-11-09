@@ -1,5 +1,9 @@
 # Self-hosted deployment
 
+The current deployment is on SSH host `dtap-website` (`204.168.151.250`). Frontend releases use
+[the release workflow](FRONTEND-RELEASES.md), which builds separately before switching the frontend service.
+The migration instructions below describe the original host and are retained for reference.
+
 We're moving the site off GitHub Pages and hosting both the Next.js frontend
 and the trajectory data on this VM (public IP `35.193.39.86`). The dt-auth
 backend continues to listen on `:12000` and is reverse-proxied at `/auth-api/`.

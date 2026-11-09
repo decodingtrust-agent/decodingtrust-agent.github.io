@@ -33,8 +33,10 @@ venv/
 # next.js
 .next/
 **/.next/
+**/.next-*/
 /out/
 /frontend/out/
+/frontend/public/benchmarks/
 
 # Trajectory + dataset data — owned by the FastAPI service, served via
 # /traj-api/*. Drop trajectory zips into ./trajectory/ and run:

@@ -1,7 +1,4 @@
-// Industry reports: third-party evaluations and joint security studies that run
-// on DTap. Each entry is one published report. Add new collaborations here —
-// the /industry page and the homepage highlight both render straight off this
-// list, so no component needs to change when a report is added.
+// Published industry reports shared by the Community report directory and detail pages.
 
 export interface IndustryMetric {
   label: string
@@ -158,9 +155,6 @@ export const POKEE_ISAAC_REPORT: IndustryReport = {
 }
 
 export const INDUSTRY_REPORTS: IndustryReport[] = [POKEE_ISAAC_REPORT]
-
-/** The report promoted on the homepage and in the announcement banner. */
-export const FEATURED_REPORT = POKEE_ISAAC_REPORT
 
 export function getIndustryReport(slug: string): IndustryReport | undefined {
   return INDUSTRY_REPORTS.find((report) => report.slug === slug)
