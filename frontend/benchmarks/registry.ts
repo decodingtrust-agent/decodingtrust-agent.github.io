@@ -43,13 +43,13 @@ export const UPCOMING_BENCHMARKS = [
   },
   {
     id: "gateway-bench",
-    name: "Gateway Bench",
+    name: "GatewayBench",
     tagline: "First Agent Gateway Benchmark Robust Evaluation Benchmark",
     scope: "Agent gateways",
   },
   {
     id: "agent-insider",
-    name: "Agent Insider",
+    name: "AgentInsider",
     tagline: "First Multi-Principal Insider Robustness Evaluation",
     scope: "Direct attacks",
   },
